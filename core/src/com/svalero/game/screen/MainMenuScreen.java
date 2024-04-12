@@ -1,5 +1,6 @@
 package com.svalero.game.screen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -32,7 +33,8 @@ public class MainMenuScreen extends ScreenAdapter {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // Aquí puedes manejar la lógica para iniciar el juego
+                dispose();
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen());
             }
         });
 

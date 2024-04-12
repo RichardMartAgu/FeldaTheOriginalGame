@@ -22,6 +22,6 @@ public class Felda extends Game {
 	
 	@Override
 	public void dispose () {
-
+		super.dispose();
 	}
 }

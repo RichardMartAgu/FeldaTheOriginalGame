@@ -2,6 +2,7 @@ package com.svalero.game.characters;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -12,9 +13,10 @@ import com.svalero.game.managers.ResourceManager;
 public class Character implements Disposable {
 
     public enum State {
-        RIGHT, LEFT, UP, DOWN, IDLE;
-    }
+        RIGHT, LEFT, UP, DOWN, DEAD;
 
+    }
+    public State state;
     public Vector2 position;
     public Rectangle rect;
 
@@ -30,8 +32,12 @@ public class Character implements Disposable {
 
         rect = new Rectangle(position.x, position.y, currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
     }
+    public void render(Batch batch) {
+        if (currentFrame != null)
+            batch.draw(currentFrame, position.x, position.y);
+    }
 
-    public void draw(SpriteBatch batch) {
+    public void draw(Batch batch) {
         stateTime += Gdx.graphics.getDeltaTime();
 
         currentFrame = animation.getKeyFrame(stateTime, true);

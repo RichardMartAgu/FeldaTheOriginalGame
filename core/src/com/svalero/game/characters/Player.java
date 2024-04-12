@@ -4,10 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
-public class Player extends Character{
+public class Player extends Character {
 
 
-    public int hearts;
     public Character.State state;
     float stateTime;
 

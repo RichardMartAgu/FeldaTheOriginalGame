@@ -11,14 +11,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.svalero.game.Felda;
 
 
 public class MainMenuScreen extends ScreenAdapter {
 
+    final Felda game;
     private Skin skin;
     private Stage stage;
 
-    public MainMenuScreen() {
+    public MainMenuScreen(Felda game) {
+        this.game = game;
         skin = new Skin(Gdx.files.internal("menu/glassy-ui.json"));
         stage = new Stage();
 
@@ -34,7 +37,7 @@ public class MainMenuScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen(game));
             }
         });
 

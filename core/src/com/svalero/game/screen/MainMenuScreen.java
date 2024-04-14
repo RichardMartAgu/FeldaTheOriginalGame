@@ -31,6 +31,7 @@ public class MainMenuScreen extends ScreenAdapter {
 
         Label titleLabel = new Label("Menu", skin,"big");
         table.add(titleLabel).expandX().center().top().padBottom(70f).colspan(2).row();
+        titleLabel.setFontScale(1.7f);
 
         TextButton playButton = new TextButton("Play", skin);
         playButton.addListener(new ClickListener() {
@@ -38,6 +39,14 @@ public class MainMenuScreen extends ScreenAdapter {
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen(game));
+            }
+        });
+        TextButton settingsButton = new TextButton("Settings", skin);
+        settingsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                dispose();
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new PreferencesScreen(game));
             }
         });
 
@@ -50,6 +59,7 @@ public class MainMenuScreen extends ScreenAdapter {
         });
 
         table.add(playButton).center().padBottom(20).colspan(2).row();
+        table.add(settingsButton).center().padBottom(20).colspan(2).row();
         table.add(exitButton).center().colspan(2);
     }
 

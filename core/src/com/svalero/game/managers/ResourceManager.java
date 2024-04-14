@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import com.svalero.game.utils.Constants;
 
 public class ResourceManager {
 
@@ -12,14 +13,14 @@ public class ResourceManager {
     public static boolean update() {
         return assetManager.update();
     }
-    public static TextureRegion getTexture(String name) {
-        return assetManager.get("Felda.atlas", TextureAtlas.class).findRegion(name);
+    public static TextureRegion getRegion(String name) {
+        return assetManager.get(Constants.TEXTURE_ATLAS, TextureAtlas.class).findRegion(name);
     }
-    public static Array<TextureAtlas.AtlasRegion>getAnimation(String name) {
-        return assetManager.get("Felda.atlas", TextureAtlas.class).findRegions(name);
+    public static Array<TextureAtlas.AtlasRegion>getRegions(String name) {
+        return assetManager.get(Constants.TEXTURE_ATLAS, TextureAtlas.class).findRegions(name);
     }
     public static void loadAllResources() {
-        assetManager.load("Felda.atlas", TextureAtlas.class);
+        assetManager.load(Constants.TEXTURE_ATLAS, TextureAtlas.class);
 
 
     }

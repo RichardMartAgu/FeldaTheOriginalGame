@@ -6,21 +6,17 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.svalero.game.Felda;
-import com.svalero.game.managers.CameraManager;
-import com.svalero.game.managers.RenderManager;
-import com.svalero.game.managers.ResourceManager;
-import com.svalero.game.managers.SpriteManager;
+import com.svalero.game.managers.*;
 
 public class GameScreen implements Screen {
 
     Felda game;
     SpriteManager spriteManager;
     RenderManager renderManager;
-    ResourceManager resourceManager;
+
     LevelManager levelManager;
-    private OrthogonalTiledMapRenderer mapRenderer;
+
     private CameraManager cameraManager;
-    private TiledMap tiledMap;
 
     public GameScreen(Felda game) {
         this.game = game;
@@ -39,7 +35,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-
     }
 
 
@@ -53,7 +48,6 @@ public class GameScreen implements Screen {
         cameraManager.handleCamera();
         spriteManager.update(dt);
         renderManager.drawFrame();
-
     }
 
 

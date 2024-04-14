@@ -6,7 +6,6 @@ import com.svalero.game.screen.SplashScreen;
 
 
 public class Felda extends Game {
-    public boolean paused;
 
 
     @Override

@@ -9,25 +9,28 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import com.svalero.game.managers.ResourceManager;
+import com.svalero.game.managers.SpriteManager;
 
 public class Character implements Disposable {
 
     public enum State {
-        RIGHT, LEFT, UP, DOWN, DEAD;
-
+        RIGHT, LEFT, UP, DOWN,IDLE, DEAD;
     }
+    public int hearts;
+    public int currentHearts;
     public State state;
     public Vector2 position;
     public Rectangle rect;
+    protected boolean dead;
 
     private Animation<TextureRegion> animation;
     private float stateTime;
-    private TextureRegion currentFrame;
+    public TextureRegion currentFrame;
 
-    public Character(Vector2 position, String animationName) {
+    public Character(Vector2 position, int hearts, String animationName) {
         this.position = position;
 
-        animation = new Animation<>(0.15f, ResourceManager.getAnimation(animationName));
+        animation = new Animation<>(0.15f, ResourceManager.getRegions(animationName));
         currentFrame = animation.getKeyFrame(0);
 
         rect = new Rectangle(position.x, position.y, currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
@@ -48,8 +51,15 @@ public class Character implements Disposable {
         rect.x += x;
         rect.y += y;
     }
+    public boolean isDead() {
+        return dead;
+    }
     @Override
     public void dispose() {
+
+    }
+
+    public void update(float dt, SpriteManager spriteManager) {
 
     }
 }

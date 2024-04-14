@@ -4,10 +4,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.Vector2;
 import com.svalero.game.Felda;
 import com.svalero.game.characters.Player;
-import com.svalero.game.screen.LevelManager;
 import com.svalero.game.screen.MainMenuScreen;
 
 public class SpriteManager implements InputProcessor {
@@ -18,17 +16,13 @@ public class SpriteManager implements InputProcessor {
     boolean pause;
 
     public SpriteManager(Felda game) {
-        initialize();
+
     }
 
     public void setCameraManager(CameraManager cameraManager) {
         this.cameraManager = cameraManager;
     }
 
-    private void initialize() {
-        player = new Player(new Vector2(0, 0), "idel_down");
-        pause = false;
-    }
 
     private void handleGameScreenInput() {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
@@ -49,6 +43,8 @@ public class SpriteManager implements InputProcessor {
             player.manageInput();
         }
         handleGameScreenInput();
+
+        player.update(dt, this);
     }
 
 

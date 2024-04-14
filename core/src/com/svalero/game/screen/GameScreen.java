@@ -25,12 +25,13 @@ public class GameScreen implements Screen {
         spriteManager = new SpriteManager(game);
         levelManager = new LevelManager(spriteManager);
         levelManager.loadCurrentLevel();
+        levelManager.loadCollisionLayer();
 
         spriteManager.setLevelManager(levelManager);
         cameraManager = new CameraManager(spriteManager, levelManager);
         levelManager.setCameraManager(cameraManager);
         spriteManager.setCameraManager(cameraManager);
-        renderManager = new RenderManager(spriteManager, cameraManager, levelManager.batch);
+        renderManager = new RenderManager(spriteManager, cameraManager, levelManager,levelManager.batch);
     }
 
     @Override

@@ -17,7 +17,10 @@ public class Player extends Character {
     public boolean isAttackInProgress = false;
     public State previousState;
     public int rupias;
-
+    private boolean collidingRight = false;
+    private boolean collidingLeft = false;
+    private boolean collidingUp = false;
+    private boolean collidingDown = false;
     public Character.State state;
     float stateTime;
     Animation<TextureRegion> rightAnimation, idleRightAnimation, leftAnimation, idleLeftAnimation,
@@ -53,20 +56,20 @@ public class Player extends Character {
         }
 
         if (!isAttackInProgress) {
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-                move(2, 0);
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && !isCollidingRight()) {
+                move(Constants.PLAYER_SPEED, 0);
                 state = State.RIGHT;
                 previousState = State.RIGHT;
-            } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-                move(-2, 0);
+            } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)&& !isCollidingLeft()) {
+                move(-Constants.PLAYER_SPEED, 0);
                 state = State.LEFT;
                 previousState = State.LEFT;
-            } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                move(0, 2);
+            } else if (Gdx.input.isKeyPressed(Input.Keys.UP)&& !isCollidingUp()) {
+                move(0, Constants.PLAYER_SPEED);
                 state = State.UP;
                 previousState = State.UP;
-            } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-                move(0, -2);
+            } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)&& !isCollidingDown()) {
+                move(0, -Constants.PLAYER_SPEED);
                 state = State.DOWN;
                 previousState = State.DOWN;
             } else {
@@ -163,6 +166,30 @@ public class Player extends Character {
             isAttackInProgress = true;
             stateTime = 0;
         }
+    }
+    public void setCollidingRight(boolean colliding) {
+        collidingRight  = colliding;
+    }
+    public boolean isCollidingRight() {
+        return collidingRight ;
+    }
+    public void setCollidingUp(boolean colliding) {
+        collidingUp = colliding;
+    }
+    public boolean isCollidingUp() {
+        return collidingUp;
+    }
+    public void setCollidingDown(boolean colliding) {
+        collidingDown  = colliding;
+    }
+    public boolean isCollidingDown() {
+        return collidingDown ;
+    }
+    public void setCollidingLeft(boolean colliding) {
+        collidingLeft = colliding;
+    }
+    public boolean isCollidingLeft() {
+        return collidingLeft;
     }
 
 }

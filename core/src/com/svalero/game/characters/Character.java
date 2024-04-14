@@ -3,7 +3,6 @@ package com.svalero.game.characters;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -14,8 +13,9 @@ import com.svalero.game.managers.SpriteManager;
 public class Character implements Disposable {
 
     public enum State {
-        RIGHT, LEFT, UP, DOWN,IDLE, DEAD;
+        RIGHT, LEFT, UP, DOWN, IDLE, DEAD;
     }
+
     public int hearts;
     public int currentHearts;
     public State state;
@@ -35,6 +35,7 @@ public class Character implements Disposable {
 
         rect = new Rectangle(position.x, position.y, currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
     }
+
     public void render(Batch batch) {
         if (currentFrame != null)
             batch.draw(currentFrame, position.x, position.y);
@@ -46,20 +47,28 @@ public class Character implements Disposable {
         currentFrame = animation.getKeyFrame(stateTime, true);
         batch.draw(currentFrame, position.x, position.y);
     }
+
     public void move(float x, float y) {
         position.add(x, y);
         rect.x += x;
         rect.y += y;
     }
+
     public boolean isDead() {
         return dead;
     }
+
     @Override
     public void dispose() {
 
     }
 
     public void update(float dt, SpriteManager spriteManager) {
+
+    }
+
+    public void checkCollisions(SpriteManager spriteManager) {
+
 
     }
 }

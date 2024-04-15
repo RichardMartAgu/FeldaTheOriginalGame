@@ -4,9 +4,13 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 import com.svalero.game.Felda;
+import com.svalero.game.characters.Enemy;
+import com.svalero.game.characters.GreenEnemy;
 import com.svalero.game.characters.Player;
 import com.svalero.game.items.CollisionObject;
 import com.svalero.game.screen.MainMenuScreen;
@@ -20,18 +24,21 @@ public class SpriteManager implements InputProcessor {
     LevelManager levelManager;
     CameraManager cameraManager;
     public Player player;
+    Array<Enemy> enemies;
 
     TiledMapTileLayer collisionLayer;
     boolean pause;
 
     public SpriteManager(Felda game) {
 
+        this.game = game;
+        enemies = new Array<>();
+        Gdx.input.setInputProcessor(this);
     }
 
     public void setCameraManager(CameraManager cameraManager) {
         this.cameraManager = cameraManager;
     }
-
 
     private void handleGameScreenInput() {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
@@ -43,24 +50,52 @@ public class SpriteManager implements InputProcessor {
         }
     }
 
+
     public void setLevelManager(LevelManager levelManager) {
         this.levelManager = levelManager;
     }
 
     public void update(float dt) {
         if (!pause) {
-            player.manageInput();
+            player.manageInput(dt);
         }
+
         handleGameScreenInput();
 
         player.update(dt, this);
+
+        for (Enemy enemy : enemies) {
+            enemy.update(dt,this);
+        }
+        attackEnemies();
+
         checkCollision();
+    }
+    public void attackEnemies() {
+        // Verificar si el jugador está atacando
+
+        if (player.isAttackInProgress) {
+            // Obtener la hitbox de la espada del jugador
+            Rectangle swordRectangle = player.getSwordRectangle();
+
+            // Lógica para detectar colisiones entre la espada del jugador y los enemigos
+            for (Enemy enemy : enemies) {
+
+                if (enemy.hitBox.overlaps(swordRectangle)) {
+                    enemy.reduceLife(1); // Restar un corazón al enemigo golpeado
+                    System.out.println(enemy.hearts);
+                }
+            }
+        }
+    }
+    public void removeEnemy(Enemy enemy) {
+        enemies.removeValue(enemy, true);
     }
 
 
     private void checkCollision() {
-        float playerX = player.position.x;
-        float playerY = player.position.y;
+        float playerX = player.getPosition().x;
+        float playerY = player.getPosition().y;
 
         // Obtener el tamaño del jugador (ancho y alto)
         float playerWidth = Constants.PLAYER_WIDTH;

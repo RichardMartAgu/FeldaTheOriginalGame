@@ -7,10 +7,14 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.svalero.game.characters.Enemy;
+import com.svalero.game.characters.GreenEnemy;
 import com.svalero.game.characters.Player;
 import com.svalero.game.items.CollisionObject;
+import com.svalero.game.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,12 +54,35 @@ public class LevelManager {
 
         batch.begin();
 
-        spriteManager.player = new Player(new Vector2(30, 10), 3, "idle_down");
-        spriteManager.player.position.set(40, 20);
+        spriteManager.player = new Player(new Vector2(30, 10), 3);
+        spriteManager.player.getPosition().set(40, 20);
+
+        loadCollisionLayer();
+        loadEnemies();
 
         batch.end();
 
-        loadCollisionLayer();
+
+    }
+    public void loadEnemies() {
+
+        Enemy enemy = null;
+        // Carga los objetos "enemigo" del TiledMap
+        for (MapObject object : map.getLayers().get("objects").getObjects()) {
+            if (object instanceof TiledMapTileMapObject) {
+                TiledMapTileMapObject tile = (TiledMapTileMapObject) object;
+                if (tile.getProperties().containsKey("enemy")) {
+                    String enemyType = (String) tile.getProperties().get("enemy");
+                    switch (enemyType) {
+                        case "green":
+                            enemy = new GreenEnemy(new Vector2(tile.getX(), tile.getY()), 2, "green_bubble_down",spriteManager.player);
+                            break;
+                    }
+                    spriteManager.enemies.add(enemy);
+
+                }
+            }
+        }
     }
 
     public void loadCollisionLayer() {

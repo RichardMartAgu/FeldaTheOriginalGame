@@ -9,11 +9,18 @@ public class Constants {
     public static final int TILE_WIDTH = 32;
     public static final int TILE_HEIGHT = 32;
 
-    public static final float PLAYER_SPEED = 2f;
+    public static final float PLAYER_SPEED = 100f;
     public static final float ENEMY_SPEED = 1f;
 
     public static final int PLAYER_WIDTH = 20;
     public static final int PLAYER_HEIGHT = 28;
+
+    public static final int SWORD_LENGTH = 14;
+
+    public static final int SWORD_HEIGHT = 14;
+
+    public static final int ENEMY_WIDTH = 26;
+    public static final int ENEMY_HEIGHT = 20;
 
     public static final int TILES_IN_CAMERA = 16;
 

@@ -10,6 +10,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.svalero.game.characters.Enemy;
 import com.svalero.game.characters.GreenEnemy;
 import com.svalero.game.characters.Player;
@@ -25,7 +26,7 @@ public class LevelManager {
             "levels/casa_felda.tmx",
             "levels/otro_nivel.tmx"
     };
-
+    World world;
     private int currentLevelIndex = 0;
 
     public TiledMap map;
@@ -36,8 +37,9 @@ public class LevelManager {
     private SpriteManager spriteManager;
     private CameraManager cameraManager;
 
-    public LevelManager(SpriteManager spriteManager) {
+    public LevelManager(SpriteManager spriteManager, World world) {
         this.spriteManager = spriteManager;
+        this.world = world;
     }
 
     public void setCameraManager(CameraManager cameraManager) {
@@ -54,7 +56,7 @@ public class LevelManager {
 
         batch.begin();
 
-        spriteManager.player = new Player(new Vector2(30, 10), 3);
+        spriteManager.player = new Player(new Vector2(30, 10), 3,world);
         spriteManager.player.getPosition().set(40, 20);
 
         loadCollisionLayer();
@@ -75,7 +77,7 @@ public class LevelManager {
                     String enemyType = (String) tile.getProperties().get("enemy");
                     switch (enemyType) {
                         case "green":
-                            enemy = new GreenEnemy(new Vector2(tile.getX(), tile.getY()), 2, "green_bubble_down",spriteManager.player);
+                            enemy = new GreenEnemy(new Vector2(tile.getX(), tile.getY()), 2, spriteManager.player,world);
                             break;
                     }
                     spriteManager.enemies.add(enemy);
@@ -95,7 +97,7 @@ public class LevelManager {
                 float y = rectangleObject.getRectangle().y;
                 float width = rectangleObject.getRectangle().width;
                 float height = rectangleObject.getRectangle().height;
-                collisionObjects.add(new CollisionObject(x, y, width, height));
+                collisionObjects.add(new CollisionObject(x, y, width, height,world));
             }
         }
 

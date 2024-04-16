@@ -21,7 +21,5 @@ public class ResourceManager {
     }
     public static void loadAllResources() {
         assetManager.load(Constants.TEXTURE_ATLAS, TextureAtlas.class);
-
-
     }
 }

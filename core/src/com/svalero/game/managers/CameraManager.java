@@ -24,12 +24,18 @@ public class CameraManager {
 
     public void handleCamera() {
         // Fija la cámara para seguir al personaje en el centro de la pantalla y altura fija (eje y)
+        if (spriteManager.player.getPosition().x < TILES_IN_CAMERA * TILE_WIDTH / 2)
+            camera.position.set(TILES_IN_CAMERA * TILE_WIDTH / 2 , TILES_IN_CAMERA * TILE_HEIGHT / 2, 0);
+        else
+            camera.position.set(spriteManager.player.getPosition().x, TILES_IN_CAMERA * TILE_HEIGHT / 2, 0);
 
-        //camera.zoom = 1 / 2f;
+
         camera.update();
         levelManager.mapRenderer.setView(camera);
-        // Renderiza las capas 0 (background) y 1 (terrain) según se parametricen en el Tiled
-        levelManager.mapRenderer.render();
+        levelManager.mapRenderer.render(new int[]{0, 1,2,3});
+    }
+    public OrthographicCamera getCamera() {
+        return camera;
     }
 
 }

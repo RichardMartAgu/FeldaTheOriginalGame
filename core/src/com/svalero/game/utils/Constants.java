@@ -6,23 +6,19 @@ public class Constants {
     public static final int SCREEN_WIDTH = 1024;
     public static final int SCREEN_HEIGHT = 768;
 
-    public static final int TILE_WIDTH = 32;
-    public static final int TILE_HEIGHT = 32;
+    public static final int TILE_WIDTH = 16;
+    public static final int TILE_HEIGHT = 16;
 
     public static final float PLAYER_SPEED = 100f;
-    public static final float ENEMY_SPEED = 1f;
 
-    public static final int PLAYER_WIDTH = 20;
-    public static final int PLAYER_HEIGHT = 28;
-
-    public static final int SWORD_LENGTH = 14;
+    public static final int PLAYER_WIDTH = 15;
+    public static final int PLAYER_HEIGHT = 20;
 
     public static final int SWORD_HEIGHT = 14;
 
-    public static final int ENEMY_WIDTH = 26;
-    public static final int ENEMY_HEIGHT = 20;
+    public static final int SWORD_WIDTH = 8;
 
-    public static final int TILES_IN_CAMERA = 16;
+    public static final int TILES_IN_CAMERA = 20;
 
     public static final int CAMERA_WIDTH = TILES_IN_CAMERA * TILE_WIDTH;
     public static final int CAMERA_HEIGHT = TILES_IN_CAMERA * TILE_HEIGHT;

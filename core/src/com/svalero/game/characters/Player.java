@@ -4,22 +4,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.*;
 import com.svalero.game.managers.ResourceManager;
 import com.svalero.game.managers.SpriteManager;
 import com.svalero.game.utils.Constants;
 
-import static com.svalero.game.utils.Constants.PLAYER_HEIGHT;
-import static com.svalero.game.utils.Constants.PLAYER_WIDTH;
+import static com.svalero.game.utils.Constants.*;
 
 public class Player extends Character {
-
+    private Body body;
+    private Body sword;
+    public Fixture swordFixture;
     private Vector2 position;
     public boolean isIdleInProgress = false;
     public boolean isAttackInProgress = false;
     public State previousState;
-    Rectangle swordRectangle = new Rectangle();
     public int rupias;
     private boolean collidingRight = false;
     private boolean collidingLeft = false;
@@ -27,22 +27,53 @@ public class Player extends Character {
     private boolean collidingDown = false;
     public Character.State state;
     float stateTime;
+    PolygonShape swordShape = new PolygonShape();
+    int distanceSword = 8;
+
     Animation<TextureRegion> rightAnimation, idleRightAnimation, leftAnimation, idleLeftAnimation,
             upAnimation, idleUpAnimation, downAnimation, idleDownAnimation, attackRightAnimation, attackLeftAnimation,
             attackUpAnimation, attackDownAnimation;
 
-    @Override
-    public void die(SpriteManager spriteManager) {
-
-    }
-
-    public Player(Vector2 position, int hearts) {
+    public Player(Vector2 position, int hearts, World world) {
         super(position, hearts);
         this.position = position;
 
-        this.hitBox = new Rectangle(position.x, position.y, PLAYER_WIDTH, PLAYER_HEIGHT);
-
         currentHearts = hearts;
+
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(position.x, position.y);
+        body = world.createBody(bodyDef);
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(Constants.PLAYER_WIDTH / 2f, Constants.PLAYER_HEIGHT / 2f);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.density = 0f;
+        fixtureDef.friction = 0.4f;
+        fixtureDef.restitution = 0.2f;
+        body.createFixture(fixtureDef);
+        shape.dispose();
+
+//        Body de la espada
+
+        BodyDef bodySword = new BodyDef();
+        bodySword.type = BodyDef.BodyType.DynamicBody;
+        bodySword.position.set(0, 0);
+        sword = world.createBody(bodySword);
+
+        PolygonShape swordShape = new PolygonShape();
+        swordShape.setAsBox(PLAYER_WIDTH / 10f, PLAYER_HEIGHT / 10f);
+        FixtureDef swordFixtureDef = new FixtureDef();
+        swordFixtureDef.shape = swordShape;
+        swordFixtureDef.density = 0f;
+        swordFixtureDef.friction = 0f;
+        swordFixtureDef.restitution = 0f;
+
+        swordFixtureDef.isSensor = true;
+        swordFixture = sword.createFixture(swordFixtureDef);
+        swordShape.dispose();
 
         rightAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("idle_right"));
         leftAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("idle_left"));
@@ -64,39 +95,39 @@ public class Player extends Character {
 
     public void manageInput(float dt) {
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !isAttackInProgress){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !isAttackInProgress) {
             playAttackAnimation();
         }
 
         if (!isAttackInProgress) {
             if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && !isCollidingRight()) {
-                move(Constants.PLAYER_SPEED, 0,dt);
+                body.applyLinearImpulse(new Vector2(Constants.PLAYER_SPEED, 0), body.getWorldCenter(), true);
                 state = State.RIGHT;
                 previousState = State.RIGHT;
-            } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)&& !isCollidingLeft()) {
-                move(-Constants.PLAYER_SPEED, 0,dt);
+            } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && !isCollidingLeft()) {
+                body.applyLinearImpulse(new Vector2(-Constants.PLAYER_SPEED, 0), body.getWorldCenter(), true);
                 state = State.LEFT;
                 previousState = State.LEFT;
-            } else if (Gdx.input.isKeyPressed(Input.Keys.UP)&& !isCollidingUp()) {
-                move(0, Constants.PLAYER_SPEED,dt);
+            } else if (Gdx.input.isKeyPressed(Input.Keys.UP) && !isCollidingUp()) {
+                body.applyLinearImpulse(new Vector2(0, Constants.PLAYER_SPEED), body.getWorldCenter(), true);
                 state = State.UP;
                 previousState = State.UP;
-            } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)&& !isCollidingDown()) {
-                move(0, -Constants.PLAYER_SPEED,dt);
+            } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && !isCollidingDown()) {
+                body.applyLinearImpulse(new Vector2(0, -Constants.PLAYER_SPEED), body.getWorldCenter(), true);
                 state = State.DOWN;
                 previousState = State.DOWN;
             } else {
+                body.setLinearVelocity(0, 0);
                 // Si ninguna tecla está presionada, el personaje está en estado inactivo
                 state = State.IDLE;
             }
         }
-
     }
 
     public void update(float dt, SpriteManager spriteManager) {
         stateTime += dt;
 
-        this.hitBox.setPosition(position.x, position.y);
+        position.set(body.getPosition().x, body.getPosition().y);
 
         if (!isAttackInProgress) {
             // Si no está atacando, muestra la animación correspondiente al estado del jugador
@@ -114,6 +145,9 @@ public class Player extends Character {
                     currentFrame = downAnimation.getKeyFrame(stateTime, true);
                     break;
                 case IDLE:
+                    ((PolygonShape) swordFixture.getShape()).setAsBox(0, 0,
+                            new Vector2(0, 0),
+                            0f);
                     playIdleAnimation();
                     // Muestra la animación correspondiente al estado inactivo basado en previousState
                     switch (previousState) {
@@ -137,31 +171,29 @@ public class Player extends Character {
             switch (previousState) {
                 case RIGHT:
                     currentFrame = attackRightAnimation.getKeyFrame(stateTime, true);
-                    // Calcular la posición y el tamaño del rectángulo de la espada cuando mira hacia la derecha
-                    swordRectangle.set(position.x + PLAYER_WIDTH, position.y + PLAYER_HEIGHT
-                            / 2f, Constants.SWORD_LENGTH, Constants.SWORD_HEIGHT);
-
+                    ((PolygonShape) swordFixture.getShape()).setAsBox(SWORD_WIDTH, SWORD_HEIGHT,
+                            new Vector2(position.x + distanceSword, position.y),
+                            0f);
                     break;
                 case LEFT:
                     currentFrame = attackLeftAnimation.getKeyFrame(stateTime, true);
-                    // Calcular la posición y el tamaño del rectángulo de la espada cuando mira hacia la izquierda
-                    swordRectangle.set(position.x - Constants.SWORD_LENGTH, position.y + PLAYER_HEIGHT
-                            / 2f, Constants.SWORD_LENGTH, Constants.SWORD_HEIGHT);
+                    ((PolygonShape) swordFixture.getShape()).setAsBox(SWORD_WIDTH, SWORD_HEIGHT,
+                            new Vector2(position.x - distanceSword, position.y),
+                            0f);
                     break;
                 case UP:
                     currentFrame = attackUpAnimation.getKeyFrame(stateTime, true);
-                    // Calcular la posición y el tamaño del rectángulo de la espada cuando mira hacia arriba
-                    swordRectangle.set(position.x + PLAYER_WIDTH / 2f - Constants.SWORD_HEIGHT
-                            / 2f, position.y + PLAYER_HEIGHT, Constants.SWORD_HEIGHT, Constants.SWORD_LENGTH);
+                    ((PolygonShape) swordFixture.getShape()).setAsBox(Constants.SWORD_HEIGHT, SWORD_WIDTH,
+                            new Vector2(position.x , position.y + distanceSword),
+                            0f);
                     break;
                 case DOWN:
                     currentFrame = attackDownAnimation.getKeyFrame(stateTime, true);
-                    // Calcular la posición y el tamaño del rectángulo de la espada cuando mira hacia abajo
-                    swordRectangle.set(position.x + PLAYER_WIDTH / 2f - Constants.SWORD_HEIGHT
-                            / 2f, position.y - Constants.SWORD_LENGTH, Constants.SWORD_HEIGHT, Constants.SWORD_LENGTH);
+                    ((PolygonShape) swordFixture.getShape()).setAsBox(Constants.SWORD_HEIGHT, Constants.SWORD_WIDTH,
+                            new Vector2(position.x , position.y - distanceSword),
+                            0f);
                     break;
             }
-
         }
         if (attackUpAnimation.isAnimationFinished(stateTime) ||
                 attackDownAnimation.isAnimationFinished(stateTime) ||
@@ -190,33 +222,44 @@ public class Player extends Character {
             stateTime = 0;
         }
     }
-    public Rectangle getSwordRectangle() {
-        return swordRectangle;
+
+    public Body getBody() {
+        return body;
     }
 
     public void setCollidingRight(boolean colliding) {
-        collidingRight  = colliding;
+        collidingRight = colliding;
     }
+
     public boolean isCollidingRight() {
-        return collidingRight ;
+        return collidingRight;
     }
+
     public void setCollidingUp(boolean colliding) {
         collidingUp = colliding;
     }
+
     public boolean isCollidingUp() {
         return collidingUp;
     }
+
     public void setCollidingDown(boolean colliding) {
-        collidingDown  = colliding;
+        collidingDown = colliding;
     }
+
     public boolean isCollidingDown() {
-        return collidingDown ;
+        return collidingDown;
     }
+
     public void setCollidingLeft(boolean colliding) {
         collidingLeft = colliding;
     }
+
     public boolean isCollidingLeft() {
         return collidingLeft;
     }
 
+    public Fixture getSwordFixture() {
+        return swordFixture;
+    }
 }

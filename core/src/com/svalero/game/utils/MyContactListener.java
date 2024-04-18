@@ -5,6 +5,9 @@ import com.svalero.game.characters.Character;
 import com.svalero.game.characters.Enemy;
 import com.svalero.game.characters.Player;
 import com.svalero.game.characters.Sword;
+import com.svalero.game.items.Heart;
+import com.svalero.game.items.Item;
+import com.svalero.game.items.Rupia;
 
 public class MyContactListener implements ContactListener {
     @Override
@@ -13,21 +16,32 @@ public class MyContactListener implements ContactListener {
         Body bodySword = contact.getFixtureA().getBody();
         Body bodyEnemy = contact.getFixtureB().getBody();
         Body bodyPlayer = contact.getFixtureA().getBody();
+        Body bodyItem = contact.getFixtureB().getBody();
 
         if (bodySword.getUserData() instanceof Sword && bodyEnemy.getUserData() instanceof Enemy) {
             Enemy enemy = (Enemy) bodyEnemy.getUserData();
-            enemy.hit(1, bodySword.getPosition());
-            System.out.println("golpeando");
+            enemy.hit(1, bodySword.getPosition());;
         }
 
         if (bodyPlayer.getUserData() instanceof Player && bodyEnemy.getUserData() instanceof Enemy) {
 
             Player player = (Player) bodyPlayer.getUserData();
                 player.hit(1, bodyEnemy.getPosition());
-                System.out.println("player hit");
-
         }
 
+        if (bodyPlayer.getUserData() instanceof Player && bodyItem.getUserData() instanceof Item) {
+            Item item = (Item) bodyItem.getUserData(); // Debes obtener el objeto Item
+            Player player = (Player) bodyPlayer.getUserData();
+            if (item instanceof Heart) {
+                System.out.println("corazon");
+                item.collected();
+                player.addHeart();
+            } else if (item instanceof Rupia) {
+                player.addRupia(item.score);
+                System.out.println("rupia");
+                item.collected();
+            }
+        }
     }
 
 

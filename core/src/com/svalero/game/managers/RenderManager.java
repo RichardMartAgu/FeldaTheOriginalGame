@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.svalero.game.characters.Enemy;
+import com.svalero.game.items.Item;
 
 import static com.svalero.game.utils.Constants.*;
 
@@ -41,6 +42,9 @@ public class RenderManager {
         // Pinta al enemigo
         for (Enemy enemy : spriteManager.enemies)
             enemy.render(batch);
+
+        for (Item item : spriteManager.items)
+            item.render(batch);
 
         // Pinta al jugador
         spriteManager.player.render(batch);

@@ -25,6 +25,7 @@ public class Enemy extends Character {
         super(position);
 
         currentHearts = hearts;
+
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody; // Cuerpo dinámico
         bodyDef.position.set(position.x, position.y);

@@ -119,8 +119,6 @@ public class Player extends Character {
 
         invulnerabilityTimer -= dt;
 
-        System.out.println(currentHearts);
-
         position.set(body.getPosition().x, body.getPosition().y);
 
         if (liveState == LiveState.HIT) {
@@ -241,6 +239,12 @@ public class Player extends Character {
                 invulnerabilityTimer = INVULNERABILITY_DURATION;
             }
         }
+    }
+    public void addHeart() {
+        currentHearts ++;
+    }
+    public void addRupia(int score) {
+        rupias +=  score;
     }
 
     public void playIdleAnimation() {

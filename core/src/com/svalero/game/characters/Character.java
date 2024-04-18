@@ -20,16 +20,13 @@ public abstract class Character implements Disposable {
 
     public int currentHearts;
     public Vector2 position;
-
     public LiveState liveState = LiveState.NORMAL;
     public float stateTime;
     public TextureRegion currentFrame;
 
     public Character(Vector2 position) {
         this.position = position;
-
     }
-
 
     public void render(Batch batch) {
         if (currentFrame != null)

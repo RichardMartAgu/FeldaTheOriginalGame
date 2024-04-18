@@ -11,11 +11,15 @@ import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.svalero.game.characters.Enemy;
 import com.svalero.game.characters.GreenEnemy;
 import com.svalero.game.characters.Player;
 import com.svalero.game.characters.Sword;
 import com.svalero.game.items.CollisionObject;
+import com.svalero.game.items.Goal;
+import com.svalero.game.items.Item;
+import com.svalero.game.items.Rupia;
 import com.svalero.game.utils.Constants;
 
 import java.util.ArrayList;
@@ -29,7 +33,7 @@ public class LevelManager {
     };
     World world;
     private int currentLevelIndex = 0;
-
+    public Array<Item> items;
     public TiledMap map;
     public TiledMapTileLayer collisionLayer;
     private List<CollisionObject> collisionObjects;
@@ -64,8 +68,8 @@ public class LevelManager {
 
         loadCollisionLayer();
         loadEnemies();
+        loadItems();
         batch.end();
-
 
     }
     public void loadEnemies() {
@@ -83,6 +87,28 @@ public class LevelManager {
                             break;
                     }
                     spriteManager.enemies.add(enemy);
+
+                }
+
+            }
+        }
+    }
+    private void loadItems() {
+
+        Item item = null;
+        // Carga los objetos "enemigo" del TiledMap
+        for (MapObject object : map.getLayers().get("objects").getObjects()) {
+            if (object instanceof TiledMapTileMapObject) {
+                TiledMapTileMapObject tile = (TiledMapTileMapObject) object;
+                if (tile.getProperties().containsKey("item")) {
+                    String itemType = (String) tile.getProperties().get("item");
+                    if (itemType.equals("rupia")) {
+                        int score = Integer.parseInt((String) tile.getProperties().get("score"));
+
+                        item = new Rupia(new Vector2(tile.getX(), tile.getY()), score,world);
+
+                    }
+                } else if (tile.getProperties().containsKey("goal")) {
 
                 }
             }
@@ -125,11 +151,11 @@ public class LevelManager {
     }
 
     private void unloadCurrentLevel() {
-        // Liberar recursos, por ejemplo, puedes establecer los objetos a null
+
         map.dispose();
         mapRenderer.dispose();
         batch.dispose();
-        spriteManager.player = null; // Eliminar referencia al jugador para permitir que el recolector de basura lo elimine
+        spriteManager.player = null;
         collisionLayer = null;
     }
 }

@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -13,6 +15,9 @@ import com.svalero.game.characters.Character;
 import com.svalero.game.characters.Enemy;
 import com.svalero.game.characters.Player;
 import com.svalero.game.characters.Sword;
+import com.svalero.game.items.Heart;
+import com.svalero.game.items.Item;
+import com.svalero.game.items.Rupia;
 import com.svalero.game.screen.GameOverScreen;
 import com.svalero.game.screen.MainMenuScreen;
 import com.svalero.game.utils.MyContactListener;
@@ -23,21 +28,23 @@ public class SpriteManager implements InputProcessor {
     LevelManager levelManager;
     CameraManager cameraManager;
     public Player player;
+    public Rupia rupia;
     public Sword sword;
 
     private MyContactListener myContactListener;
-
+    Array<Item> items;
     Array<Enemy> enemies;
     Array<Body> worldBodies;
     TiledMapTileLayer collisionLayer;
     boolean pause;
 
-    public SpriteManager(Felda game, World world,MyContactListener contactListener) {
+    public SpriteManager(Felda game, World world, MyContactListener contactListener) {
 
         this.game = game;
         this.world = world;
         this.myContactListener = contactListener;
         enemies = new Array<>();
+        items = new Array<>();
         Gdx.input.setInputProcessor(this);
 
         worldBodies = new Array<>();
@@ -81,31 +88,52 @@ public class SpriteManager implements InputProcessor {
                     if (enemy.liveState == Enemy.LiveState.DEAD) {
                         worldBodies.removeValue(enemy.getBody(), true);
                         world.destroyBody(body);
+                        int random = MathUtils.random(1, 2);
+                        if (random == 1) {
+                            System.out.println("Llego aqui");
+                            // Agrega una rupia en la posición del enemigo
+                            Rupia rupia = new Rupia(new Vector2(enemy.position.x, enemy.position.y), 1, world);
+                            items.add(rupia);
+
+                        } else if (random == 2) {
+                            // Agrega un corazón en la posición del enemigo
+                            Heart heart = new Heart(new Vector2(enemy.position.x, enemy.position.y), 1, world);
+                            items.add(heart);
+                        }
                         enemies.removeValue(enemy, true);
                     }
                 }
+
+                if (body.getUserData() instanceof Item) {
+                    Item item = (Item) body.getUserData();
+                    if (item.state == Item.State.COLLECTED) {
+                        worldBodies.removeValue(item.getBody(), true);
+                        world.destroyBody(body);
+                        items.removeValue(item, true);
+
+                    }
+                }
             }
+
 
             if (player.liveState == Player.LiveState.DEAD) {
                 game.setScreen(new GameOverScreen(game));
             }
 
-            if(player.liveState == Character.LiveState.HIT){
+            if (player.liveState == Character.LiveState.HIT) {
                 world.setContactListener(null);
-            }else{
+            } else {
                 world.setContactListener(myContactListener);
             }
-
-
 
             player.update(dt, this);
 
             for (Enemy enemy : enemies) {
                 enemy.update(dt, this);
             }
-
-            attackEnemies();
-
+            for (Item items : items) {
+                items.update(dt, this);
+            }
         }
         handleGameScreenInput();
     }

@@ -61,7 +61,7 @@ public class GameScreen implements Screen {
         debugRenderer.render(world, camera.combined);
         debugRenderer.render(world, cameraManager.getCamera().combined);
 
-        cameraManager.handleCamera();
+
         spriteManager.update(dt);
         renderManager.drawFrame();
     }

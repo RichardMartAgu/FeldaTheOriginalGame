@@ -11,7 +11,8 @@ import com.svalero.game.utils.Constants;
 
 public class GreenEnemy extends Enemy {
 
-    Vector2 direction = new Vector2();
+
+    World world;
     private static final float DETECTION_DISTANCE = 100;
     private static final float MOVEMENT_SPEED = 800f;
 
@@ -24,6 +25,10 @@ public class GreenEnemy extends Enemy {
         this.player = player;
         this.position = position;
         this.hearts = 3;
+        this.type = EnemyType.green;
+        body.setUserData(this);
+
+        this.world = world;
 
 
         rightAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("green_bubble_right"));
@@ -39,10 +44,19 @@ public class GreenEnemy extends Enemy {
         Vector2 currentPosition = body.getPosition();
         position.set(currentPosition.x, currentPosition.y);
 
-        if(state == State.DYING){
-            dieAnimation.getKeyFrame(stateTime, true);
+        if(liveState == LiveState.HIT){
+            Vector2 repulsionDirection = body.getPosition().cpy().sub(attackOrigin).nor();
+            // Aplicar una fuerza repulsiva al cuerpo
+            System.out.println("Llego aqui");
+            float repulsionForceMagnitude = 90000000000f; // Ajusta la magnitud según lo deseado
+            body.applyLinearImpulse(repulsionDirection.scl(repulsionForceMagnitude),body.getWorldCenter(), true);
+            liveState=LiveState.NORMAL;
+        }
+
+        if(liveState == LiveState.DYING){
+            currentFrame = dieAnimation.getKeyFrame(stateTime, true);
         if (dieAnimation.isAnimationFinished(stateTime)){
-            state = State.DEAD;
+            liveState = LiveState.DEAD;
             stateTime += dt;
             }
         }
@@ -50,6 +64,8 @@ public class GreenEnemy extends Enemy {
         // Calcular la distancia entre el enemigo y el jugador
         Vector2 playerPosition = player.getPosition();
         float distanceToPlayer = position.dst(playerPosition);
+
+        if (!(liveState == LiveState.DYING||liveState == LiveState.DEAD)) {
 
         // Si el jugador está dentro de la distancia de detección
         if (distanceToPlayer <= DETECTION_DISTANCE) {
@@ -60,19 +76,19 @@ public class GreenEnemy extends Enemy {
             body.applyLinearImpulse(direction.scl(MOVEMENT_SPEED), body.getWorldCenter(), true);
 
             // Actualizar la animación según la dirección del movimiento
-            if (direction.x > 0) {
-                // Mover hacia la derecha
-                currentFrame = rightAnimation.getKeyFrame(stateTime, true);
-            } else if (direction.x < 0) {
-                // Mover hacia la izquierda
-                currentFrame = leftAnimation.getKeyFrame(stateTime, true);
+
+                if (direction.x > 0) {
+                    // Mover hacia la derecha
+                    currentFrame = rightAnimation.getKeyFrame(stateTime, true);
+                } else if (direction.x < 0) {
+                    // Mover hacia la izquierda
+                    currentFrame = leftAnimation.getKeyFrame(stateTime, true);
+                }
+            } else {
+                body.setLinearVelocity(1, 1);
+                // Si el jugador está fuera de la distancia de detección, el enemigo está inactivo
+                currentFrame = idleAnimation.getKeyFrame(stateTime, true);
             }
-        } else {
-            body.setLinearVelocity(1, 1);
-            // Si el jugador está fuera de la distancia de detección, el enemigo está inactivo
-            currentFrame = idleAnimation.getKeyFrame(stateTime, true);
         }
     }
-
-
 }

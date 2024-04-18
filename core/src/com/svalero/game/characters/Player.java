@@ -14,8 +14,9 @@ import static com.svalero.game.utils.Constants.*;
 
 public class Player extends Character {
     private Body body;
-    private Body sword;
-    public Fixture swordFixture;
+
+    private Sword sword;
+
     private Vector2 position;
     public boolean isIdleInProgress = false;
     public boolean isAttackInProgress = false;
@@ -27,23 +28,24 @@ public class Player extends Character {
     private boolean collidingDown = false;
     public Character.State state;
     float stateTime;
-    PolygonShape swordShape = new PolygonShape();
+
     int distanceSword = 8;
 
     Animation<TextureRegion> rightAnimation, idleRightAnimation, leftAnimation, idleLeftAnimation,
             upAnimation, idleUpAnimation, downAnimation, idleDownAnimation, attackRightAnimation, attackLeftAnimation,
             attackUpAnimation, attackDownAnimation;
 
-    public Player(Vector2 position, int hearts, World world) {
+    public Player(Vector2 position, int hearts, World world,Sword sword) {
         super(position, hearts);
         this.position = position;
-
+        this.sword = sword;
         currentHearts = hearts;
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(position.x, position.y);
         body = world.createBody(bodyDef);
+        body.setUserData(this);
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(Constants.PLAYER_WIDTH / 2f, Constants.PLAYER_HEIGHT / 2f);
@@ -55,25 +57,6 @@ public class Player extends Character {
         fixtureDef.restitution = 0.2f;
         body.createFixture(fixtureDef);
         shape.dispose();
-
-//        Body de la espada
-
-        BodyDef bodySword = new BodyDef();
-        bodySword.type = BodyDef.BodyType.DynamicBody;
-        bodySword.position.set(0, 0);
-        sword = world.createBody(bodySword);
-
-        PolygonShape swordShape = new PolygonShape();
-        swordShape.setAsBox(PLAYER_WIDTH / 10f, PLAYER_HEIGHT / 10f);
-        FixtureDef swordFixtureDef = new FixtureDef();
-        swordFixtureDef.shape = swordShape;
-        swordFixtureDef.density = 0f;
-        swordFixtureDef.friction = 0f;
-        swordFixtureDef.restitution = 0f;
-
-        swordFixtureDef.isSensor = true;
-        swordFixture = sword.createFixture(swordFixtureDef);
-        swordShape.dispose();
 
         rightAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("idle_right"));
         leftAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("idle_left"));
@@ -145,7 +128,7 @@ public class Player extends Character {
                     currentFrame = downAnimation.getKeyFrame(stateTime, true);
                     break;
                 case IDLE:
-                    ((PolygonShape) swordFixture.getShape()).setAsBox(0, 0,
+                    ((PolygonShape) sword.swordFixture.getShape()).setAsBox(0, 0,
                             new Vector2(0, 0),
                             0f);
                     playIdleAnimation();
@@ -171,27 +154,26 @@ public class Player extends Character {
             switch (previousState) {
                 case RIGHT:
                     currentFrame = attackRightAnimation.getKeyFrame(stateTime, true);
-                    ((PolygonShape) swordFixture.getShape()).setAsBox(SWORD_WIDTH, SWORD_HEIGHT,
-                            new Vector2(position.x + distanceSword, position.y),
+                    ((PolygonShape) sword.getSwordFixture().getShape()).setAsBox(SWORD_WIDTH , SWORD_HEIGHT);
+                    sword.getSwordBody().setTransform(new Vector2(position.x + distanceSword, position.y),
                             0f);
                     break;
                 case LEFT:
                     currentFrame = attackLeftAnimation.getKeyFrame(stateTime, true);
-                    ((PolygonShape) swordFixture.getShape()).setAsBox(SWORD_WIDTH, SWORD_HEIGHT,
-                            new Vector2(position.x - distanceSword, position.y),
+                    ((PolygonShape) sword.getSwordFixture().getShape()).setAsBox(SWORD_WIDTH, SWORD_HEIGHT);
+                    sword.getSwordBody().setTransform(new Vector2(position.x - distanceSword, position.y),
                             0f);
                     break;
                 case UP:
                     currentFrame = attackUpAnimation.getKeyFrame(stateTime, true);
-                    ((PolygonShape) swordFixture.getShape()).setAsBox(Constants.SWORD_HEIGHT, SWORD_WIDTH,
-                            new Vector2(position.x , position.y + distanceSword),
+                    ((PolygonShape) sword.getSwordFixture().getShape()).setAsBox(Constants.SWORD_HEIGHT, SWORD_WIDTH);
+                    sword.getSwordBody().setTransform(new Vector2(position.x , position.y + distanceSword),
                             0f);
                     break;
                 case DOWN:
                     currentFrame = attackDownAnimation.getKeyFrame(stateTime, true);
-                    ((PolygonShape) swordFixture.getShape()).setAsBox(Constants.SWORD_HEIGHT, Constants.SWORD_WIDTH,
-                            new Vector2(position.x , position.y - distanceSword),
-                            0f);
+                    ((PolygonShape) sword.getSwordFixture().getShape()).setAsBox(Constants.SWORD_HEIGHT, Constants.SWORD_WIDTH);
+                    sword.getSwordBody().setTransform(new Vector2(position.x , position.y - distanceSword),0);
                     break;
             }
         }
@@ -259,7 +241,5 @@ public class Player extends Character {
         return collidingLeft;
     }
 
-    public Fixture getSwordFixture() {
-        return swordFixture;
-    }
+
 }

@@ -11,7 +11,11 @@ public abstract class Character implements Disposable {
 
 
     public enum State {
-        RIGHT, LEFT, UP, DOWN, IDLE, DEAD,DYING,NORMAL, HIT;
+        RIGHT, LEFT, UP, DOWN, IDLE;
+    }
+
+    public enum LiveState{
+        DEAD,DYING,NORMAL, HIT;
     }
 
     public int hearts;
@@ -19,7 +23,7 @@ public abstract class Character implements Disposable {
     public State state;
     public Vector2 position;
 
-
+    public LiveState liveState = LiveState.NORMAL;
     private Animation<TextureRegion> animation;
     public float stateTime;
     public TextureRegion currentFrame;
@@ -27,13 +31,6 @@ public abstract class Character implements Disposable {
     public Character(Vector2 position, int hearts) {
         this.position = position;
 
-    }
-
-    public void hit(){
-        if (state == State.NORMAL){
-            state = State.DYING;
-            stateTime =0;
-        }
     }
 
     public void render(Batch batch) {

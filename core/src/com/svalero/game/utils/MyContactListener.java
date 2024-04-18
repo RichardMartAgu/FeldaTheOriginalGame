@@ -1,22 +1,21 @@
 package com.svalero.game.utils;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.svalero.game.characters.Enemy;
 import com.svalero.game.characters.Player;
+import com.svalero.game.characters.Sword;
 
 public class MyContactListener implements ContactListener {
     @Override
     public void beginContact(Contact contact) {
         // Método llamado cuando dos cuerpos comienzan a colisionar
-        Body bodyPLayer = contact.getFixtureA().getBody();
+        Body bodySword = contact.getFixtureA().getBody();
         Body bodyEnemy = contact.getFixtureB().getBody();
 
-        if (bodyPLayer.getUserData() instanceof Player && bodyEnemy.getUserData() instanceof Enemy) {
+        if (bodySword.getUserData() instanceof Sword && bodyEnemy.getUserData() instanceof Enemy) {
             Enemy enemy = (Enemy) bodyEnemy.getUserData();
-            enemy.hit();
-            System.out.println("Player collided with enemy!");
-
+            enemy.hit(1,bodySword.getPosition());
+            System.out.println("golpeando");
         }
     }
 

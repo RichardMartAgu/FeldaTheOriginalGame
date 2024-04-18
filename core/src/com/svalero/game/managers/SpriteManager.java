@@ -14,10 +14,8 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.svalero.game.Felda;
+import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
-import com.svalero.game.characters.Enemy;
-import com.svalero.game.characters.GreenEnemy;
-import com.svalero.game.characters.Player;
 import com.svalero.game.items.CollisionObject;
 import com.svalero.game.screen.MainMenuScreen;
 import com.svalero.game.utils.Constants;
@@ -30,6 +28,8 @@ public class SpriteManager implements InputProcessor {
     LevelManager levelManager;
     CameraManager cameraManager;
     public Player player;
+    public Sword sword;
+
     Array<Enemy> enemies;
     Array<Body> worldBodies;
     TiledMapTileLayer collisionLayer;
@@ -77,9 +77,10 @@ public class SpriteManager implements InputProcessor {
 
             if (body.getUserData() instanceof Enemy) {
                 Enemy enemy = (Enemy) body.getUserData();
-                if (enemy.state == Enemy.State.DEAD) {
+                if (enemy.liveState == Enemy.LiveState.DEAD) {
                     worldBodies.removeValue(enemy.getBody(), true);
                     world.destroyBody(body);
+                    enemies.removeValue(enemy, true);
                 }
             }
         }

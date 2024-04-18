@@ -11,14 +11,17 @@ import com.svalero.game.utils.Constants;
 public class Enemy extends Character {
 
 
+    public Vector2 attackOrigin;
+
     public enum EnemyType {
         green, gray, yellow
     }
 
+    public float hitForce = 50f;
     public Body body;
 
     protected EnemyType type;
-    public boolean isDying = false;
+
 
     Animation<TextureRegion> rightAnimation, leftAnimation, idleAnimation, dieAnimation;
 
@@ -35,8 +38,8 @@ public class Enemy extends Character {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 2f;
-        fixtureDef.friction = 20f;
+        fixtureDef.density = 1f;
+        fixtureDef.friction = 1f;
         fixtureDef.restitution = 0.2f;
 
         body.createFixture(fixtureDef);
@@ -44,43 +47,31 @@ public class Enemy extends Character {
 
     }
 
-
     @Override
     public void update(float dt, SpriteManager spriteManager) {
     }
 
+    public void push (){
+        body.applyForceToCenter(200f, 2000f, true);
+    }
 
+    public void hit(int damage, Vector2 attackOrigin) {
+        if (liveState == LiveState.NORMAL) {
+            hearts -= damage;
 
-    public void reduceLife(int amount) {
-        if (isDying) return;
-        hearts -= amount;
-        if (hearts <= 0) {
-            isDying = true;
+            if (hearts <= 0) {
+                body.setLinearVelocity(1, 1);
+                liveState = LiveState.DYING;
+                stateTime = 0;
+            } else {
+                this.attackOrigin = attackOrigin;
+                liveState = LiveState.HIT;
+                // Calcular la dirección del empuje
+
+            }
         }
     }
 
-    public void handleCollision(Vector2 playerPosition) {
-        // Calcular la dirección desde el enemigo hacia el jugador
-        Vector2 directionToPlayer = playerPosition.cpy().sub(position).nor();
-
-        // Definir la cantidad de retroceso y la duración
-        float backwardDistance = 50; // La cantidad de píxeles que el enemigo se desplaza hacia atrás
-        float backwardDuration = 0.1f; // Duración en segundos durante la cual se aplica el retroceso
-
-        // Calcular el desplazamiento hacia atrás del enemigo
-        Vector2 backwardMovement = directionToPlayer.scl(backwardDistance);
-
-        // Calcular el paso de movimiento para cada frame
-        float stepX = backwardMovement.x / (backwardDuration / Gdx.graphics.getDeltaTime());
-        float stepY = backwardMovement.y / (backwardDuration / Gdx.graphics.getDeltaTime());
-
-        // Mover el enemigo píxel por píxel en la dirección opuesta al jugador
-        float elapsed = 0;
-        while (elapsed < backwardDuration) {
-            position.sub(stepX, stepY);
-            elapsed += Gdx.graphics.getDeltaTime();
-        }
-    }
 
     public Body getBody() {
         return this.body;

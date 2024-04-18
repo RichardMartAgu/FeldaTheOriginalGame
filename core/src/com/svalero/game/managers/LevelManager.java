@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.svalero.game.characters.Enemy;
 import com.svalero.game.characters.GreenEnemy;
 import com.svalero.game.characters.Player;
+import com.svalero.game.characters.Sword;
 import com.svalero.game.items.CollisionObject;
 import com.svalero.game.utils.Constants;
 
@@ -56,12 +57,13 @@ public class LevelManager {
 
         batch.begin();
 
-        spriteManager.player = new Player(new Vector2(30, 10), 3,world);
+        spriteManager.player = new Player(new Vector2(30, 10), 3,world,
+                spriteManager.sword = new Sword(world));
+
         spriteManager.player.getPosition().set(40, 20);
 
         loadCollisionLayer();
         loadEnemies();
-
         batch.end();
 
 

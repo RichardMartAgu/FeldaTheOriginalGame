@@ -22,6 +22,7 @@ public class GameScreen implements Screen {
     LevelManager levelManager;
     Box2DDebugRenderer debugRenderer;
     OrthographicCamera camera = new OrthographicCamera();
+    private MyContactListener myContactListener;
 
     private CameraManager cameraManager;
     World world;
@@ -30,9 +31,10 @@ public class GameScreen implements Screen {
         this.game = game;
 
         world = new World(new Vector2(0, 0), true);
-        world.setContactListener(new MyContactListener());
+        myContactListener = new MyContactListener();
+        world.setContactListener(myContactListener);
         debugRenderer = new Box2DDebugRenderer();
-        spriteManager = new SpriteManager(game, world);
+        spriteManager = new SpriteManager(game, world, myContactListener);
         levelManager = new LevelManager(spriteManager, world);
         levelManager.loadCurrentLevel();
         levelManager.loadCollisionLayer();
@@ -66,7 +68,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-
     }
 
     @Override
@@ -77,7 +78,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
     }
 
     @Override

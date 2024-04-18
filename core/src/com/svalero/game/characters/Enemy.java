@@ -1,6 +1,5 @@
 package com.svalero.game.characters;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -17,17 +16,15 @@ public class Enemy extends Character {
         green, gray, yellow
     }
 
-    public float hitForce = 50f;
     public Body body;
 
     protected EnemyType type;
-
-
     Animation<TextureRegion> rightAnimation, leftAnimation, idleAnimation, dieAnimation;
 
     public Enemy(Vector2 position, int hearts, World world) {
-        super(position, hearts);
+        super(position);
 
+        currentHearts = hearts;
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody; // Cuerpo dinámico
         bodyDef.position.set(position.x, position.y);
@@ -45,33 +42,27 @@ public class Enemy extends Character {
         body.createFixture(fixtureDef);
         shape.dispose();
 
+        liveState = LiveState.NORMAL;
     }
 
     @Override
     public void update(float dt, SpriteManager spriteManager) {
     }
 
-    public void push (){
-        body.applyForceToCenter(200f, 2000f, true);
-    }
-
     public void hit(int damage, Vector2 attackOrigin) {
         if (liveState == LiveState.NORMAL) {
-            hearts -= damage;
+            currentHearts -= damage;
 
-            if (hearts <= 0) {
+            if (currentHearts <= 0) {
                 body.setLinearVelocity(1, 1);
                 liveState = LiveState.DYING;
                 stateTime = 0;
             } else {
                 this.attackOrigin = attackOrigin;
                 liveState = LiveState.HIT;
-                // Calcular la dirección del empuje
-
             }
         }
     }
-
 
     public Body getBody() {
         return this.body;

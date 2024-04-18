@@ -10,10 +10,12 @@ import com.svalero.game.managers.ResourceManager;
 import com.svalero.game.managers.SpriteManager;
 import com.svalero.game.utils.Constants;
 
-import static com.svalero.game.utils.Constants.*;
+import static com.svalero.game.utils.Constants.SWORD_HEIGHT;
+import static com.svalero.game.utils.Constants.SWORD_WIDTH;
 
 public class Player extends Character {
     private Body body;
+    public Vector2 attackOrigin;
 
     private Sword sword;
 
@@ -28,15 +30,17 @@ public class Player extends Character {
     private boolean collidingDown = false;
     public Character.State state;
     float stateTime;
+    private float invulnerabilityTimer = 0f;
+    private final float INVULNERABILITY_DURATION = 0.5f;
 
-    int distanceSword = 8;
+    int distanceSword = 6;
 
     Animation<TextureRegion> rightAnimation, idleRightAnimation, leftAnimation, idleLeftAnimation,
             upAnimation, idleUpAnimation, downAnimation, idleDownAnimation, attackRightAnimation, attackLeftAnimation,
-            attackUpAnimation, attackDownAnimation;
+            attackUpAnimation, attackDownAnimation, dieAnimationPLayer, hurtAnimationPLayer;
 
-    public Player(Vector2 position, int hearts, World world,Sword sword) {
-        super(position, hearts);
+    public Player(Vector2 position, int hearts, World world, Sword sword) {
+        super(position);
         this.position = position;
         this.sword = sword;
         currentHearts = hearts;
@@ -72,8 +76,11 @@ public class Player extends Character {
         attackRightAnimation = new Animation<TextureRegion>(0.040f, ResourceManager.getRegions("atack_right"));
         attackLeftAnimation = new Animation<TextureRegion>(0.040f, ResourceManager.getRegions("atack_left"));
 
-        previousState = State.IDLE;
+        dieAnimationPLayer = new Animation<TextureRegion>(1f, ResourceManager.getRegions("die"));
+        hurtAnimationPLayer = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("hurt_down"));
 
+        previousState = State.IDLE;
+        liveState = LiveState.NORMAL;
     }
 
     public void manageInput(float dt) {
@@ -82,7 +89,7 @@ public class Player extends Character {
             playAttackAnimation();
         }
 
-        if (!isAttackInProgress) {
+        if (!isAttackInProgress || liveState != LiveState.DYING) {
             if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && !isCollidingRight()) {
                 body.applyLinearImpulse(new Vector2(Constants.PLAYER_SPEED, 0), body.getWorldCenter(), true);
                 state = State.RIGHT;
@@ -110,85 +117,129 @@ public class Player extends Character {
     public void update(float dt, SpriteManager spriteManager) {
         stateTime += dt;
 
+        invulnerabilityTimer -= dt;
+
+        System.out.println(currentHearts);
+
         position.set(body.getPosition().x, body.getPosition().y);
 
-        if (!isAttackInProgress) {
-            // Si no está atacando, muestra la animación correspondiente al estado del jugador
-            switch (state) {
-                case RIGHT:
-                    currentFrame = rightAnimation.getKeyFrame(stateTime, true);
-                    break;
-                case LEFT:
-                    currentFrame = leftAnimation.getKeyFrame(stateTime, true);
-                    break;
-                case UP:
-                    currentFrame = upAnimation.getKeyFrame(stateTime, true);
-                    break;
-                case DOWN:
-                    currentFrame = downAnimation.getKeyFrame(stateTime, true);
-                    break;
-                case IDLE:
-                    ((PolygonShape) sword.swordFixture.getShape()).setAsBox(0, 0,
-                            new Vector2(0, 0),
-                            0f);
-                    playIdleAnimation();
-                    // Muestra la animación correspondiente al estado inactivo basado en previousState
-                    switch (previousState) {
-                        case RIGHT:
-                            currentFrame = idleRightAnimation.getKeyFrame(stateTime, true);
-                            break;
-                        case LEFT:
-                            currentFrame = idleLeftAnimation.getKeyFrame(stateTime, true);
-                            break;
-                        case UP:
-                            currentFrame = idleUpAnimation.getKeyFrame(stateTime, true);
-                            break;
-                        case DOWN:
-                            currentFrame = idleDownAnimation.getKeyFrame(stateTime, true);
-                            break;
-                    }
-                    break;
+        if (liveState == LiveState.HIT) {
+
+            currentFrame = hurtAnimationPLayer.getKeyFrame(stateTime, true);
+
+            if (stateTime >= 8 * hurtAnimationPLayer.getFrameDuration()) {
+                stateTime = 0;
+
+                if (invulnerabilityTimer <= 0) {
+                    liveState = LiveState.NORMAL;
+                }
             }
         } else {
 
-            switch (previousState) {
-                case RIGHT:
-                    currentFrame = attackRightAnimation.getKeyFrame(stateTime, true);
-                    ((PolygonShape) sword.getSwordFixture().getShape()).setAsBox(SWORD_WIDTH , SWORD_HEIGHT);
-                    sword.getSwordBody().setTransform(new Vector2(position.x + distanceSword, position.y),
-                            0f);
-                    break;
-                case LEFT:
-                    currentFrame = attackLeftAnimation.getKeyFrame(stateTime, true);
-                    ((PolygonShape) sword.getSwordFixture().getShape()).setAsBox(SWORD_WIDTH, SWORD_HEIGHT);
-                    sword.getSwordBody().setTransform(new Vector2(position.x - distanceSword, position.y),
-                            0f);
-                    break;
-                case UP:
-                    currentFrame = attackUpAnimation.getKeyFrame(stateTime, true);
-                    ((PolygonShape) sword.getSwordFixture().getShape()).setAsBox(Constants.SWORD_HEIGHT, SWORD_WIDTH);
-                    sword.getSwordBody().setTransform(new Vector2(position.x , position.y + distanceSword),
-                            0f);
-                    break;
-                case DOWN:
-                    currentFrame = attackDownAnimation.getKeyFrame(stateTime, true);
-                    ((PolygonShape) sword.getSwordFixture().getShape()).setAsBox(Constants.SWORD_HEIGHT, Constants.SWORD_WIDTH);
-                    sword.getSwordBody().setTransform(new Vector2(position.x , position.y - distanceSword),0);
-                    break;
+            if (liveState == LiveState.DYING) {
+                currentFrame = dieAnimationPLayer.getKeyFrame(stateTime, true);
+                if (dieAnimationPLayer.isAnimationFinished(stateTime)) {
+                    liveState = LiveState.DEAD;
+                    stateTime += dt;
+                }
+            } else {
+
+                if (liveState == LiveState.NORMAL) {
+                    if (!isAttackInProgress) {
+                        ((PolygonShape) sword.swordFixture.getShape()).setAsBox(0, 0,
+                                new Vector2(0, 0),
+                                0f);
+                        // Si no está atacando, muestra la animación correspondiente al estado del jugador
+                        switch (state) {
+                            case RIGHT:
+                                currentFrame = rightAnimation.getKeyFrame(stateTime, true);
+                                break;
+                            case LEFT:
+                                currentFrame = leftAnimation.getKeyFrame(stateTime, true);
+                                break;
+                            case UP:
+                                currentFrame = upAnimation.getKeyFrame(stateTime, true);
+                                break;
+                            case DOWN:
+                                currentFrame = downAnimation.getKeyFrame(stateTime, true);
+                                break;
+                            case IDLE:
+                                // Muestra la animación correspondiente al estado inactivo basado en previousState
+                                switch (previousState) {
+                                    case RIGHT:
+                                        currentFrame = idleRightAnimation.getKeyFrame(stateTime, true);
+                                        break;
+                                    case LEFT:
+                                        currentFrame = idleLeftAnimation.getKeyFrame(stateTime, true);
+                                        break;
+                                    case UP:
+                                        currentFrame = idleUpAnimation.getKeyFrame(stateTime, true);
+                                        break;
+                                    case DOWN:
+                                        currentFrame = idleDownAnimation.getKeyFrame(stateTime, true);
+                                        break;
+                                }
+                                break;
+                        }
+                    } else {
+
+                        switch (previousState) {
+                            case RIGHT:
+                                currentFrame = attackRightAnimation.getKeyFrame(stateTime, true);
+                                ((PolygonShape) sword.getSwordFixture().getShape()).setAsBox(SWORD_WIDTH, SWORD_HEIGHT);
+                                sword.getSwordBody().setTransform(new Vector2(position.x + distanceSword, position.y),
+                                        0f);
+                                break;
+                            case LEFT:
+                                currentFrame = attackLeftAnimation.getKeyFrame(stateTime, true);
+                                ((PolygonShape) sword.getSwordFixture().getShape()).setAsBox(SWORD_WIDTH, SWORD_HEIGHT);
+                                sword.getSwordBody().setTransform(new Vector2(position.x - distanceSword, position.y),
+                                        0f);
+                                break;
+                            case UP:
+                                currentFrame = attackUpAnimation.getKeyFrame(stateTime, true);
+                                ((PolygonShape) sword.getSwordFixture().getShape()).setAsBox(Constants.SWORD_HEIGHT, SWORD_WIDTH);
+                                sword.getSwordBody().setTransform(new Vector2(position.x, position.y + distanceSword),
+                                        0f);
+                                break;
+                            case DOWN:
+                                currentFrame = attackDownAnimation.getKeyFrame(stateTime, true);
+                                ((PolygonShape) sword.getSwordFixture().getShape()).setAsBox(Constants.SWORD_HEIGHT, Constants.SWORD_WIDTH);
+                                sword.getSwordBody().setTransform(new Vector2(position.x, position.y - distanceSword), 0);
+                                break;
+                        }
+                    }
+                    if (attackUpAnimation.isAnimationFinished(stateTime) ||
+                            attackDownAnimation.isAnimationFinished(stateTime) ||
+                            attackRightAnimation.isAnimationFinished(stateTime) ||
+                            attackLeftAnimation.isAnimationFinished(stateTime)) {
+                        isAttackInProgress = false;
+                    }
+
+                    if (isIdleInProgress && idleUpAnimation.isAnimationFinished(stateTime) || idleDownAnimation.isAnimationFinished(stateTime) || idleRightAnimation.isAnimationFinished(stateTime) || idleLeftAnimation.isAnimationFinished(stateTime)) {
+                        isIdleInProgress = false;
+                    }
+                    if (isAttackInProgress && attackUpAnimation.isAnimationFinished(stateTime) || attackDownAnimation.isAnimationFinished(stateTime) || attackRightAnimation.isAnimationFinished(stateTime) || attackLeftAnimation.isAnimationFinished(stateTime)) {
+                        isAttackInProgress = false;
+                    }
+                }
             }
         }
-        if (attackUpAnimation.isAnimationFinished(stateTime) ||
-                attackDownAnimation.isAnimationFinished(stateTime) ||
-                attackRightAnimation.isAnimationFinished(stateTime) ||
-                attackLeftAnimation.isAnimationFinished(stateTime)) {
-            isAttackInProgress = false;
-        }
+    }
 
-        if (isIdleInProgress && idleUpAnimation.isAnimationFinished(stateTime) || idleDownAnimation.isAnimationFinished(stateTime) || idleRightAnimation.isAnimationFinished(stateTime) || idleLeftAnimation.isAnimationFinished(stateTime)) {
-            isIdleInProgress = false;
-        }
-        if (isAttackInProgress && attackUpAnimation.isAnimationFinished(stateTime) || attackDownAnimation.isAnimationFinished(stateTime) || attackRightAnimation.isAnimationFinished(stateTime) || attackLeftAnimation.isAnimationFinished(stateTime)) {
-            isAttackInProgress = false;
+    public void hit(int damage, Vector2 attackOrigin) {
+        if (liveState == LiveState.NORMAL) {
+            currentHearts -= damage;
+
+            if (currentHearts <= 0) {
+                body.setLinearVelocity(1, 1);
+                liveState = LiveState.DYING;
+                stateTime = 0;
+            } else {
+                this.attackOrigin = attackOrigin;
+                liveState = LiveState.HIT;
+                invulnerabilityTimer = INVULNERABILITY_DURATION;
+            }
         }
     }
 

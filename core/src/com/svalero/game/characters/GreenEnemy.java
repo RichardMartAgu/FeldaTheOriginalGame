@@ -24,7 +24,7 @@ public class GreenEnemy extends Enemy {
         super(position, hearts,world);
         this.player = player;
         this.position = position;
-        this.hearts = 3;
+        currentHearts = hearts;
         this.type = EnemyType.green;
         body.setUserData(this);
 

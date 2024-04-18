@@ -21,12 +21,6 @@ public class GameOverScreen implements Screen {
 
     public GameOverScreen(Felda game) {
         this.game = game;
-    }
-
-    @Override
-    public void show() {
-
-
         skin = new Skin(Gdx.files.internal("menu/glassy-ui.json"));
         stage = new Stage();
 
@@ -43,7 +37,7 @@ public class GameOverScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen(game));
+                game.setScreen(new GameScreen(game));
             }
         });
         TextButton MenuButton = new TextButton("Main menu", skin);
@@ -65,6 +59,13 @@ public class GameOverScreen implements Screen {
 
         table.add(playButton).center().padBottom(20).colspan(2).row();
         table.add(exitButton).center().colspan(2);
+
+    }
+
+
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(stage);
 
     }
 
@@ -103,6 +104,5 @@ public class GameOverScreen implements Screen {
     public void dispose() {
         stage.dispose();
         skin.dispose();
-
     }
 }

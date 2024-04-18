@@ -57,7 +57,7 @@ public class LevelManager {
 
         batch.begin();
 
-        spriteManager.player = new Player(new Vector2(30, 10), 3,world,
+        spriteManager.player = new Player(new Vector2(30, 10), 5,world,
                 spriteManager.sword = new Sword(world));
 
         spriteManager.player.getPosition().set(40, 20);

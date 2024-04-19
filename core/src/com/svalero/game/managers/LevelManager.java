@@ -46,6 +46,16 @@ public class LevelManager {
         this.spriteManager = spriteManager;
         this.world = world;
     }
+    private void playCurrentLevelMusic() {
+
+        if (ConfigurationManager.isSoundEnabled()) {
+            spriteManager.music = ResourceManager.getMusic(Constants.MUSIC + "bso.mp3");
+            spriteManager.music.setLooping(true);
+            spriteManager.music.setVolume(.2f);
+            spriteManager.music.play();
+
+        }
+    }
 
     public void setCameraManager(CameraManager cameraManager) {
         this.cameraManager = cameraManager;
@@ -67,6 +77,7 @@ public class LevelManager {
         spriteManager.player.getPosition().set(40, 20);
 
         loadCollisionLayer();
+        playCurrentLevelMusic();
         loadEnemies();
         loadItems();
         batch.end();

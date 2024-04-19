@@ -10,8 +10,7 @@ import com.svalero.game.managers.ResourceManager;
 import com.svalero.game.managers.SpriteManager;
 import com.svalero.game.utils.Constants;
 
-import static com.svalero.game.utils.Constants.SWORD_HEIGHT;
-import static com.svalero.game.utils.Constants.SWORD_WIDTH;
+import static com.svalero.game.utils.Constants.*;
 
 public class Player extends Character {
     private Body body;
@@ -257,6 +256,7 @@ public class Player extends Character {
         if (!isAttackInProgress) {
             isAttackInProgress = true;
             stateTime = 0;
+            ResourceManager.getSound(Constants.SOUND + "sword.mp3").play();
         }
     }
 

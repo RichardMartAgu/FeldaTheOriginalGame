@@ -56,6 +56,7 @@ public class GreenEnemy extends Enemy {
         if(liveState == LiveState.DYING){
             currentFrame = dieAnimation.getKeyFrame(stateTime, true);
         if (dieAnimation.isAnimationFinished(stateTime)){
+            ResourceManager.getSound(Constants.SOUND + "die_bubble.mp3").play();
             liveState = LiveState.DEAD;
             stateTime += dt;
             }

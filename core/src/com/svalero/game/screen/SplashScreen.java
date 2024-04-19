@@ -50,7 +50,7 @@ public class SplashScreen implements Screen {
         stage.addActor(table);
 
         // Lanza la carga de recursos
-        ResourceManager.loadAllResources();
+       ResourceManager.loadAllResources();
     }
 
     @Override

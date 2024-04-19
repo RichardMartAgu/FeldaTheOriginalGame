@@ -8,6 +8,7 @@ import com.svalero.game.characters.Sword;
 import com.svalero.game.items.Heart;
 import com.svalero.game.items.Item;
 import com.svalero.game.items.Rupia;
+import com.svalero.game.managers.ResourceManager;
 
 public class MyContactListener implements ContactListener {
     @Override
@@ -21,24 +22,26 @@ public class MyContactListener implements ContactListener {
         if (bodySword.getUserData() instanceof Sword && bodyEnemy.getUserData() instanceof Enemy) {
             Enemy enemy = (Enemy) bodyEnemy.getUserData();
             enemy.hit(1, bodySword.getPosition());;
+            ResourceManager.getSound(Constants.SOUND + "hurt_bubble.mp3").play();
         }
 
         if (bodyPlayer.getUserData() instanceof Player && bodyEnemy.getUserData() instanceof Enemy) {
 
             Player player = (Player) bodyPlayer.getUserData();
                 player.hit(1, bodyEnemy.getPosition());
+                ResourceManager.getSound(Constants.SOUND + "hurt.mp3").play();
         }
 
         if (bodyPlayer.getUserData() instanceof Player && bodyItem.getUserData() instanceof Item) {
             Item item = (Item) bodyItem.getUserData(); // Debes obtener el objeto Item
             Player player = (Player) bodyPlayer.getUserData();
             if (item instanceof Heart) {
-                System.out.println("corazon");
+                ResourceManager.getSound(Constants.SOUND + "collect_heart.mp3").play();
                 item.collected();
                 player.addHeart();
             } else if (item instanceof Rupia) {
                 player.addRupia(item.score);
-                System.out.println("rupia");
+                ResourceManager.getSound(Constants.SOUND + "collect_rupia.mp3").play();
                 item.collected();
             }
         }

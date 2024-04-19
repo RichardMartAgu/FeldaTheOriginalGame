@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -20,6 +20,7 @@ import com.svalero.game.items.Item;
 import com.svalero.game.items.Rupia;
 import com.svalero.game.screen.GameOverScreen;
 import com.svalero.game.screen.MainMenuScreen;
+import com.svalero.game.utils.Constants;
 import com.svalero.game.utils.MyContactListener;
 
 public class SpriteManager implements InputProcessor {
@@ -30,12 +31,11 @@ public class SpriteManager implements InputProcessor {
     public Player player;
     public Rupia rupia;
     public Sword sword;
-
+    Music music;
     private MyContactListener myContactListener;
     Array<Item> items;
     Array<Enemy> enemies;
     Array<Body> worldBodies;
-    TiledMapTileLayer collisionLayer;
     boolean pause;
 
     public SpriteManager(Felda game, World world, MyContactListener contactListener) {
@@ -50,9 +50,6 @@ public class SpriteManager implements InputProcessor {
         worldBodies = new Array<>();
     }
 
-    public void setCameraManager(CameraManager cameraManager) {
-        this.cameraManager = cameraManager;
-    }
 
     private void handleGameScreenInput() {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
@@ -115,8 +112,8 @@ public class SpriteManager implements InputProcessor {
                 }
             }
 
-
             if (player.liveState == Player.LiveState.DEAD) {
+                ResourceManager.getSound(Constants.SOUND + "sword.mp3").play();
                 game.setScreen(new GameOverScreen(game));
             }
 
@@ -138,8 +135,6 @@ public class SpriteManager implements InputProcessor {
         handleGameScreenInput();
     }
 
-    public void attackEnemies() {
-    }
 
     @Override
     public boolean keyDown(int keycode) {
@@ -186,7 +181,4 @@ public class SpriteManager implements InputProcessor {
         return false;
     }
 
-    public void setCollisionLayer(TiledMapTileLayer collisionLayer) {
-        this.collisionLayer = collisionLayer;
-    }
 }

@@ -24,4 +24,7 @@ public class Constants {
     public static final int CAMERA_HEIGHT = TILES_IN_CAMERA * TILE_HEIGHT;
 
     public static final String TEXTURE_ATLAS = "Felda.atlas";
+
+    public static final String SOUND = "sounds/";
+    public static final String MUSIC = "music/";
 }

@@ -230,6 +230,7 @@ public class Player extends Character {
 
             if (currentHearts <= 0) {
                 body.setLinearVelocity(1, 1);
+                ResourceManager.getSound(Constants.SOUND + "die.mp3").play();
                 liveState = LiveState.DYING;
                 stateTime = 0;
             } else {

@@ -31,17 +31,19 @@ public class ResourceManager {
     }
     public static void loadSounds() {
 
-        assets.load("sounds/sword.mp3", Sound.class);
-        assets.load("sounds/shot.mp3", Sound.class);
-        assets.load("sounds/hurt_bubble.mp3", Sound.class);
-        assets.load("sounds/die_bubble.mp3", Sound.class);
-        assets.load("sounds/collect_heart.mp3", Sound.class);
-        assets.load("sounds/collect_rupia.mp3", Sound.class);
-        assets.load("sounds/hurt.mp3", Sound.class);
+        assets.load(Constants.SOUND + "sword.mp3", Sound.class);
+        assets.load(Constants.SOUND + "shot.mp3", Sound.class);
+        assets.load(Constants.SOUND + "hurt_bubble.mp3", Sound.class);
+        assets.load(Constants.SOUND + "die_bubble.mp3", Sound.class);
+        assets.load(Constants.SOUND + "collect_heart.mp3", Sound.class);
+        assets.load(Constants.SOUND + "collect_rupia.mp3", Sound.class);
+        assets.load(Constants.SOUND + "hurt.mp3", Sound.class);
+        assets.load(Constants.SOUND + "die.mp3", Sound.class);
+        assets.load(Constants.SOUND + "lose.mp3", Sound.class);
 
     }
     public static void loadMusics() {
-        assets.load("music/bso.mp3", Music.class);
+        assets.load(Constants.MUSIC +"zelda_music.mp3", Music.class);
 
     }
     public static Sound getSound(String name) {

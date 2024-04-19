@@ -72,6 +72,7 @@ public class SpriteManager implements InputProcessor {
             if (player.liveState != Character.LiveState.DYING) {
                 world.step(dt, 8, 6);
             } else {
+                music.stop();
                 world.step(0, 0, 0); // Detiene el mundo físico
             }
 
@@ -113,7 +114,7 @@ public class SpriteManager implements InputProcessor {
             }
 
             if (player.liveState == Player.LiveState.DEAD) {
-                ResourceManager.getSound(Constants.SOUND + "sword.mp3").play();
+                ResourceManager.getSound(Constants.SOUND + "lose.mp3").play();
                 game.setScreen(new GameOverScreen(game));
             }
 

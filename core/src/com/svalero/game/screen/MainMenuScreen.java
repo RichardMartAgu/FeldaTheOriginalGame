@@ -46,7 +46,7 @@ public class MainMenuScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new PreferencesScreen(game));
+                game.setScreen(new PreferencesScreen(game));
             }
         });
 

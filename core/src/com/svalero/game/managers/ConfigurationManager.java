@@ -6,9 +6,9 @@ import com.svalero.game.utils.Constants;
 
 public class ConfigurationManager {
 
-    private static Preferences prefs = Gdx.app.getPreferences(Constants.APP_NAME);;
+    private static Preferences settings = Gdx.app.getPreferences(Constants.APP_NAME);;
 
     public static boolean isSoundEnabled() {
-        return prefs.getBoolean("sound");
+        return settings.getBoolean("sound",true);
     }
 }

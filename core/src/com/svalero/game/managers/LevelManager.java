@@ -49,11 +49,10 @@ public class LevelManager {
     private void playCurrentLevelMusic() {
 
         if (ConfigurationManager.isSoundEnabled()) {
-            spriteManager.music = ResourceManager.getMusic(Constants.MUSIC + "bso.mp3");
+            spriteManager.music = ResourceManager.getMusic(Constants.MUSIC + "zelda_music.mp3");
             spriteManager.music.setLooping(true);
             spriteManager.music.setVolume(.2f);
             spriteManager.music.play();
-
         }
     }
 

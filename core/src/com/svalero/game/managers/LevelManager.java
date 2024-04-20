@@ -12,12 +12,8 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.svalero.game.characters.Enemy;
-import com.svalero.game.characters.GreenEnemy;
-import com.svalero.game.characters.Player;
-import com.svalero.game.characters.Sword;
+import com.svalero.game.characters.*;
 import com.svalero.game.items.CollisionObject;
-import com.svalero.game.items.Goal;
 import com.svalero.game.items.Item;
 import com.svalero.game.items.Rupia;
 import com.svalero.game.utils.Constants;
@@ -94,6 +90,9 @@ public class LevelManager {
                     switch (enemyType) {
                         case "green":
                             enemy = new GreenEnemy(new Vector2(tile.getX(), tile.getY()), 2, spriteManager.player,world);
+                            break;
+                        case "gray":
+                            enemy = new GrayEnemy(new Vector2(tile.getX(), tile.getY()), 2, spriteManager.player,world);
                             break;
                     }
                     spriteManager.enemies.add(enemy);

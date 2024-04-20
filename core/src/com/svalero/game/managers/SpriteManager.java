@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -88,7 +89,6 @@ public class SpriteManager implements InputProcessor {
                         world.destroyBody(body);
                         int random = MathUtils.random(1, 2);
                         if (random == 1) {
-                            System.out.println("Llego aqui");
                             // Agrega una rupia en la posición del enemigo
                             Rupia rupia = new Rupia(new Vector2(enemy.position.x, enemy.position.y), 1, world);
                             items.add(rupia);
@@ -114,7 +114,8 @@ public class SpriteManager implements InputProcessor {
             }
 
             if (player.liveState == Player.LiveState.DEAD) {
-                ResourceManager.getSound(Constants.SOUND + "lose.mp3").play();
+             ResourceManager.getSound(Constants.SOUND + "lose.mp3").play();
+
                 game.setScreen(new GameOverScreen(game));
             }
 

@@ -13,7 +13,7 @@ public class Enemy extends Character {
     public Vector2 attackOrigin;
 
     public enum EnemyType {
-        green, gray, yellow
+        green, gray, blue
     }
 
     public Body body;

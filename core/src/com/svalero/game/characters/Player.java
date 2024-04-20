@@ -143,9 +143,7 @@ public class Player extends Character {
 
                 if (liveState == LiveState.NORMAL) {
                     if (!isAttackInProgress) {
-                        ((PolygonShape) sword.swordFixture.getShape()).setAsBox(0, 0,
-                                new Vector2(0, 0),
-                                0f);
+                        sword.getSwordBody().setActive(false);
                         // Si no está atacando, muestra la animación correspondiente al estado del jugador
                         switch (state) {
                             case RIGHT:
@@ -179,7 +177,7 @@ public class Player extends Character {
                                 break;
                         }
                     } else {
-
+                        sword.getSwordBody().setActive(true);
                         switch (previousState) {
                             case RIGHT:
                                 currentFrame = attackRightAnimation.getKeyFrame(stateTime, true);

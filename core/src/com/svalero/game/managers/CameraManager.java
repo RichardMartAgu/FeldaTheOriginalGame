@@ -24,10 +24,29 @@ public class CameraManager {
 
     public void handleCamera() {
         // Fija la cámara para seguir al personaje en el centro de la pantalla y altura fija (eje y)
-        if (spriteManager.player.getPosition().x < TILES_IN_CAMERA * TILE_WIDTH / 2)
-            camera.position.set(TILES_IN_CAMERA * TILE_WIDTH / 2 , TILES_IN_CAMERA * TILE_HEIGHT / 2, 0);
-        else
-            camera.position.set(spriteManager.player.getPosition().x, TILES_IN_CAMERA * TILE_HEIGHT / 2, 0);
+        float cameraX = spriteManager.player.getPosition().x; // Posición X del jugador
+        float cameraY = spriteManager.player.getPosition().y; // Posición Y del jugador
+        float halfViewportWidth = camera.viewportWidth / 2; // Mitad del ancho de la cámara
+        float halfViewportHeight = camera.viewportHeight / 2; // Mitad de la altura de la cámara
+        float levelWidth = TILES_IN_CAMERA * TILE_WIDTH; // Ancho total del nivel en píxeles
+        float levelHeight = TILES_IN_CAMERA * TILE_HEIGHT; // Alto total del nivel en píxeles
+
+        // Restringir la cámara en el eje X
+        if (cameraX - halfViewportWidth < 0) {
+            cameraX = halfViewportWidth; // Ajustar la posición X de la cámara al límite izquierdo
+        } else if (cameraX + halfViewportWidth > levelWidth) {
+            cameraX = levelWidth - halfViewportWidth; // Ajustar la posición X de la cámara al límite derecho
+        }
+
+        // Restringir la cámara en el eje Y
+        if (cameraY - halfViewportHeight < 0) {
+            cameraY = halfViewportHeight; // Ajustar la posición Y de la cámara al límite superior
+        } else if (cameraY + halfViewportHeight > levelHeight) {
+            cameraY = levelHeight - halfViewportHeight; // Ajustar la posición Y de la cámara al límite inferior
+        }
+
+        // Configurar la nueva posición de la cámara
+        camera.position.set(cameraX, cameraY, 0);
 
 
         camera.update();

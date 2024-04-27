@@ -30,7 +30,7 @@ public class Player extends Character {
     public Character.State state;
     float stateTime;
     private float invulnerabilityTimer = 0f;
-    private final float INVULNERABILITY_DURATION = 0.5f;
+    private float invulnerabilityDuration = 0.5f;
 
     int distanceSword = 6;
 
@@ -79,6 +79,7 @@ public class Player extends Character {
         hurtAnimationPLayer = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("hurt_down"));
 
         previousState = State.IDLE;
+        currentFrame = idleDownAnimation.getKeyFrame(stateTime, true);
         liveState = LiveState.NORMAL;
     }
 
@@ -234,7 +235,7 @@ public class Player extends Character {
             } else {
                 this.attackOrigin = attackOrigin;
                 liveState = LiveState.HIT;
-                invulnerabilityTimer = INVULNERABILITY_DURATION;
+                invulnerabilityTimer = invulnerabilityDuration;
             }
         }
     }

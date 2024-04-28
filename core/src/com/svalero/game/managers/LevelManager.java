@@ -94,6 +94,9 @@ public class LevelManager {
                         case "gray":
                             enemy = new GrayEnemy(new Vector2(tile.getX(), tile.getY()), 2, spriteManager.player,world);
                             break;
+                        case "blue":
+                            enemy = new BlueEnemy(new Vector2(tile.getX(), tile.getY()), 5, spriteManager.player,world);
+                            break;
                     }
                     spriteManager.enemies.add(enemy);
 

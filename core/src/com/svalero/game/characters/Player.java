@@ -32,7 +32,7 @@ public class Player extends Character {
     private float invulnerabilityTimer = 0f;
     private float invulnerabilityDuration = 0.5f;
 
-    int distanceSword = 6;
+    int distanceSword = 10;
 
     Animation<TextureRegion> rightAnimation, idleRightAnimation, leftAnimation, idleLeftAnimation,
             upAnimation, idleUpAnimation, downAnimation, idleDownAnimation, attackRightAnimation, attackLeftAnimation,

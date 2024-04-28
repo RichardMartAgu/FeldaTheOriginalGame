@@ -1,7 +1,6 @@
 package com.svalero.game.utils;
 
 import com.badlogic.gdx.physics.box2d.*;
-import com.svalero.game.characters.Character;
 import com.svalero.game.characters.Enemy;
 import com.svalero.game.characters.Player;
 import com.svalero.game.characters.Sword;
@@ -21,19 +20,21 @@ public class MyContactListener implements ContactListener {
 
         if (bodySword.getUserData() instanceof Sword && bodyEnemy.getUserData() instanceof Enemy) {
             Enemy enemy = (Enemy) bodyEnemy.getUserData();
-            enemy.hit(1, bodySword.getPosition());;
             ResourceManager.getSound(Constants.SOUND + "hurt_bubble.mp3").play();
+            System.out.println("Colisión entre el espada y enemigo.");
+            enemy.hit(1, bodySword.getPosition());
+
+
         }
 
         if (bodyPlayer.getUserData() instanceof Player && bodyEnemy.getUserData() instanceof Enemy) {
-
             Player player = (Player) bodyPlayer.getUserData();
-                player.hit(1, bodyEnemy.getPosition());
-                ResourceManager.getSound(Constants.SOUND + "hurt.mp3").play();
+            player.hit(1, bodyEnemy.getPosition());
+            ResourceManager.getSound(Constants.SOUND + "hurt.mp3").play();
         }
 
         if (bodyPlayer.getUserData() instanceof Player && bodyItem.getUserData() instanceof Item) {
-            Item item = (Item) bodyItem.getUserData(); // Debes obtener el objeto Item
+            Item item = (Item) bodyItem.getUserData();
             Player player = (Player) bodyPlayer.getUserData();
             if (item instanceof Heart) {
                 ResourceManager.getSound(Constants.SOUND + "collect_heart.mp3").play();
@@ -45,6 +46,7 @@ public class MyContactListener implements ContactListener {
                 item.collected();
             }
         }
+
     }
 
 

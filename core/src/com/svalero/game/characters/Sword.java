@@ -33,6 +33,8 @@ public class Sword {
         swordFixtureDef.isSensor = true;
         swordFixture = sword.createFixture(swordFixtureDef);
 
+        sword.setBullet(true);
+
         swordShape.dispose();
     }
 

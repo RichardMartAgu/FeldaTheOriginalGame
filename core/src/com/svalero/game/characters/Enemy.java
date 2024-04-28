@@ -13,7 +13,7 @@ public class Enemy extends Character {
     public Vector2 attackOrigin;
 
     public enum EnemyType {
-        green, gray, blue
+        green, gray, blue,projectile
     }
 
     public Body body;
@@ -27,7 +27,7 @@ public class Enemy extends Character {
         currentHearts = hearts;
 
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody; // Cuerpo dinámico
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(position.x, position.y);
         body = world.createBody(bodyDef);
 
@@ -59,8 +59,9 @@ public class Enemy extends Character {
                 liveState = LiveState.DYING;
                 stateTime = 0;
             } else {
-                this.attackOrigin = attackOrigin;
                 liveState = LiveState.HIT;
+                this.attackOrigin = attackOrigin;
+
             }
         }
     }

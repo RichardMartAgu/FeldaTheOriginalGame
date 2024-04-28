@@ -13,7 +13,7 @@ public class GrayEnemy extends Enemy {
 
 
     public enum InvulnerabilityState {
-        TRUE, FALSE, REFRESH;
+        TRUE, FALSE
     }
 
     public InvulnerabilityState invulnerabilityState = InvulnerabilityState.FALSE;
@@ -114,20 +114,16 @@ public class GrayEnemy extends Enemy {
                 boolean invulnerability = MathUtils.randomBoolean(0.2f);
                 if (invulnerability) {
                     invulnerabilityState = InvulnerabilityState.TRUE;
-                    repeatCount = 0;
                     stateTime = 0;
                 }
             }
-            int numRepeats = MathUtils.random(3, 7);
+
             if (invulnerabilityState == InvulnerabilityState.TRUE && invulnerabilityAnimation.isAnimationFinished(stateTime)) {
                 repeatCount++;
-
-                if (repeatCount >= numRepeats) {
                     invulnerabilityState = InvulnerabilityState.FALSE;
                     body.setActive(true);
                     refreshTime = 0;
                     repeatCount = 0;
-                }
             }
         }
     }

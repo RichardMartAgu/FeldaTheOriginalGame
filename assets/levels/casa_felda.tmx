@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="41">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="47">
  <tileset firstgid="1" source="public_tileset_by_orohnpokemon-d4vpcfu.tsx"/>
  <tileset firstgid="2377" source="green_bubble_down_2.tsx"/>
  <tileset firstgid="2378" source="gray_bubble_down_1.tsx"/>
+ <tileset firstgid="2379" source="blue_bubble_down_1.tsx"/>
  <layer id="1" name="terrain" width="20" height="20" visible="0">
   <data encoding="csv">
 188,188,188,188,188,188,188,188,188,188,188,188,188,188,188,188,188,188,188,188,
@@ -126,14 +127,19 @@
   <properties>
    <property name="enemy" value="green"/>
   </properties>
-  <object id="36" gid="2377" x="240" y="288" width="16" height="16">
+  <object id="41" gid="2381" x="240" y="240" width="16" height="16">
    <properties>
-    <property name="enemy" value="green"/>
+    <property name="enemy" value="blue"/>
    </properties>
   </object>
-  <object id="38" gid="2378" x="240" y="224" width="16" height="16">
+  <object id="45" gid="2378" x="240" y="192" width="16" height="16">
    <properties>
     <property name="enemy" value="gray"/>
+   </properties>
+  </object>
+  <object id="46" gid="2377" x="240" y="160" width="16" height="16">
+   <properties>
+    <property name="enemy" value="green"/>
    </properties>
   </object>
  </objectgroup>

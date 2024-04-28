@@ -12,10 +12,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.svalero.game.Felda;
+import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
-import com.svalero.game.characters.Enemy;
-import com.svalero.game.characters.Player;
-import com.svalero.game.characters.Sword;
 import com.svalero.game.items.Heart;
 import com.svalero.game.items.Item;
 import com.svalero.game.items.Rupia;
@@ -32,6 +30,7 @@ public class SpriteManager implements InputProcessor {
     public Player player;
     public Rupia rupia;
     public Sword sword;
+    public BlueProjectile blueProjectile;
     Music music;
     private MyContactListener myContactListener;
     Array<Item> items;
@@ -79,14 +78,18 @@ public class SpriteManager implements InputProcessor {
 
             world.getBodies(worldBodies);
 
+
+
             for (Body body : worldBodies) {
                 if (world.isLocked()) continue;
+
 
                 if (body.getUserData() instanceof Enemy) {
                     Enemy enemy = (Enemy) body.getUserData();
                     if (enemy.liveState == Enemy.LiveState.DEAD) {
                         worldBodies.removeValue(enemy.getBody(), true);
                         world.destroyBody(body);
+
                         int random = MathUtils.random(1, 2);
                         if (random == 1) {
                             // Agrega una rupia en la posición del enemigo
@@ -112,7 +115,6 @@ public class SpriteManager implements InputProcessor {
                     }
                 }
             }
-
             if (player.liveState == Player.LiveState.DEAD) {
              ResourceManager.getSound(Constants.SOUND + "lose.mp3").play();
 
@@ -128,6 +130,12 @@ public class SpriteManager implements InputProcessor {
             player.update(dt, this);
 
             for (Enemy enemy : enemies) {
+                if (enemy instanceof BlueEnemy ) {
+                    if(((BlueEnemy) enemy).shoot) {
+                        BlueProjectile blueProjectile = new BlueProjectile(new Vector2(enemy.position.x, enemy.position.y), 1, player, world);
+                        enemies.add(blueProjectile);
+                    }
+                }
                 enemy.update(dt, this);
             }
             for (Item items : items) {

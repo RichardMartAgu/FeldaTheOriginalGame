@@ -52,7 +52,6 @@ public abstract class Item {
 
     }
     public void collected(){
-        System.out.println("Cogido");
         state = State.COLLECTED;
     }
 

@@ -2,6 +2,7 @@ package com.svalero.game.characters;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.svalero.game.managers.ResourceManager;
@@ -10,53 +11,61 @@ import com.svalero.game.utils.Constants;
 
 public class BlueEnemy extends Enemy {
 
+    public enum ShootingState {
+        TRUE, FALSE
+    }
+    public ShootingState shootingState = ShootingState.FALSE;
+
     World world;
-    private static final float DETECTION_DISTANCE = 100;
-    private static final float MOVEMENT_SPEED = 800f;
+    private static final float DETECTION_DISTANCE = 200;
+    private static final float MOVEMENT_SPEED = 100f;
 
     private Vector2 position;
     private Player player;
 
+    public boolean shoot = false;
 
-    public BlueEnemy(Vector2 position, int hearts, Player player,World world) {
-        super(position, hearts,world);
+    float refreshTime;
+    float timeToShooting = 5;
+
+    public BlueEnemy(Vector2 position, int hearts, Player player, World world) {
+        super(position, hearts, world);
         this.player = player;
         this.position = position;
-        currentHearts = hearts;
         this.type = Enemy.EnemyType.blue;
         body.setUserData(this);
-
         this.world = world;
-
 
         rightAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("blue_bubble_right"));
         leftAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("blue_bubble_left"));
-        idleAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("blue_bubble_down"));
+        idleAnimation = new Animation<TextureRegion>(1f, ResourceManager.getRegions("blue_bubble_down"));
         dieAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("blue_bubble_die"));
 
     }
 
     public void update(float dt, SpriteManager spriteManager) {
+
+        shoot = false;
         stateTime += dt;
+        refreshTime += dt;
+
 
         Vector2 currentPosition = body.getPosition();
         position.set(currentPosition.x, currentPosition.y);
 
-        if(liveState == Character.LiveState.HIT){
+        if (liveState == LiveState.HIT) {
             Vector2 repulsionDirection = body.getPosition().cpy().sub(attackOrigin).nor();
             // Aplicar una fuerza repulsiva al cuerpo
-            System.out.println("Llego aqui");
             float repulsionForceMagnitude = 90000000000f; // Ajusta la magnitud según lo deseado
-            body.applyLinearImpulse(repulsionDirection.scl(repulsionForceMagnitude),body.getWorldCenter(), true);
-            liveState= Character.LiveState.NORMAL;
+            body.applyLinearImpulse(repulsionDirection.scl(repulsionForceMagnitude), body.getWorldCenter(), true);
+            liveState = LiveState.NORMAL;
         }
 
-        if(liveState == Character.LiveState.DYING){
+        if (liveState == LiveState.DYING) {
             currentFrame = dieAnimation.getKeyFrame(stateTime, true);
-            if (dieAnimation.isAnimationFinished(stateTime)){
+            if (dieAnimation.isAnimationFinished(stateTime)) {
                 ResourceManager.getSound(Constants.SOUND + "die_bubble.mp3").play();
-                liveState = Character.LiveState.DEAD;
-                stateTime += dt;
+                liveState = LiveState.DEAD;
             }
         }
 
@@ -64,29 +73,49 @@ public class BlueEnemy extends Enemy {
         Vector2 playerPosition = player.getPosition();
         float distanceToPlayer = position.dst(playerPosition);
 
-        if (!(liveState == Character.LiveState.DYING||liveState == Character.LiveState.DEAD)) {
-
-            // Si el jugador está dentro de la distancia de detección
-            if (distanceToPlayer <= DETECTION_DISTANCE) {
-                // Obtener la dirección hacia la que debe moverse el enemigo para alcanzar al jugador
-                Vector2 direction = playerPosition.cpy().sub(currentPosition).nor();
-
-                // Aplicar una fuerza lineal al cuerpo del enemigo en la dirección del jugador
-                body.applyLinearImpulse(direction.scl(MOVEMENT_SPEED), body.getWorldCenter(), true);
-
-                // Actualizar la animación según la dirección del movimiento
-
-                if (direction.x > 0) {
-                    // Mover hacia la derecha
-                    currentFrame = rightAnimation.getKeyFrame(stateTime, true);
-                } else if (direction.x < 0) {
-                    // Mover hacia la izquierda
-                    currentFrame = leftAnimation.getKeyFrame(stateTime, true);
-                }
-            } else {
-                body.setLinearVelocity(1, 1);
-                // Si el jugador está fuera de la distancia de detección, el enemigo está inactivo
+        if (!(liveState == LiveState.DYING || liveState == LiveState.DEAD)) {
+            if (shootingState == ShootingState.TRUE) {
                 currentFrame = idleAnimation.getKeyFrame(stateTime, true);
+                body.setLinearVelocity(0, 0);
+
+            } else {
+                // Si el jugador está dentro de la distancia de detección
+                if (distanceToPlayer <= DETECTION_DISTANCE) {
+                    // Obtener la dirección hacia la que debe moverse el enemigo para alcanzar al jugador
+                    Vector2 direction = playerPosition.cpy().sub(currentPosition).nor();
+
+                    // Aplicar una fuerza lineal al cuerpo del enemigo en la dirección del jugador
+                    body.applyLinearImpulse(direction.scl(MOVEMENT_SPEED), body.getWorldCenter(), true);
+
+                    // Actualizar la animación según la dirección del movimiento
+
+                    if (direction.x > 0) {
+                        // Mover hacia la derecha
+                        currentFrame = rightAnimation.getKeyFrame(stateTime, true);
+                    } else if (direction.x < 0) {
+                        // Mover hacia la izquierda
+                        currentFrame = leftAnimation.getKeyFrame(stateTime, true);
+                    }
+
+                } else {
+                    body.setLinearVelocity(1, 1);
+                    // Si el jugador está fuera de la distancia de detección, el enemigo está inactivo
+                    currentFrame = idleAnimation.getKeyFrame(stateTime, true);
+                }
+            }
+            timeToShooting = MathUtils.random(8, 15);
+            if (shootingState == ShootingState.FALSE && refreshTime > timeToShooting) {
+                shootingState = ShootingState.TRUE;
+                stateTime = 0;
+                refreshTime = 0;
+
+            }
+
+            if (shootingState == ShootingState.TRUE && idleAnimation.isAnimationFinished(stateTime)) {
+                shoot = true;
+                shootingState = ShootingState.FALSE;
+
+
             }
         }
     }

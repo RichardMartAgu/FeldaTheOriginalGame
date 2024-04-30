@@ -1,11 +1,9 @@
 package com.svalero.game.managers;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -18,7 +16,6 @@ import com.svalero.game.items.Heart;
 import com.svalero.game.items.Item;
 import com.svalero.game.items.Rupia;
 import com.svalero.game.screen.GameOverScreen;
-import com.svalero.game.screen.MainMenuScreen;
 import com.svalero.game.utils.Constants;
 import com.svalero.game.utils.MyContactListener;
 
@@ -26,13 +23,12 @@ public class SpriteManager implements InputProcessor {
     World world;
     Felda game;
     LevelManager levelManager;
-    CameraManager cameraManager;
+
     public Player player;
-    public Rupia rupia;
     public Sword sword;
-    public BlueProjectile blueProjectile;
     Music music;
     private MyContactListener myContactListener;
+
     Array<Item> items;
     Array<Enemy> enemies;
     Array<Body> worldBodies;
@@ -52,8 +48,8 @@ public class SpriteManager implements InputProcessor {
 
 
     private void handleGameScreenInput() {
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(game));
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            levelManager.nextLevel();
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
@@ -77,8 +73,6 @@ public class SpriteManager implements InputProcessor {
             }
 
             world.getBodies(worldBodies);
-
-
 
             for (Body body : worldBodies) {
                 if (world.isLocked()) continue;
@@ -124,6 +118,8 @@ public class SpriteManager implements InputProcessor {
             if (player.liveState == Character.LiveState.HIT) {
                 world.setContactListener(null);
             } else {
+
+
                 world.setContactListener(myContactListener);
             }
 

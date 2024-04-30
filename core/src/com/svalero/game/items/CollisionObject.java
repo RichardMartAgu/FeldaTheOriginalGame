@@ -1,8 +1,9 @@
 package com.svalero.game.items;
 
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Disposable;
 
-public class CollisionObject {
+public class CollisionObject implements Disposable {
     private Body body;
 
     public CollisionObject(float x, float y, float width, float height, World world) {
@@ -29,4 +30,8 @@ public class CollisionObject {
         shape.dispose();
     }
 
+    @Override
+    public void dispose() {
+
+    }
 }

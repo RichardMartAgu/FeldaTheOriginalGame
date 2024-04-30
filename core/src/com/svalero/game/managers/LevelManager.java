@@ -1,5 +1,6 @@
 package com.svalero.game.managers;
 
+
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -10,10 +11,12 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.svalero.game.characters.*;
 import com.svalero.game.items.CollisionObject;
+import com.svalero.game.items.Goal;
 import com.svalero.game.items.Item;
 import com.svalero.game.items.Rupia;
 import com.svalero.game.utils.Constants;
@@ -25,7 +28,7 @@ public class LevelManager {
 
     private static final String[] LEVELS = {
             "levels/casa_felda.tmx",
-            "levels/otro_nivel.tmx"
+            "levels/bosque.tmx"
     };
     World world;
     private int currentLevelIndex = 0;
@@ -33,15 +36,25 @@ public class LevelManager {
     public TiledMap map;
     public TiledMapTileLayer collisionLayer;
     private List<CollisionObject> collisionObjects;
+    public Array<Body> worldBodies;
     public OrthogonalTiledMapRenderer mapRenderer;
     public Batch batch;
     private SpriteManager spriteManager;
     private CameraManager cameraManager;
 
+
+
     public LevelManager(SpriteManager spriteManager, World world) {
         this.spriteManager = spriteManager;
         this.world = world;
+        this.worldBodies = new Array<>();
+        this.items = new Array<>();
+
     }
+    public void setCameraManager(CameraManager cameraManager) {
+        this.cameraManager = cameraManager;
+    }
+
     private void playCurrentLevelMusic() {
 
         if (ConfigurationManager.isSoundEnabled()) {
@@ -49,35 +62,28 @@ public class LevelManager {
             spriteManager.music.setLooping(true);
             spriteManager.music.setVolume(.2f);
             spriteManager.music.play();
-        }
-    }
 
-    public void setCameraManager(CameraManager cameraManager) {
-        this.cameraManager = cameraManager;
+        }
     }
 
     public void loadCurrentLevel() {
         String levelFile = LEVELS[currentLevelIndex];
+
         map = new TmxMapLoader().load(levelFile);
 
         mapRenderer = new OrthogonalTiledMapRenderer(map);
 
         batch = mapRenderer.getBatch();
 
-        batch.begin();
-
-        spriteManager.player = new Player(new Vector2(30, 10), 5,world,
-                spriteManager.sword = new Sword(world));
+        spriteManager.player = new Player(new Vector2(30, 10), 5, world, spriteManager.sword = new Sword(world));
 
         spriteManager.player.getPosition().set(40, 20);
-
         loadCollisionLayer();
         playCurrentLevelMusic();
         loadEnemies();
-        loadItems();
-        batch.end();
 
     }
+
     public void loadEnemies() {
 
         Enemy enemy = null;
@@ -89,13 +95,13 @@ public class LevelManager {
                     String enemyType = (String) tile.getProperties().get("enemy");
                     switch (enemyType) {
                         case "green":
-                            enemy = new GreenEnemy(new Vector2(tile.getX(), tile.getY()), 2, spriteManager.player,world);
+                            enemy = new GreenEnemy(new Vector2(tile.getX(), tile.getY()), 2, spriteManager.player, world);
                             break;
                         case "gray":
-                            enemy = new GrayEnemy(new Vector2(tile.getX(), tile.getY()), 2, spriteManager.player,world);
+                            enemy = new GrayEnemy(new Vector2(tile.getX(), tile.getY()), 2, spriteManager.player, world);
                             break;
                         case "blue":
-                            enemy = new BlueEnemy(new Vector2(tile.getX(), tile.getY()), 5, spriteManager.player,world);
+                            enemy = new BlueEnemy(new Vector2(tile.getX(), tile.getY()), 5, spriteManager.player, world);
                             break;
                     }
                     spriteManager.enemies.add(enemy);
@@ -105,6 +111,7 @@ public class LevelManager {
             }
         }
     }
+
     private void loadItems() {
 
         Item item = null;
@@ -114,14 +121,16 @@ public class LevelManager {
                 TiledMapTileMapObject tile = (TiledMapTileMapObject) object;
                 if (tile.getProperties().containsKey("item")) {
                     String itemType = (String) tile.getProperties().get("item");
-                    if (itemType.equals("rupia")) {
-                        int score = Integer.parseInt((String) tile.getProperties().get("score"));
-
-                        item = new Rupia(new Vector2(tile.getX(), tile.getY()), score,world);
+                    switch (itemType) {
+                        case "rupia":
+                            item = new Rupia(new Vector2(tile.getX(), tile.getY()), 1, world);
+                            break;
+                        case "goal":
+                            item = new Goal(new Vector2(tile.getX(), tile.getY()), 0, world);
+                            break;
 
                     }
-                } else if (tile.getProperties().containsKey("goal")) {
-
+                    spriteManager.items.add(item);
                 }
             }
         }
@@ -137,37 +146,49 @@ public class LevelManager {
                 float y = rectangleObject.getRectangle().y;
                 float width = rectangleObject.getRectangle().width;
                 float height = rectangleObject.getRectangle().height;
-                collisionObjects.add(new CollisionObject(x, y, width, height,world));
+                collisionObjects.add(new CollisionObject(x, y, width, height, world));
+
             }
         }
+    }
 
-    }
-    public List<CollisionObject> getCollisionObjects() {
-        return collisionObjects;
-    }
 
     public void nextLevel() {
+
         currentLevelIndex++;
         if (currentLevelIndex >= LEVELS.length) {
-            currentLevelIndex = 0; // Vuelve al primer nivel si se llega al final de la lista
+            currentLevelIndex = 0;
         }
+
         unloadCurrentLevel();
         loadCurrentLevel();
+
     }
 
     public void restartGame() {
         currentLevelIndex = 0;
-
         unloadCurrentLevel();
         loadCurrentLevel();
     }
 
-    private void unloadCurrentLevel() {
+    public void unloadCurrentLevel() {
+        spriteManager.music.stop();
+        cameraManager.init();
+        spriteManager.player.dispose();
+        spriteManager.enemies.clear();
+        spriteManager.items.clear();
+        collisionObjects.clear();
+        world.getBodies(worldBodies);
+        for (Body body : worldBodies) {
+            world.destroyBody(body);
+        }
 
-        map.dispose();
-        mapRenderer.dispose();
         batch.dispose();
-        spriteManager.player = null;
-        collisionLayer = null;
+        map.dispose();
+
     }
+
+
 }
+
+

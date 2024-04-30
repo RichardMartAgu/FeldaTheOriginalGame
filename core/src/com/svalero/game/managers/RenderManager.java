@@ -34,7 +34,6 @@ public class RenderManager {
         // Inicia renderizado del juego
         batch.begin();
 
-
         //Capas inferiores
         renderLayer("terrain");
         renderLayer("terrain2");
@@ -55,7 +54,7 @@ public class RenderManager {
 
         // Pinta el HUD
         drawHud();
-
+        batch.setProjectionMatrix(cameraManager.camera.combined);
         batch.end();
 
     }
@@ -64,13 +63,13 @@ public class RenderManager {
 
         int currentLevel = 1; // Obtén el nivel actual del SpriteManager
         String levelText = "Nivel " + currentLevel + ": Casa de Felda";
-        font.draw(batch, levelText, cameraManager.camera.position.x - CAMERA_WIDTH / 2 +10 , CAMERA_HEIGHT -10 );
+        font.draw(batch, levelText, cameraManager.camera.position.x - CAMERA_WIDTH / 2f +10 , CAMERA_HEIGHT -10 );
 
-        batch.draw(ResourceManager.getRegion("heart"), cameraManager.camera.position.x - CAMERA_WIDTH / 2 +10 , CAMERA_HEIGHT -47);
-        font.draw(batch, " x " + spriteManager.player.currentHearts, cameraManager.camera.position.x - CAMERA_WIDTH / 2 +22, CAMERA_HEIGHT-35);
+        batch.draw(ResourceManager.getRegion("heart"), cameraManager.camera.position.x - CAMERA_WIDTH / 2f +10 , CAMERA_HEIGHT -47);
+        font.draw(batch, " x " + spriteManager.player.currentHearts, cameraManager.camera.position.x - CAMERA_WIDTH / 2f +22, CAMERA_HEIGHT-35);
 
-        batch.draw(ResourceManager.getRegion("rupia"), cameraManager.camera.position.x - CAMERA_WIDTH / 2 +54 , CAMERA_HEIGHT-47);
-        font.draw(batch, " x " + spriteManager.player.rupias, cameraManager.camera.position.x - CAMERA_WIDTH / 2 +66 , CAMERA_HEIGHT-35);
+        batch.draw(ResourceManager.getRegion("rupia"), cameraManager.camera.position.x - CAMERA_WIDTH / 2f +54 , CAMERA_HEIGHT-47);
+        font.draw(batch, " x " + spriteManager.player.rupias, cameraManager.camera.position.x - CAMERA_WIDTH / 2f +66 , CAMERA_HEIGHT-35);
 
     }
 
@@ -79,7 +78,7 @@ public class RenderManager {
         if (layerIndex != -1) {
             MapLayer layer = levelManager.map.getLayers().get(layerIndex);
             if (layer instanceof TiledMapTileLayer) {
-                levelManager.mapRenderer.renderTileLayer((TiledMapTileLayer) layer);
+
             }
         }
     }

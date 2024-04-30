@@ -16,13 +16,14 @@ import com.svalero.game.utils.MyContactListener;
 
 public class GameScreen implements Screen {
 
-    Felda game;
+    public static Felda game;
     SpriteManager spriteManager;
     RenderManager renderManager;
     LevelManager levelManager;
     Box2DDebugRenderer debugRenderer;
     OrthographicCamera camera = new OrthographicCamera();
     private MyContactListener myContactListener;
+
 
     private CameraManager cameraManager;
     World world;
@@ -37,12 +38,11 @@ public class GameScreen implements Screen {
         spriteManager = new SpriteManager(game, world, myContactListener);
         levelManager = new LevelManager(spriteManager, world);
         levelManager.loadCurrentLevel();
-        levelManager.loadCollisionLayer();
-
+        setLevelManagerForSpriteManager(levelManager);
         cameraManager = new CameraManager(spriteManager, levelManager);
         renderManager = new RenderManager(spriteManager, cameraManager, levelManager, levelManager.batch);
+        levelManager.setCameraManager(cameraManager);
 
-        camera.setToOrtho(false, Gdx.graphics.getWidth() / 200f, Gdx.graphics.getHeight() / 200f);
     }
 
     @Override
@@ -56,11 +56,7 @@ public class GameScreen implements Screen {
         // Limpia la pantalla
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        camera.update();
-
-        debugRenderer.render(world, camera.combined);
-        debugRenderer.render(world, cameraManager.getCamera().combined);
-
+        cameraManager.handleCamera();
         spriteManager.update(dt);
         renderManager.drawFrame();
     }
@@ -86,4 +82,8 @@ public class GameScreen implements Screen {
     @Override
     public void resume() {
     }
+    public void setLevelManagerForSpriteManager(LevelManager levelManager) {
+        spriteManager.setLevelManager(levelManager);
+    }
+
 }

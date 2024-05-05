@@ -10,14 +10,20 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.svalero.game.Felda;
-import com.svalero.game.characters.*;
 import com.svalero.game.characters.Character;
+import com.svalero.game.characters.*;
+import com.svalero.game.items.Goal;
 import com.svalero.game.items.Heart;
 import com.svalero.game.items.Item;
 import com.svalero.game.items.Rupia;
 import com.svalero.game.screen.GameOverScreen;
+import com.svalero.game.screen.GameScreen;
+import com.svalero.game.screen.MainMenuScreen;
+import com.svalero.game.screen.PauseGameScreen;
 import com.svalero.game.utils.Constants;
 import com.svalero.game.utils.MyContactListener;
+
+import java.util.Iterator;
 
 public class SpriteManager implements InputProcessor {
     World world;
@@ -26,19 +32,22 @@ public class SpriteManager implements InputProcessor {
 
     public Player player;
     public Sword sword;
-    Music music;
+    public static Music music;
     private MyContactListener myContactListener;
+    private GameScreen gameScreen;
 
     Array<Item> items;
     Array<Enemy> enemies;
     Array<Body> worldBodies;
     boolean pause;
 
-    public SpriteManager(Felda game, World world, MyContactListener contactListener) {
+
+    public SpriteManager(Felda game, World world, MyContactListener contactListener, GameScreen gameScreen) {
 
         this.game = game;
         this.world = world;
         this.myContactListener = contactListener;
+        this.gameScreen = gameScreen;
         enemies = new Array<>();
         items = new Array<>();
         Gdx.input.setInputProcessor(this);
@@ -49,11 +58,13 @@ public class SpriteManager implements InputProcessor {
 
     private void handleGameScreenInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            levelManager.nextLevel();
+            game.setScreen(new MainMenuScreen(game));
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             pause = !pause;
+            game.setScreen(new PauseGameScreen(game,gameScreen,this));
+
         }
     }
 
@@ -87,30 +98,22 @@ public class SpriteManager implements InputProcessor {
                         int random = MathUtils.random(1, 2);
                         if (random == 1) {
                             // Agrega una rupia en la posición del enemigo
-                            Rupia rupia = new Rupia(new Vector2(enemy.position.x, enemy.position.y), 1, world);
+                            Rupia rupia = new Rupia(enemy.position.x, enemy.position.y, 1);
                             items.add(rupia);
 
                         } else if (random == 2) {
                             // Agrega un corazón en la posición del enemigo
-                            Heart heart = new Heart(new Vector2(enemy.position.x, enemy.position.y), 1, world);
+                            Heart heart = new Heart(enemy.position.x, enemy.position.y, 1);
                             items.add(heart);
                         }
                         enemies.removeValue(enemy, true);
                     }
                 }
 
-                if (body.getUserData() instanceof Item) {
-                    Item item = (Item) body.getUserData();
-                    if (item.state == Item.State.COLLECTED) {
-                        worldBodies.removeValue(item.getBody(), true);
-                        world.destroyBody(body);
-                        items.removeValue(item, true);
-
-                    }
-                }
             }
+
             if (player.liveState == Player.LiveState.DEAD) {
-             ResourceManager.getSound(Constants.SOUND + "lose.mp3").play();
+                ResourceManager.getSound(Constants.SOUND + "lose.mp3").play();
 
                 game.setScreen(new GameOverScreen(game));
             }
@@ -126,19 +129,57 @@ public class SpriteManager implements InputProcessor {
             player.update(dt, this);
 
             for (Enemy enemy : enemies) {
-                if (enemy instanceof BlueEnemy ) {
-                    if(((BlueEnemy) enemy).shoot) {
+                if (enemy instanceof BlueEnemy) {
+                    if (((BlueEnemy) enemy).shoot) {
                         BlueProjectile blueProjectile = new BlueProjectile(new Vector2(enemy.position.x, enemy.position.y), 1, player, world);
                         enemies.add(blueProjectile);
                     }
                 }
                 enemy.update(dt, this);
             }
-            for (Item items : items) {
-                items.update(dt, this);
-            }
+
         }
         handleGameScreenInput();
+        updateItems();
+
+    }
+
+    private void updateItems() {
+
+        Item item;
+        Iterator<Item> iterItems = items.iterator();
+        while (iterItems.hasNext()) {
+            item = iterItems.next();
+            if (item instanceof Heart) {
+                if (item.rect.overlaps(player.rect)) {
+                    System.out.println("choca");
+                    player.addHeart();
+                    iterItems.remove();
+                    if (ConfigurationManager.isSoundEnabled()) {
+                        ResourceManager.getSound(Constants.SOUND + "collect_heart.mp3").play();
+
+                    }
+                }
+            } else if (item instanceof Rupia) {
+                if (item.rect.overlaps(player.rect)) {
+                    System.out.println("choca");
+                    player.addRupia(item.score);
+                    iterItems.remove();
+                    if (ConfigurationManager.isSoundEnabled()) {
+                        ResourceManager.getSound(Constants.SOUND + "collect_rupia.mp3").play();
+
+                    }
+                }
+            } else if (item instanceof Goal) {
+                if (item.rect.overlaps(player.rect)) {
+                    levelManager.nextLevel();
+
+                }
+            }
+        }
+    }
+    public void quitPause() {
+        pause = !pause;
     }
 
 

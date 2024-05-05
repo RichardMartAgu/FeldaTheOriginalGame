@@ -4,12 +4,17 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.VisCheckBox;
 import com.svalero.game.Felda;
+import com.svalero.game.managers.ConfigurationManager;
+import com.svalero.game.managers.SpriteManager;
 import com.svalero.game.utils.Constants;
 
 public class PreferencesScreen implements Screen {
@@ -18,10 +23,14 @@ public class PreferencesScreen implements Screen {
     private Skin skin;
     private Stage stage;
 
-    Preferences settings;
+
 
     public PreferencesScreen(Felda game) {
         this.game = game;
+
+        if (!VisUI.isLoaded()) {
+            VisUI.load();
+        }
 
         loadPreferences();
 
@@ -36,15 +45,17 @@ public class PreferencesScreen implements Screen {
         table.add(titleLabel).expandX().center().top().padBottom(150f).colspan(2).row();
         titleLabel.setFontScale(1.5f);
 
-        final CheckBox checkSound = new CheckBox(" SOUND", skin);
-        checkSound.setChecked(settings.getBoolean("sound"));
-        checkSound.getLabel().setFontScale(1.5f); // Escala el texto del CheckBox
-        checkSound.setSize(200f, 50f);
+        final VisCheckBox checkSound = new VisCheckBox("SOUND");
+        checkSound.setChecked(ConfigurationManager.isSoundEnabled());
         checkSound.addListener(new ClickListener() {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                settings.putBoolean("sound", checkSound.isChecked());
+                // Cambiar el estado de la música según el estado del CheckBox
+                boolean isChecked = checkSound.isChecked();
+                ConfigurationManager.switchMusic(isChecked);
             }
         });
+
+
         Button menuButton = new TextButton("Main menu", skin);
         menuButton.addListener(new ClickListener() {
             @Override
@@ -56,23 +67,18 @@ public class PreferencesScreen implements Screen {
 
         table.add(menuButton).center().padBottom(40).colspan(2).row();
         table.add(checkSound).center().padBottom(20).colspan(2).row();
+
+        Gdx.input.setInputProcessor(stage);
     }
+
 
     private void loadPreferences() {
-
-        settings = Gdx.app.getPreferences(Constants.APP_NAME);
-
-        // Coloca los valores por defecto (para la primera ejecución)
-        if (!settings.contains("sound"))
-            settings.putBoolean("sound", true);
     }
-
 
     @Override
     public void show() {
 
-        Gdx.input.setInputProcessor(stage);
-
+        loadPreferences();
 
     }
     @Override

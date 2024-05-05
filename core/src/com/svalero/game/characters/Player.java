@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.svalero.game.managers.ResourceManager;
@@ -18,7 +19,7 @@ public class Player extends Character {
 
     private Sword sword;
 
-    private Vector2 position;
+    public Vector2 position;
     public boolean isIdleInProgress = false;
     public boolean isAttackInProgress = false;
     public State previousState;
@@ -31,6 +32,8 @@ public class Player extends Character {
     float stateTime;
     private float invulnerabilityTimer = 0f;
     private float invulnerabilityDuration = 0.5f;
+
+    public Rectangle rect;
 
     int distanceSword = 10;
 
@@ -60,6 +63,14 @@ public class Player extends Character {
         fixtureDef.restitution = 0.2f;
         body.createFixture(fixtureDef);
         shape.dispose();
+
+        rect = new Rectangle();
+
+        rect.x = position.x;
+        rect.y = position.y;
+        rect.width = Constants.PLAYER_WIDTH;
+        rect.height = Constants.PLAYER_HEIGHT;
+
 
         rightAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("idle_right"));
         leftAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("idle_left"));
@@ -120,6 +131,7 @@ public class Player extends Character {
         invulnerabilityTimer -= dt;
 
         position.set(body.getPosition().x, body.getPosition().y);
+        rect.setPosition(position);
 
         if (liveState == LiveState.HIT) {
 

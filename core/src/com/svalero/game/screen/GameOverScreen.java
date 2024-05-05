@@ -40,12 +40,12 @@ public class GameOverScreen implements Screen {
                 game.setScreen(new GameScreen(game));
             }
         });
-        TextButton MenuButton = new TextButton("Main menu", skin);
-        MenuButton.addListener(new ClickListener() {
+        TextButton menuButton = new TextButton("Main menu", skin);
+        menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(game));
+
             }
         });
 
@@ -58,6 +58,7 @@ public class GameOverScreen implements Screen {
         });
 
         table.add(playButton).center().padBottom(20).colspan(2).row();
+        table.add(menuButton).center().padBottom(20).colspan(2).row();
         table.add(exitButton).center().colspan(2);
 
     }

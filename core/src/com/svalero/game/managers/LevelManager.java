@@ -1,6 +1,5 @@
 package com.svalero.game.managers;
 
-
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -42,8 +41,6 @@ public class LevelManager {
     private SpriteManager spriteManager;
     private CameraManager cameraManager;
 
-
-
     public LevelManager(SpriteManager spriteManager, World world) {
         this.spriteManager = spriteManager;
         this.world = world;
@@ -62,7 +59,6 @@ public class LevelManager {
             spriteManager.music.setLooping(true);
             spriteManager.music.setVolume(.2f);
             spriteManager.music.play();
-
         }
     }
 
@@ -75,13 +71,15 @@ public class LevelManager {
 
         batch = mapRenderer.getBatch();
 
-        spriteManager.player = new Player(new Vector2(30, 10), 5, world, spriteManager.sword = new Sword(world));
-
-        spriteManager.player.getPosition().set(40, 20);
+        if(currentLevelIndex==0) {
+            spriteManager.player = new Player(new Vector2(140, 180), 5, world, spriteManager.sword = new Sword(world));
+        }else {
+            spriteManager.player = new Player(new Vector2(20, 50), spriteManager.player.currentHearts, world, spriteManager.sword = new Sword(world));;
+        }
         loadCollisionLayer();
         playCurrentLevelMusic();
         loadEnemies();
-
+        loadItems();
     }
 
     public void loadEnemies() {
@@ -105,9 +103,7 @@ public class LevelManager {
                             break;
                     }
                     spriteManager.enemies.add(enemy);
-
                 }
-
             }
         }
     }
@@ -123,10 +119,10 @@ public class LevelManager {
                     String itemType = (String) tile.getProperties().get("item");
                     switch (itemType) {
                         case "rupia":
-                            item = new Rupia(new Vector2(tile.getX(), tile.getY()), 1, world);
+                            item = new Rupia(tile.getX(), tile.getY(), 1);
                             break;
                         case "goal":
-                            item = new Goal(new Vector2(tile.getX(), tile.getY()), 0, world);
+                            item = new Goal(tile.getX(), tile.getY());
                             break;
 
                     }
@@ -152,17 +148,14 @@ public class LevelManager {
         }
     }
 
-
     public void nextLevel() {
 
         currentLevelIndex++;
         if (currentLevelIndex >= LEVELS.length) {
             currentLevelIndex = 0;
         }
-
         unloadCurrentLevel();
         loadCurrentLevel();
-
     }
 
     public void restartGame() {
@@ -174,7 +167,6 @@ public class LevelManager {
     public void unloadCurrentLevel() {
         spriteManager.music.stop();
         cameraManager.init();
-        spriteManager.player.dispose();
         spriteManager.enemies.clear();
         spriteManager.items.clear();
         collisionObjects.clear();
@@ -182,7 +174,6 @@ public class LevelManager {
         for (Body body : worldBodies) {
             world.destroyBody(body);
         }
-
         batch.dispose();
         map.dispose();
 

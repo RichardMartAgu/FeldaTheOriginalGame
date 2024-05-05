@@ -20,10 +20,14 @@ public class MainMenuScreen extends ScreenAdapter {
     private Skin skin;
     private Stage stage;
 
+
+
     public MainMenuScreen(Felda game) {
         this.game = game;
+
         skin = new Skin(Gdx.files.internal("menu/glassy-ui.json"));
         stage = new Stage();
+
 
         Table table = new Table();
         table.setFillParent(true);
@@ -33,12 +37,12 @@ public class MainMenuScreen extends ScreenAdapter {
         table.add(titleLabel).expandX().center().top().padBottom(70f).colspan(2).row();
         titleLabel.setFontScale(1.7f);
 
-        TextButton playButton = new TextButton("Play", skin);
+        TextButton playButton = new TextButton("New Game", skin);
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen(game));
+                game.setScreen(new GameScreen(game));
             }
         });
         TextButton settingsButton = new TextButton("Settings", skin);

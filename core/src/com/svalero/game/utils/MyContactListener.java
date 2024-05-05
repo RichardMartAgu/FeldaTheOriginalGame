@@ -20,7 +20,6 @@ public class MyContactListener implements ContactListener {
 
         Body bodySword = contact.getFixtureA().getBody();
         Body bodyPlayer = contact.getFixtureA().getBody();
-        Body bodyItem = contact.getFixtureB().getBody();
         Body bodyEnemy = contact.getFixtureB().getBody();
 
 
@@ -29,42 +28,20 @@ public class MyContactListener implements ContactListener {
             player.hit(1, bodyEnemy.getPosition());
             ResourceManager.getSound(Constants.SOUND + "hurt.mp3").play();
         }
-        if (bodyPlayer.getUserData() instanceof Player && bodyItem.getUserData() instanceof Item) {
-            Item item = (Item) bodyItem.getUserData();
-            Player player = (Player) bodyPlayer.getUserData();
-            if (item instanceof Heart) {
-                ResourceManager.getSound(Constants.SOUND + "collect_heart.mp3").play();
-                item.collected();
-                player.addHeart();
-            } else if (item instanceof Rupia) {
-                player.addRupia(item.score);
-                ResourceManager.getSound(Constants.SOUND + "collect_rupia.mp3").play();
-                item.collected();
-            } else if (item instanceof Goal) {
-
-                System.out.println("cambiando de nivel");
-            }
-
-        }
-
 
         if (bodySword.getUserData() instanceof Sword && bodyEnemy.getUserData() instanceof Enemy) {
             Enemy enemy = (Enemy) bodyEnemy.getUserData();
             if (enemy instanceof GreenEnemy) {
                 ResourceManager.getSound(Constants.SOUND + "hurt_bubble.mp3").play();
-                System.out.println("Colisión entre el espada y enemigo.");
                 enemy.hit(1, bodySword.getPosition());
             } else if (enemy instanceof GrayEnemy) {
                 ResourceManager.getSound(Constants.SOUND + "hurt_bubble.mp3").play();
-                System.out.println("Colisión entre el espada y enemigo.");
                 enemy.hit(1, bodySword.getPosition());
             } else if (enemy instanceof BlueEnemy) {
                 ResourceManager.getSound(Constants.SOUND + "hurt_bubble.mp3").play();
-                System.out.println("Colisión entre el espada y enemigo.");
                 enemy.hit(1, bodySword.getPosition());
             } else if (enemy instanceof BlueProjectile) {
                 ResourceManager.getSound(Constants.SOUND + "hurt_bubble.mp3").play();
-                System.out.println("Colisión entre el espada y enemigo.");
                 enemy.hit(1, bodySword.getPosition());
             }
         }

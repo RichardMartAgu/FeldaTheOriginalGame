@@ -35,7 +35,7 @@ public class GameScreen implements Screen {
         myContactListener = new MyContactListener();
         world.setContactListener(myContactListener);
         debugRenderer = new Box2DDebugRenderer();
-        spriteManager = new SpriteManager(game, world, myContactListener);
+        spriteManager = new SpriteManager(game, world, myContactListener,this);
         levelManager = new LevelManager(spriteManager, world);
         levelManager.loadCurrentLevel();
         setLevelManagerForSpriteManager(levelManager);

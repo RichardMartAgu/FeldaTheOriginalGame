@@ -27,6 +27,7 @@ public class GameScreen implements Screen {
 
     private CameraManager cameraManager;
     World world;
+    private boolean levelLoaded = false;
 
     public GameScreen(Felda game) {
         this.game = game;
@@ -56,10 +57,13 @@ public class GameScreen implements Screen {
         // Limpia la pantalla
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
         cameraManager.handleCamera();
         spriteManager.update(dt);
         renderManager.drawFrame();
     }
+
+
 
     @Override
     public void hide() {

@@ -25,12 +25,15 @@ import java.util.List;
 
 public class LevelManager {
 
-    private static final String[] LEVELS = {
+    public static final String[] LEVELS = {
             "levels/casa_felda.tmx",
-            "levels/bosque.tmx"
+            "levels/bosque.tmx",
+            "levels/ladera_nevada.tmx",
+            "levels/cima_montaña.tmx"
+
     };
     World world;
-    private int currentLevelIndex = 0;
+    public int currentLevelIndex = 0;
     public Array<Item> items;
     public TiledMap map;
     public TiledMapTileLayer collisionLayer;
@@ -73,8 +76,12 @@ public class LevelManager {
 
         if(currentLevelIndex==0) {
             spriteManager.player = new Player(new Vector2(140, 180), 5, world, spriteManager.sword = new Sword(world));
-        }else {
-            spriteManager.player = new Player(new Vector2(20, 50), spriteManager.player.currentHearts, world, spriteManager.sword = new Sword(world));;
+        } else if (currentLevelIndex==1) {
+            spriteManager.player = new Player(new Vector2(20, 50), spriteManager.player.currentHearts, world, spriteManager.sword = new Sword(world));
+        } else if (currentLevelIndex==2) {
+            spriteManager.player = new Player(new Vector2(20, 50), spriteManager.player.currentHearts, world, spriteManager.sword = new Sword(world));
+        } else if (currentLevelIndex==3) {
+            spriteManager.player = new Player(new Vector2(20, 50), spriteManager.player.currentHearts, world, spriteManager.sword = new Sword(world));
         }
         loadCollisionLayer();
         playCurrentLevelMusic();

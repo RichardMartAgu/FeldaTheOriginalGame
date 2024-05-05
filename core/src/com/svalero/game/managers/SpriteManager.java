@@ -66,6 +66,10 @@ public class SpriteManager implements InputProcessor {
             game.setScreen(new PauseGameScreen(game,gameScreen,this));
 
         }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.G)) {
+
+        }
+
     }
 
     public void setLevelManager(LevelManager levelManager) {
@@ -121,7 +125,6 @@ public class SpriteManager implements InputProcessor {
             if (player.liveState == Character.LiveState.HIT) {
                 world.setContactListener(null);
             } else {
-
 
                 world.setContactListener(myContactListener);
             }

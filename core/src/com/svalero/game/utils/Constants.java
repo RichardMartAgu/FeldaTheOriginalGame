@@ -9,7 +9,7 @@ public class Constants {
     public static final int TILE_WIDTH = 16;
     public static final int TILE_HEIGHT = 16;
 
-    public static final float PLAYER_SPEED = 100f;
+    public static final float PLAYER_SPEED = 200f;
 
     public static final int PLAYER_WIDTH = 15;
     public static final int PLAYER_HEIGHT = 20;

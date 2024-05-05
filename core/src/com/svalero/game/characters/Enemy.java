@@ -48,6 +48,7 @@ public class Enemy extends Character {
 
     @Override
     public void update(float dt, SpriteManager spriteManager) {
+
     }
 
     public void hit(int damage, Vector2 attackOrigin) {

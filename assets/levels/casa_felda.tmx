@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="89">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="111">
  <tileset firstgid="1" source="public_tileset_by_orohnpokemon-d4vpcfu.tsx"/>
  <tileset firstgid="2377" source="green_bubble_down_2.tsx"/>
  <tileset firstgid="2378" source="gray_bubble_down_1.tsx"/>
  <tileset firstgid="2379" source="blue_bubble_down_1.tsx"/>
  <tileset firstgid="2383" source="goal.tsx"/>
+ <tileset firstgid="2384" source="rupia.tsx"/>
  <layer id="1" name="terrain" width="20" height="20">
   <data encoding="csv">
 188,188,188,188,188,188,188,188,188,188,188,188,188,188,188,188,188,188,188,188,
@@ -155,5 +156,47 @@
   <object id="86" x="112" y="336" width="16" height="32"/>
   <object id="87" x="128" y="352" width="64" height="16"/>
   <object id="88" x="176" y="336" width="16" height="16"/>
+  <object id="101" gid="2384" x="48" y="160" width="16" height="16"/>
+  <object id="102" gid="2384" x="48" y="160" width="16" height="16">
+   <properties>
+    <property name="item" value="rupia"/>
+   </properties>
+  </object>
+  <object id="103" gid="2384" x="32" y="160" width="16" height="16"/>
+  <object id="104" gid="2384" x="32" y="176" width="16" height="16">
+   <properties>
+    <property name="item" value="rupia"/>
+   </properties>
+  </object>
+  <object id="105" gid="2384" x="16" y="192" width="16" height="16">
+   <properties>
+    <property name="item" value="rupia"/>
+   </properties>
+  </object>
+  <object id="106" gid="2384" x="256" y="160" width="16" height="16">
+   <properties>
+    <property name="item" value="rupia"/>
+   </properties>
+  </object>
+  <object id="107" gid="2384" x="272" y="176" width="16" height="16">
+   <properties>
+    <property name="item" value="rupia"/>
+   </properties>
+  </object>
+  <object id="108" gid="2384" x="272" y="160" width="16" height="16">
+   <properties>
+    <property name="item" value="rupia"/>
+   </properties>
+  </object>
+  <object id="109" gid="2384" x="288" y="192" width="16" height="16">
+   <properties>
+    <property name="item" value="rupia"/>
+   </properties>
+  </object>
+  <object id="110" gid="2384" x="32" y="160" width="16" height="16">
+   <properties>
+    <property name="item" value="rupia"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

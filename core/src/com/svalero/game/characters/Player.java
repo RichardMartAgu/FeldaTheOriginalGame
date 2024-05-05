@@ -72,11 +72,11 @@ public class Player extends Character {
         rect.height = Constants.PLAYER_HEIGHT;
 
 
-        rightAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("idle_right"));
-        leftAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("idle_left"));
+        rightAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("walk_right"));
+        leftAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("walk_left"));
         upAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("walk_up"));
         downAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("walk_down"));
-        idleRightAnimation = new Animation<TextureRegion>(0.40f, ResourceManager.getRegions("walk_right"));
+        idleRightAnimation = new Animation<TextureRegion>(0.40f, ResourceManager.getRegions("idle_right"));
         idleLeftAnimation = new Animation<TextureRegion>(0.40f, ResourceManager.getRegions("idle_left"));
         idleUpAnimation = new Animation<TextureRegion>(0.40f, ResourceManager.getRegions("idle_up"));
         idleDownAnimation = new Animation<TextureRegion>(0.80f, ResourceManager.getRegions("idle_down"));

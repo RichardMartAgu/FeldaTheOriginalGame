@@ -32,8 +32,10 @@
 
 ### Hay tres tipos de dificultad:
 
-1.Fácil: enemigos con menos vida y más lentos.
-2.Media: enemigos con la vida estándar del juego.
-3.Difícil: enemigos con más vida y más veloces. 
+1. Fácil: enemigos con menos vida y más lentos.
+  
+2. Media: enemigos con la vida estándar del juego.
+  
+3. Difícil: enemigos con más vida y más veloces. 
 
 ### El objetivo es pasar a través de los diferentes mapas sin morir utilizando el ingenio o la fuerza en busca de Felda, la cual parece estar en peligro.

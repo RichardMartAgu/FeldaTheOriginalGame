@@ -33,5 +33,11 @@ public class ConfigurationManager {
         preferences.putBoolean("sound", value);
         preferences.flush(); // Guardar los cambios
     }
+    public static String getDifficulty(){
+        return settings.getString("difficulty");
+    }
+    public static void setDifficulty(String value){
+        settings.putString("difficulty", value);
+    }
 
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.svalero.game.managers.ConfigurationManager;
 import com.svalero.game.managers.ResourceManager;
 import com.svalero.game.managers.SpriteManager;
 import com.svalero.game.utils.Constants;
@@ -13,8 +14,8 @@ public class GreenEnemy extends Enemy {
 
     World world;
     private static final float DETECTION_DISTANCE = 100;
-    private static final float MOVEMENT_SPEED = 800f;
 
+    private static float MOVEMENT_SPEED = 800f;
     private Vector2 position;
     private Player player;
 
@@ -36,6 +37,7 @@ public class GreenEnemy extends Enemy {
             idleAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("green_bubble_down"));
             dieAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("green_bubble_die"));
 
+        setDifficultyStats(hearts);
         }
 
         public void update ( float dt, SpriteManager spriteManager){

@@ -6,9 +6,11 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisCheckBox;
@@ -55,6 +57,18 @@ public class PreferencesScreen implements Screen {
             }
         });
 
+        final SelectBox<String> difficultySelectBox = new SelectBox<>(skin);
+        difficultySelectBox.setItems("Easy", "Medium", "Hard");
+        difficultySelectBox.setSelected(ConfigurationManager.getDifficulty());
+        difficultySelectBox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                // Guardar la dificultad seleccionada en las preferencias
+                String selectedDifficulty = difficultySelectBox.getSelected();
+                ConfigurationManager.setDifficulty(selectedDifficulty);
+            }
+        });
+
 
         Button menuButton = new TextButton("Main menu", skin);
         menuButton.addListener(new ClickListener() {
@@ -66,6 +80,7 @@ public class PreferencesScreen implements Screen {
         });
 
         table.add(menuButton).center().padBottom(40).colspan(2).row();
+        table.add(difficultySelectBox).center().padBottom(40).colspan(2).row();
         table.add(checkSound).center().padBottom(20).colspan(2).row();
 
         Gdx.input.setInputProcessor(stage);

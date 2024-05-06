@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="111">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="113">
  <tileset firstgid="1" source="public_tileset_by_orohnpokemon-d4vpcfu.tsx"/>
  <tileset firstgid="2377" source="green_bubble_down_2.tsx"/>
  <tileset firstgid="2378" source="gray_bubble_down_1.tsx"/>
@@ -61,9 +61,9 @@
 985,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,985,
 985,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,985,
 985,1145,1146,1147,1145,1146,0,0,0,0,0,0,0,1145,1146,1147,1145,1146,1147,985,
-985,1199,1200,1201,1199,1200,1201,0,0,0,0,0,0,1199,1200,1201,1199,1200,1201,985,
-985,1253,1254,1255,1253,1254,1255,0,0,0,0,0,0,1253,1254,1255,1253,1254,1255,985,
-985,1307,1308,1309,1307,1308,1309,0,0,0,0,0,0,1307,1308,1309,1307,1308,1309,985,
+985,1199,1200,1201,1199,1200,1201,1094,0,0,0,1094,0,1199,1200,1201,1199,1200,1201,985,
+985,1253,1254,1255,1253,1254,1255,1094,0,0,0,1094,0,1253,1254,1255,1253,1254,1255,985,
+985,1307,1308,1309,1307,1308,1309,1094,0,0,0,1094,0,1307,1308,1309,1307,1308,1309,985,
 985,985,985,985,985,985,985,0,0,0,0,0,985,985,985,985,985,985,985,985,
 282,283,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,284,285,
 336,337,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,338,339,
@@ -198,5 +198,7 @@
     <property name="item" value="rupia"/>
    </properties>
   </object>
+  <object id="111" x="112" y="80" width="16" height="48"/>
+  <object id="112" x="176" y="80" width="16" height="48"/>
  </objectgroup>
 </map>

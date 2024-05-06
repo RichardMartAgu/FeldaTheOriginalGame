@@ -25,12 +25,21 @@ public class CameraManager {
     }
 
     public void handleCamera() {
+        float levelWith = 0;
+        if (levelManager.currentLevelIndex == 0)
+            levelWith = 320;
+        else if (levelManager.currentLevelIndex == 1)
+            levelWith = 1120 ;
+        else if (levelManager.currentLevelIndex == 2)
+            levelWith = 640;
+        else if (levelManager.currentLevelIndex == 3)
+            levelWith = 480;
+
         if (spriteManager.player.getPosition().x < CAMERA_WIDTH / 2f)
             camera.position.set(CAMERA_WIDTH / 2f, CAMERA_HEIGHT / 2f, 0);
-
-        else if (spriteManager.player.getPosition().x > 1120 - CAMERA_WIDTH / 2f)
+        else if (spriteManager.player.getPosition().x > levelWith - CAMERA_WIDTH / 2f)
             // Si el jugador está cerca del borde derecho, centrar la cámara en el lado derecho de la pantalla
-            camera.position.set(1120 - CAMERA_WIDTH / 2f, CAMERA_HEIGHT / 2f, 0);
+            camera.position.set(levelWith - CAMERA_WIDTH / 2f, CAMERA_HEIGHT / 2f, 0);
         else
             camera.position.set(spriteManager.player.getPosition().x, CAMERA_HEIGHT / 2f, 0);
 

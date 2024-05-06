@@ -53,6 +53,14 @@ public class MainMenuScreen extends ScreenAdapter {
                 game.setScreen(new PreferencesScreen(game));
             }
         });
+        TextButton instructionsButton = new TextButton("Instructions", skin);
+        instructionsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                dispose();
+                game.setScreen(new InstructionsScreen(game));
+            }
+        });
 
         TextButton exitButton = new TextButton("Exit", skin);
         exitButton.addListener(new ClickListener() {
@@ -64,6 +72,7 @@ public class MainMenuScreen extends ScreenAdapter {
 
         table.add(playButton).center().padBottom(20).colspan(2).row();
         table.add(settingsButton).center().padBottom(20).colspan(2).row();
+        table.add(instructionsButton).center().padBottom(20).colspan(2).row();
         table.add(exitButton).center().colspan(2);
     }
 

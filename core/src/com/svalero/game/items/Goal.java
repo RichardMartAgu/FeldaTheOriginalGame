@@ -10,7 +10,7 @@ public class Goal extends Item {
     public Goal(float x, float y) {
         super(x, y);
 
-        currentFrame = ResourceManager.getRegion("heart");
+        currentFrame = ResourceManager.getRegion("nothing");
         rect.x = x;
         rect.y = y;
         rect.width = currentFrame.getRegionWidth();

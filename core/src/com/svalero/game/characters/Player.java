@@ -41,11 +41,12 @@ public class Player extends Character {
             upAnimation, idleUpAnimation, downAnimation, idleDownAnimation, attackRightAnimation, attackLeftAnimation,
             attackUpAnimation, attackDownAnimation, dieAnimationPLayer, hurtAnimationPLayer;
 
-    public Player(Vector2 position, int hearts, World world, Sword sword) {
+    public Player(Vector2 position, int hearts,int rupias, World world, Sword sword) {
         super(position);
         this.position = position;
         this.sword = sword;
         currentHearts = hearts;
+        this.rupias = rupias;
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;

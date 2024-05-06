@@ -69,6 +69,7 @@ public class SpriteManager implements InputProcessor {
     }
 
     public void update(float dt) {
+        System.out.println(levelManager.currentLevelIndex);
         if (!pause) {
             player.manageInput(dt);
 

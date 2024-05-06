@@ -3,7 +3,6 @@ package com.svalero.game.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -21,7 +20,7 @@ public class GameScreen implements Screen {
     RenderManager renderManager;
     LevelManager levelManager;
     Box2DDebugRenderer debugRenderer;
-    OrthographicCamera camera = new OrthographicCamera();
+
     private MyContactListener myContactListener;
 
     private CameraManager cameraManager;
@@ -34,7 +33,7 @@ public class GameScreen implements Screen {
         myContactListener = new MyContactListener();
         world.setContactListener(myContactListener);
         debugRenderer = new Box2DDebugRenderer();
-        spriteManager = new SpriteManager(game, world, myContactListener,this);
+        spriteManager = new SpriteManager(game, world, myContactListener, this);
         levelManager = new LevelManager(spriteManager, world);
         levelManager.loadCurrentLevel();
         setLevelManagerForSpriteManager(levelManager);
@@ -62,7 +61,6 @@ public class GameScreen implements Screen {
     }
 
 
-
     @Override
     public void hide() {
     }
@@ -84,6 +82,7 @@ public class GameScreen implements Screen {
     @Override
     public void resume() {
     }
+
     public void setLevelManagerForSpriteManager(LevelManager levelManager) {
         spriteManager.setLevelManager(levelManager);
     }

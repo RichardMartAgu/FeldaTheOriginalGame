@@ -1,4 +1,3 @@
-
 package com.svalero.game.screen;
 
         import com.badlogic.gdx.Gdx;
@@ -15,20 +14,20 @@ package com.svalero.game.screen;
 
         import static com.svalero.game.utils.Constants.SCREEN_HEIGHT;
 
-public class PrologueScreen implements Screen {
+public class WinScreen implements Screen {
 
-    private Texture prologueTexture;
-    private Image prologueImage;
+    private Texture winTexture;
+    private Image winImage;
     private Stage stage;
-    private boolean prologueDone = false;
+    private boolean winDone = false;
 
     private Felda game;
 
-    public PrologueScreen (Felda game) {
+    public WinScreen (Felda game) {
         this.game = game;
 
-        prologueTexture = new Texture(Gdx.files.internal("prologue.png"));
-        prologueImage = new Image(prologueTexture);
+        winTexture = new Texture(Gdx.files.internal("win.png"));
+        winImage = new Image(winTexture);
         stage = new Stage();
     }
 
@@ -40,17 +39,17 @@ public class PrologueScreen implements Screen {
         table.center();
 
         // Muestra la imagen de SplashScreen como una animación
-        prologueImage.addAction(Actions.sequence(Actions.alpha(0), Actions.fadeIn(1f),
-                Actions.delay(1.5f), Actions.run(new Runnable() {
+        winImage.addAction(Actions.sequence(Actions.alpha(0), Actions.fadeIn(1f),
+                Actions.delay(10f), Actions.run(new Runnable() {
                     @Override
                     public void run() {
-                        prologueDone = true;
+                        winDone = true;
                     }
                 })
         ));
 
         table.row().height(SCREEN_HEIGHT);
-        table.add(prologueImage).center();
+        table.add(winImage).center();
         stage.addActor(table);
 
         // Lanza la carga de recursos
@@ -66,14 +65,14 @@ public class PrologueScreen implements Screen {
         stage.draw();
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
-            prologueDone = true;
+            winDone = true;
         }
 
         // Comprueba si se han cargado todos los recursos
         if (ResourceManager.update()) {
             // Si la animación ha terminado se muestra ya el menú principal
-            if (prologueDone) {
-                game.setScreen(new GameScreen(game));
+            if (winDone) {
+                game.setScreen(new MainMenuScreen(game));
             }
         }
 
@@ -101,7 +100,7 @@ public class PrologueScreen implements Screen {
 
     @Override
     public void dispose() {
-        prologueTexture.dispose();
+        winTexture.dispose();
         stage.dispose();
     }
 }

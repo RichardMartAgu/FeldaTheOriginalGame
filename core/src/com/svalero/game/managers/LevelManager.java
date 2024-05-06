@@ -1,11 +1,12 @@
 package com.svalero.game.managers;
 
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -18,10 +19,13 @@ import com.svalero.game.items.CollisionObject;
 import com.svalero.game.items.Goal;
 import com.svalero.game.items.Item;
 import com.svalero.game.items.Rupia;
+import com.svalero.game.screen.WinScreen;
 import com.svalero.game.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.svalero.game.screen.GameScreen.game;
 
 public class LevelManager {
 
@@ -36,7 +40,6 @@ public class LevelManager {
     public int currentLevelIndex = 0;
     public Array<Item> items;
     public TiledMap map;
-    public TiledMapTileLayer collisionLayer;
     private List<CollisionObject> collisionObjects;
     public Array<Body> worldBodies;
     public OrthogonalTiledMapRenderer mapRenderer;
@@ -51,6 +54,7 @@ public class LevelManager {
         this.items = new Array<>();
 
     }
+
     public void setCameraManager(CameraManager cameraManager) {
         this.cameraManager = cameraManager;
     }
@@ -74,19 +78,20 @@ public class LevelManager {
 
         batch = mapRenderer.getBatch();
 
-        if(currentLevelIndex==0) {
-            spriteManager.player = new Player(new Vector2(140, 180), 5, world, spriteManager.sword = new Sword(world));
-        } else if (currentLevelIndex==1) {
-            spriteManager.player = new Player(new Vector2(20, 50), spriteManager.player.currentHearts, world, spriteManager.sword = new Sword(world));
-        } else if (currentLevelIndex==2) {
-            spriteManager.player = new Player(new Vector2(20, 50), spriteManager.player.currentHearts, world, spriteManager.sword = new Sword(world));
-        } else if (currentLevelIndex==3) {
-            spriteManager.player = new Player(new Vector2(20, 50), spriteManager.player.currentHearts, world, spriteManager.sword = new Sword(world));
+        if (currentLevelIndex == 0) {
+            spriteManager.player = new Player(new Vector2(140, 180), 5, 0, world, spriteManager.sword = new Sword(world));
+        } else if (currentLevelIndex == 1) {
+            spriteManager.player = new Player(new Vector2(10, 120), spriteManager.player.currentHearts, spriteManager.player.rupias, world, spriteManager.sword = new Sword(world));
+        } else if (currentLevelIndex == 2) {
+            spriteManager.player = new Player(new Vector2(10, 70), spriteManager.player.currentHearts, spriteManager.player.rupias, world, spriteManager.sword = new Sword(world));
+        } else if (currentLevelIndex == 3) {
+            spriteManager.player = new Player(new Vector2(20, 50), spriteManager.player.currentHearts, spriteManager.player.rupias, world, spriteManager.sword = new Sword(world));
         }
         loadCollisionLayer();
         playCurrentLevelMusic();
-        loadEnemies();
         loadItems();
+        loadEnemies();
+
     }
 
     public void loadEnemies() {
@@ -160,15 +165,12 @@ public class LevelManager {
         currentLevelIndex++;
         if (currentLevelIndex >= LEVELS.length) {
             currentLevelIndex = 0;
+            ResourceManager.getSound(Constants.SOUND + "win.mp3").play();
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen(game));
+        }else {
+            unloadCurrentLevel();
+            loadCurrentLevel();
         }
-        unloadCurrentLevel();
-        loadCurrentLevel();
-    }
-
-    public void restartGame() {
-        currentLevelIndex = 0;
-        unloadCurrentLevel();
-        loadCurrentLevel();
     }
 
     public void unloadCurrentLevel() {

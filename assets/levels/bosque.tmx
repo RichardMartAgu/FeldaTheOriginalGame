@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="70" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="180">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="70" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="189">
  <tileset firstgid="1" source="public_tileset_by_orohnpokemon-d4vpcfu.tsx"/>
  <tileset firstgid="2377" source="green_bubble_down_2.tsx"/>
  <tileset firstgid="2378" source="gray_bubble_down_1.tsx"/>
@@ -168,11 +168,6 @@
   <object id="91" gid="2383" x="1120" y="288" width="16" height="16">
    <properties>
     <property name="item" value="goal"/>
-   </properties>
-  </object>
-  <object id="105" gid="2377" x="944" y="240" width="16" height="16">
-   <properties>
-    <property name="enemy" value="green"/>
    </properties>
   </object>
   <object id="113" gid="2377" x="192" y="64" width="16" height="16">
@@ -453,14 +448,44 @@
     <property name="item" value="rupia"/>
    </properties>
   </object>
-  <object id="178" gid="2378" x="80" y="128" width="16" height="16">
+  <object id="180" gid="2377" x="112" y="128" width="16" height="16">
+   <properties>
+    <property name="enemy" value="green"/>
+   </properties>
+  </object>
+  <object id="181" gid="2378" x="560" y="80" width="16" height="16">
    <properties>
     <property name="enemy" value="gray"/>
    </properties>
   </object>
-  <object id="179" gid="2382" x="208" y="112" width="16" height="16">
+  <object id="182" gid="2378" x="720" y="208" width="16" height="16">
    <properties>
-    <property name="enemy" value="blue"/>
+    <property name="enemy" value="gray"/>
+   </properties>
+  </object>
+  <object id="183" gid="2377" x="1056" y="176" width="16" height="16">
+   <properties>
+    <property name="enemy" value="green"/>
+   </properties>
+  </object>
+  <object id="184" gid="2377" x="928" y="176" width="16" height="16">
+   <properties>
+    <property name="enemy" value="green"/>
+   </properties>
+  </object>
+  <object id="185" gid="2378" x="1056" y="256" width="16" height="16">
+   <properties>
+    <property name="enemy" value="gray"/>
+   </properties>
+  </object>
+  <object id="186" gid="2378" x="944" y="256" width="16" height="16">
+   <properties>
+    <property name="enemy" value="gray"/>
+   </properties>
+  </object>
+  <object id="188" gid="2377" x="432" y="112" width="16" height="16">
+   <properties>
+    <property name="enemy" value="green"/>
    </properties>
   </object>
  </objectgroup>

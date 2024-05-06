@@ -25,11 +25,11 @@ public class MyContactListener implements ContactListener {
         Object userDataB = fixtureB.getBody().getUserData();
 
 
-//        if (userDataA instanceof Player && userDataB instanceof Enemy) {
-//            Player player = (Player) userDataA;
-//            player.hit(1, fixtureB.getBody().getPosition());
-//            ResourceManager.getSound(Constants.SOUND + "hurt.mp3").play();
-//        }
+        if (userDataA instanceof Player && userDataB instanceof Enemy) {
+            Player player = (Player) userDataA;
+            player.hit(1, fixtureB.getBody().getPosition());
+            ResourceManager.getSound(Constants.SOUND + "hurt.mp3").play();
+        }
 
     }
 

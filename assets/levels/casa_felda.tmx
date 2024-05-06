@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="121">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="132">
  <tileset firstgid="1" source="public_tileset_by_orohnpokemon-d4vpcfu.tsx"/>
  <tileset firstgid="2377" source="green_bubble_down_2.tsx"/>
  <tileset firstgid="2378" source="gray_bubble_down_1.tsx"/>
@@ -40,18 +40,18 @@
 187,0,0,0,0,0,0,17,166,167,168,17,0,0,0,0,0,0,0,189,
 187,0,0,0,0,0,0,188,166,167,168,0,0,0,0,0,0,0,0,189,
 187,118,119,119,119,119,120,0,166,167,168,0,0,118,119,119,119,119,120,189,
-176,176,176,176,176,176,176,176,166,167,168,176,176,176,176,176,176,176,176,189,
-0,0,0,0,0,0,0,0,184,0,186,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,184,0,186,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,184,0,186,0,0,0,0,0,0,932,0,0,
-0,932,0,0,0,0,0,0,184,0,186,0,0,0,0,0,0,0,933,932,
-0,0,0,932,0,0,0,0,184,0,186,0,0,0,0,0,0,931,933,0,
-0,933,0,0,0,0,0,0,184,0,186,0,0,0,0,0,0,0,933,0,
-0,931,0,0,0,0,0,0,184,0,186,0,0,0,0,0,0,0,0,0,
-0,933,933,0,0,0,0,0,184,0,186,0,0,0,0,0,0,932,0,0,
-0,0,0,0,0,0,0,0,184,0,186,0,0,0,0,0,0,0,933,0,
-0,931,0,0,0,0,0,0,184,0,186,0,0,0,0,0,0,933,931,0,
-0,0,933,0,0,0,0,0,184,0,186,0,0,0,0,0,0,0,0,0
+176,176,176,176,176,176,176,176,166,185,168,176,176,176,176,176,176,176,176,189,
+0,0,0,0,0,0,0,0,184,0,0,184,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,184,0,506,184,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,184,933,0,184,0,0,0,0,0,932,0,0,
+0,932,0,0,0,0,0,0,184,506,932,184,0,0,0,0,0,0,933,932,
+0,0,0,932,0,0,0,0,184,932,506,184,0,0,0,0,0,931,933,0,
+0,933,0,0,0,0,0,0,184,0,0,184,0,0,0,0,0,0,933,0,
+0,931,0,0,0,0,0,0,184,0,506,184,0,0,0,0,0,0,0,0,
+0,933,933,0,0,0,0,0,184,506,0,184,0,0,0,0,0,932,0,334,
+0,0,0,0,0,931,0,0,184,0,932,238,239,239,239,239,239,239,239,239,
+0,931,0,0,0,0,0,0,184,933,0,0,506,932,185,933,506,933,931,506,
+0,0,933,0,0,0,0,0,238,239,239,239,239,239,239,239,239,239,239,239
 </data>
  </layer>
  <layer id="3" name="nature" width="20" height="20">
@@ -72,10 +72,10 @@
 332,333,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-335,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,282,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,336,
+335,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,932,0
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,1094,335,1094,334,1094,335,334,0,0,0,0,0,0,0,0,0,0,932,0
 </data>
  </layer>
  <layer id="4" name="ornamentals" width="20" height="20">
@@ -97,9 +97,9 @@
 824,825,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,831,832,
 878,879,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,885,886,
 724,725,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-778,779,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,715,716,
-832,833,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,769,770,
-886,887,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,823,824
+778,779,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+832,833,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+886,887,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <objectgroup id="6" name="collision" tintcolor="#ffffff">
@@ -108,7 +108,6 @@
   </properties>
   <object id="4" x="0" y="0" width="320" height="32"/>
   <object id="5" x="0" y="0" width="16" height="320"/>
-  <object id="6" x="304" y="0" width="16" height="320"/>
   <object id="7" x="224" y="112" width="16" height="16"/>
   <object id="8" x="272" y="112" width="16" height="16"/>
   <object id="9" x="208" y="112" width="96" height="16"/>
@@ -122,17 +121,19 @@
   <object id="19" x="16" y="272" width="10" height="32"/>
   <object id="20" x="288" y="144" width="16" height="28"/>
   <object id="21" x="292" y="208" width="12" height="32"/>
-  <object id="22" x="295" y="288" width="10" height="32"/>
   <object id="25" x="112" y="128" width="16" height="16"/>
   <object id="26" x="176" y="128" width="16" height="16"/>
   <object id="28" x="112" y="32" width="80" height="48"/>
-  <object id="69" x="0" y="320" width="128" height="16"/>
-  <object id="70" x="176" y="320" width="128" height="16"/>
   <object id="118" x="112" y="80" width="16" height="48"/>
   <object id="119" x="176" y="80" width="16" height="48"/>
-  <object id="120" x="128" y="336" width="48" height="16"/>
+  <object id="121" x="304" y="32" width="16" height="240"/>
+  <object id="122" x="128" y="320" width="208" height="16"/>
+  <object id="123" x="320" y="256" width="32" height="16"/>
+  <object id="124" x="336" y="272" width="16" height="64"/>
+  <object id="130" x="16" y="304" width="112" height="16"/>
+  <object id="131" x="192" y="384"/>
  </objectgroup>
- <objectgroup id="9" name="objects" visible="0">
+ <objectgroup id="9" name="objects">
   <properties>
    <property name="character" value="green"/>
   </properties>
@@ -141,24 +142,6 @@
     <property name="enemy" value="green"/>
    </properties>
   </object>
-  <object id="83" gid="2383" x="128" y="352" width="16" height="16">
-   <properties>
-    <property name="item" value="goal"/>
-   </properties>
-  </object>
-  <object id="84" gid="2383" x="144" y="352" width="16" height="16">
-   <properties>
-    <property name="item" value="goal"/>
-   </properties>
-  </object>
-  <object id="85" gid="2383" x="160" y="352" width="16" height="16">
-   <properties>
-    <property name="item" value="goal"/>
-   </properties>
-  </object>
-  <object id="86" x="112" y="336" width="16" height="32"/>
-  <object id="87" x="128" y="352" width="64" height="16"/>
-  <object id="88" x="176" y="336" width="16" height="16"/>
   <object id="101" gid="2384" x="48" y="160" width="16" height="16"/>
   <object id="102" gid="2384" x="48" y="160" width="16" height="16">
    <properties>
@@ -201,14 +184,24 @@
     <property name="item" value="rupia"/>
    </properties>
   </object>
-  <object id="116" gid="2378" x="240" y="288" width="16" height="16">
+  <object id="125" gid="2383" x="320" y="288" width="16" height="16">
    <properties>
-    <property name="enemy" value="gray"/>
+    <property name="item" value="goal"/>
    </properties>
   </object>
-  <object id="117" gid="2379" x="48" y="288" width="16" height="16">
+  <object id="126" gid="2383" x="320" y="304" width="16" height="16">
    <properties>
-    <property name="enemy" value="blue"/>
+    <property name="item" value="goal"/>
+   </properties>
+  </object>
+  <object id="127" gid="2383" x="320" y="320" width="16" height="16">
+   <properties>
+    <property name="item" value="goal"/>
+   </properties>
+  </object>
+  <object id="128" gid="2377" x="64" y="240" width="16" height="16">
+   <properties>
+    <property name="enemy" value="green"/>
    </properties>
   </object>
  </objectgroup>

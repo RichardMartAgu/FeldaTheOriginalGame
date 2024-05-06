@@ -2,9 +2,9 @@
 #### Trabajo para DAM sobre un Juego "TopDown" donde el objetivo es llegar vivo al final de cada nivel.
 ![splash](https://github.com/RichardMartAgu/FeldaTheOriginalGame/assets/125735052/f79f3a3d-37ff-44fd-89cc-3f0e4eea8b02)
 
-### El juego esta creado en "LibGDX" con físicas "Box2d". 
+### El juego está creado en "LibGDX" con físicas "Box2d". 
 
-### En el llevas un personaje el cual puede atacar para eliminar enemigos que dejarán caer ítems aleatoriamente.
+### En él llevas un personaje el cual puede atacar para eliminar enemigos que dejarán caer ítems aleatoriamente.
 
 ### En esos ítems tenemos:
 1. El corazón: restablece un corazón de vida.

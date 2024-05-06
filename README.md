@@ -7,7 +7,7 @@
 ### En el llevas un personaje el cual puede atacar para eliminar enemigos que dejarán caer ítems aleatoriamente.
 
 ### En esos ítems tenemos:
-1. El cerrazón: restablece un corazón de vida.
+1. El corazón: restablece un corazón de vida.
 ![heart](https://github.com/RichardMartAgu/FeldaTheOriginalGame/assets/125735052/60df1b23-f28c-4053-aca9-958acded3c43)
 
 2. Rupia: se acumulan para obtener la puntuación, estas últimas, además de soltarlas enemigos caídos, están repartidas por loas mapas.

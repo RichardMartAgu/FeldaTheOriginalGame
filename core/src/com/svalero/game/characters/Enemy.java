@@ -2,6 +2,7 @@ package com.svalero.game.characters;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.svalero.game.managers.ConfigurationManager;
@@ -26,12 +27,16 @@ public class Enemy extends Character {
     private static final float MEDIUM_MOVEMENT_SPEED = 1000f;
     private static final float HARD_MOVEMENT_SPEED = 2000f;
 
-    private static final int EASY_EXTRA_HEARTS = -1;
-    private static final int MEDIUM_EXTRA_HEARTS = 0;
-    private static final int HARD_EXTRA_HEARTS = 1;
+    private static final int EASY_EXTRA_HEARTS = -0;
+    private static final int MEDIUM_EXTRA_HEARTS = 2;
+    private static final int HARD_EXTRA_HEARTS = 4;
+
+    public Rectangle rect;
 
     public Enemy(Vector2 position, int hearts, World world) {
         super(position);
+
+        rect = new Rectangle();
 
         currentHearts = hearts;
 
@@ -57,7 +62,6 @@ public class Enemy extends Character {
 
     @Override
     public void update(float dt, SpriteManager spriteManager) {
-
     }
 
     public void hit(int damage, Vector2 attackOrigin) {
@@ -71,7 +75,6 @@ public class Enemy extends Character {
             } else {
                 liveState = LiveState.HIT;
                 this.attackOrigin = attackOrigin;
-
             }
         }
     }

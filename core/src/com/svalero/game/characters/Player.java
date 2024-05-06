@@ -35,7 +35,7 @@ public class Player extends Character {
 
     public Rectangle rect;
 
-    int distanceSword = 10;
+    int distanceSword = 15;
 
     Animation<TextureRegion> rightAnimation, idleRightAnimation, leftAnimation, idleLeftAnimation,
             upAnimation, idleUpAnimation, downAnimation, idleDownAnimation, attackRightAnimation, attackLeftAnimation,
@@ -126,6 +126,9 @@ public class Player extends Character {
     }
 
     public void update(float dt, SpriteManager spriteManager) {
+
+        System.out.println(sword.rect);
+
         stateTime += dt;
 
         invulnerabilityTimer -= dt;
@@ -157,6 +160,7 @@ public class Player extends Character {
                 if (liveState == LiveState.NORMAL) {
                     if (!isAttackInProgress) {
                         sword.getSwordBody().setActive(false);
+
                         // Si no está atacando, muestra la animación correspondiente al estado del jugador
                         switch (state) {
                             case RIGHT:
@@ -195,27 +199,30 @@ public class Player extends Character {
                             case RIGHT:
                                 currentFrame = attackRightAnimation.getKeyFrame(stateTime, true);
                                 ((PolygonShape) sword.getSwordFixture().getShape()).setAsBox(SWORD_WIDTH, SWORD_HEIGHT);
-                                sword.getSwordBody().setTransform(new Vector2(position.x + distanceSword, position.y),
-                                        0f);
+                                sword.getSwordBody().setTransform(new Vector2(position.x + distanceSword, position.y), 0f);
+                                sword.rect.setPosition(new Vector2(position.x + distanceSword, position.y));
                                 break;
                             case LEFT:
                                 currentFrame = attackLeftAnimation.getKeyFrame(stateTime, true);
                                 ((PolygonShape) sword.getSwordFixture().getShape()).setAsBox(SWORD_WIDTH, SWORD_HEIGHT);
                                 sword.getSwordBody().setTransform(new Vector2(position.x - distanceSword, position.y),
                                         0f);
+                                sword.rect.setPosition(new Vector2(position.x - distanceSword, position.y));
                                 break;
                             case UP:
                                 currentFrame = attackUpAnimation.getKeyFrame(stateTime, true);
                                 ((PolygonShape) sword.getSwordFixture().getShape()).setAsBox(Constants.SWORD_HEIGHT, SWORD_WIDTH);
-                                sword.getSwordBody().setTransform(new Vector2(position.x, position.y + distanceSword),
-                                        0f);
+                                sword.getSwordBody().setTransform(new Vector2(position.x, position.y + distanceSword), 0f);
+                                sword.rect.setPosition(new Vector2(position.x, position.y + distanceSword));
                                 break;
                             case DOWN:
                                 currentFrame = attackDownAnimation.getKeyFrame(stateTime, true);
                                 ((PolygonShape) sword.getSwordFixture().getShape()).setAsBox(Constants.SWORD_HEIGHT, Constants.SWORD_WIDTH);
                                 sword.getSwordBody().setTransform(new Vector2(position.x, position.y - distanceSword), 0);
+                                sword.rect.setPosition(new Vector2(position.x, position.y - distanceSword));
                                 break;
                         }
+
                     }
                     if (attackUpAnimation.isAnimationFinished(stateTime) ||
                             attackDownAnimation.isAnimationFinished(stateTime) ||

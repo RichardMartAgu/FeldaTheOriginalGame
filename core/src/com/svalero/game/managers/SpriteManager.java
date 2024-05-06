@@ -18,7 +18,6 @@ import com.svalero.game.items.Item;
 import com.svalero.game.items.Rupia;
 import com.svalero.game.screen.GameOverScreen;
 import com.svalero.game.screen.GameScreen;
-import com.svalero.game.screen.MainMenuScreen;
 import com.svalero.game.screen.PauseGameScreen;
 import com.svalero.game.utils.Constants;
 import com.svalero.game.utils.MyContactListener;
@@ -58,15 +57,8 @@ public class SpriteManager implements InputProcessor {
 
     private void handleGameScreenInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            game.setScreen(new MainMenuScreen(game));
-        }
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             pause = !pause;
-            game.setScreen(new PauseGameScreen(game,gameScreen,this));
-
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.G)) {
+            game.setScreen(new PauseGameScreen(game, gameScreen, this));
 
         }
 
@@ -81,7 +73,7 @@ public class SpriteManager implements InputProcessor {
             player.manageInput(dt);
 
             if (player.liveState != Character.LiveState.DYING) {
-                world.step(dt, 8, 6);
+                world.step(1 / 60f, 6, 2);
             } else {
                 music.stop();
                 world.step(0, 0, 0); // Detiene el mundo físico
@@ -144,6 +136,7 @@ public class SpriteManager implements InputProcessor {
         }
         handleGameScreenInput();
         updateItems();
+        updateEnemy();
 
     }
 
@@ -155,7 +148,6 @@ public class SpriteManager implements InputProcessor {
             item = iterItems.next();
             if (item instanceof Heart) {
                 if (item.rect.overlaps(player.rect)) {
-                    System.out.println("choca");
                     player.addHeart();
                     iterItems.remove();
                     if (ConfigurationManager.isSoundEnabled()) {
@@ -165,7 +157,6 @@ public class SpriteManager implements InputProcessor {
                 }
             } else if (item instanceof Rupia) {
                 if (item.rect.overlaps(player.rect)) {
-                    System.out.println("choca");
                     player.addRupia(item.score);
                     iterItems.remove();
                     if (ConfigurationManager.isSoundEnabled()) {
@@ -176,11 +167,31 @@ public class SpriteManager implements InputProcessor {
             } else if (item instanceof Goal) {
                 if (item.rect.overlaps(player.rect)) {
                     levelManager.nextLevel();
+                    ResourceManager.getSound(Constants.SOUND + "next_level.mp3").play();
 
                 }
             }
         }
     }
+
+    private void updateEnemy() {
+
+        Enemy enemy;
+        Iterator<Enemy> iterEnemies = enemies.iterator();
+        while (iterEnemies.hasNext()) {
+            enemy = iterEnemies.next();
+
+            if (enemy.rect.overlaps(sword.rect)) {
+                System.out.println("choca");
+                if (ConfigurationManager.isSoundEnabled()) {
+                    ResourceManager.getSound(Constants.SOUND + "hurt_bubble.mp3").play();
+                    enemy.hit(1, (new Vector2(sword.rect.x, sword.rect.y)));
+                    sword.rect.setPosition(0,0);
+                }
+            }
+        }
+    }
+
     public void quitPause() {
         pause = !pause;
     }

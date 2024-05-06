@@ -27,6 +27,11 @@ public class BlueProjectile extends Enemy {
         this.type = EnemyType.projectile;
         body.setUserData(this);
 
+        currentFrame = ResourceManager.getRegion("blue_projectile_right");
+
+        rect.width = currentFrame.getRegionWidth();
+        rect.height = currentFrame.getRegionHeight();
+
         this.world = world;
 
         rightAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("blue_projectile_right"));
@@ -42,6 +47,9 @@ public class BlueProjectile extends Enemy {
         Vector2 currentPosition = body.getPosition();
         position.set(currentPosition.x, currentPosition.y);
 
+        rect.x = currentPosition.x;
+        rect.y = currentPosition.y;
+
         if(liveState== LiveState.NORMAL && elapsedTime >LIFETIME) {
             liveState = LiveState.DYING;
         }
@@ -49,7 +57,7 @@ public class BlueProjectile extends Enemy {
         if (liveState == LiveState.DYING) {
             currentFrame = dieAnimation.getKeyFrame(stateTime, true);
             if (dieAnimation.isAnimationFinished(stateTime)) {
-                ResourceManager.getSound(Constants.SOUND + "die_bubble.mp3").play();
+                ResourceManager.getSound(Constants.SOUND + "explosion.mp3").play();
                 liveState = LiveState.DEAD;
             }
         }

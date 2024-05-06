@@ -37,16 +37,18 @@ public class GrayEnemy extends Enemy {
         currentHearts = hearts;
         this.type = Enemy.EnemyType.gray;
         body.setUserData(this);
-
-
         this.world = world;
+
+        currentFrame = ResourceManager.getRegion("gray_bubble_down");
+
+        rect.width = currentFrame.getRegionWidth();
+        rect.height = currentFrame.getRegionHeight();
 
         rightAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("gray_bubble_right"));
         leftAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("gray_bubble_left"));
         idleAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("gray_bubble_down"));
         dieAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("grey_bubble_die"));
         invulnerabilityAnimation = new Animation<TextureRegion>(1f, ResourceManager.getRegions("invulnerability"));
-
 
     }
 
@@ -56,6 +58,9 @@ public class GrayEnemy extends Enemy {
 
         Vector2 currentPosition = body.getPosition();
         position.set(currentPosition.x, currentPosition.y);
+
+        rect.x = currentPosition.x;
+        rect.y = currentPosition.y;
 
         if (liveState == LiveState.HIT) {
             Vector2 repulsionDirection = body.getPosition().cpy().sub(attackOrigin).nor();

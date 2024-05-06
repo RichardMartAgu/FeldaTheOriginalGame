@@ -34,9 +34,11 @@ public class ResourceManager {
         assets.load(Constants.SOUND + "sword.mp3", Sound.class);
         assets.load(Constants.SOUND + "shot.mp3", Sound.class);
         assets.load(Constants.SOUND + "hurt_bubble.mp3", Sound.class);
+        assets.load(Constants.SOUND + "explosion.mp3", Sound.class);
         assets.load(Constants.SOUND + "die_bubble.mp3", Sound.class);
         assets.load(Constants.SOUND + "collect_heart.mp3", Sound.class);
         assets.load(Constants.SOUND + "collect_rupia.mp3", Sound.class);
+        assets.load(Constants.SOUND + "next_level.mp3", Sound.class);
         assets.load(Constants.SOUND + "hurt.mp3", Sound.class);
         assets.load(Constants.SOUND + "die.mp3", Sound.class);
         assets.load(Constants.SOUND + "lose.mp3", Sound.class);

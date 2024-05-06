@@ -24,15 +24,13 @@ public class GameScreen implements Screen {
     OrthographicCamera camera = new OrthographicCamera();
     private MyContactListener myContactListener;
 
-
     private CameraManager cameraManager;
     World world;
-    private boolean levelLoaded = false;
 
     public GameScreen(Felda game) {
         this.game = game;
 
-        world = new World(new Vector2(0, 0), true);
+        world = new World(new Vector2(0, 0), false);
         myContactListener = new MyContactListener();
         world.setContactListener(myContactListener);
         debugRenderer = new Box2DDebugRenderer();

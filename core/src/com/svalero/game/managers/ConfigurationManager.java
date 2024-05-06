@@ -7,7 +7,6 @@ import com.svalero.game.utils.Constants;
 public class ConfigurationManager {
 
     private static Preferences settings = Gdx.app.getPreferences(Constants.APP_NAME);
-    ;
 
     public static boolean isSoundEnabled() {
         return settings.getBoolean("sound");
@@ -33,11 +32,15 @@ public class ConfigurationManager {
         preferences.putBoolean("sound", value);
         preferences.flush(); // Guardar los cambios
     }
-    public static String getDifficulty(){
-        return settings.getString("difficulty");
+
+    public static String getDifficulty() {
+        return settings.getString("difficulty", "Medium");
     }
-    public static void setDifficulty(String value){
+
+    public static void setDifficulty(String value) {
+        Preferences preferences = Gdx.app.getPreferences(Constants.APP_NAME);
         settings.putString("difficulty", value);
+        preferences.flush(); // Guardar los cambios
     }
 
 }

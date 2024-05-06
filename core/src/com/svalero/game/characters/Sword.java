@@ -1,6 +1,11 @@
 package com.svalero.game.characters;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.svalero.game.managers.ResourceManager;
+import com.svalero.game.utils.Constants;
 
 import static com.svalero.game.utils.Constants.PLAYER_HEIGHT;
 import static com.svalero.game.utils.Constants.PLAYER_WIDTH;
@@ -9,11 +14,18 @@ public class Sword {
     private Body sword;
     public Fixture swordFixture;
 
+    public Vector2 position;
     World world;
 
-    public Sword( World world) {
+    TextureRegion currentFrame;
+    public Rectangle rect;
 
+    public Sword( World world) {
         this.world = world;
+        rect = new Rectangle();
+
+        rect.width = Constants.SWORD_WIDTH;
+        rect.height = Constants.SWORD_HEIGHT;
 
         // Crear la forma de la espada
         PolygonShape swordShape = new PolygonShape();

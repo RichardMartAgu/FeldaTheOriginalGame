@@ -36,6 +36,12 @@ public class BlueEnemy extends Enemy {
         body.setUserData(this);
         this.world = world;
 
+        currentFrame = ResourceManager.getRegion("blue_bubble_down");
+
+        rect.width = currentFrame.getRegionWidth();
+        rect.height = currentFrame.getRegionHeight();
+
+
         rightAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("blue_bubble_right"));
         leftAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("blue_bubble_left"));
         idleAnimation = new Animation<TextureRegion>(1f, ResourceManager.getRegions("blue_bubble_down"));
@@ -52,6 +58,9 @@ public class BlueEnemy extends Enemy {
 
         Vector2 currentPosition = body.getPosition();
         position.set(currentPosition.x, currentPosition.y);
+
+        rect.x = currentPosition.x;
+        rect.y = currentPosition.y;
 
         if (liveState == LiveState.HIT) {
             Vector2 repulsionDirection = body.getPosition().cpy().sub(attackOrigin).nor();

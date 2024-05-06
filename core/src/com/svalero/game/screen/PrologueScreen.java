@@ -1,32 +1,33 @@
+
 package com.svalero.game.screen;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.svalero.game.Felda;
-import com.svalero.game.managers.ResourceManager;
+        import com.badlogic.gdx.Gdx;
+        import com.badlogic.gdx.Screen;
+        import com.badlogic.gdx.graphics.GL20;
+        import com.badlogic.gdx.graphics.Texture;
+        import com.badlogic.gdx.scenes.scene2d.Stage;
+        import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+        import com.badlogic.gdx.scenes.scene2d.ui.Image;
+        import com.badlogic.gdx.scenes.scene2d.ui.Table;
+        import com.svalero.game.Felda;
+        import com.svalero.game.managers.ResourceManager;
 
-import static com.svalero.game.utils.Constants.SCREEN_HEIGHT;
+        import static com.svalero.game.utils.Constants.SCREEN_HEIGHT;
 
-public class SplashScreen implements Screen {
+public class PrologueScreen implements Screen {
 
-    private Texture splashTexture;
-    private Image splashImage;
+    private Texture prologueTexture;
+    private Image prologueImage;
     private Stage stage;
-    private boolean splashDone = false;
+    private boolean prologueDone = false;
 
     private Felda game;
 
-    public SplashScreen (Felda game) {
+    public PrologueScreen (Felda game) {
         this.game = game;
 
-        splashTexture = new Texture(Gdx.files.internal("splash.png"));
-        splashImage = new Image(splashTexture);
+        prologueTexture = new Texture(Gdx.files.internal("prologue.png"));
+        prologueImage = new Image(prologueTexture);
         stage = new Stage();
     }
 
@@ -38,21 +39,21 @@ public class SplashScreen implements Screen {
         table.center();
 
         // Muestra la imagen de SplashScreen como una animación
-        splashImage.addAction(Actions.sequence(Actions.alpha(0), Actions.fadeIn(1f),
+        prologueImage.addAction(Actions.sequence(Actions.alpha(0), Actions.fadeIn(1f),
                 Actions.delay(1.5f), Actions.run(new Runnable() {
                     @Override
                     public void run() {
-                        splashDone = true;
+                        prologueDone = true;
                     }
                 })
         ));
 
         table.row().height(SCREEN_HEIGHT);
-        table.add(splashImage).center();
+        table.add(prologueImage).center();
         stage.addActor(table);
 
         // Lanza la carga de recursos
-       ResourceManager.loadAllResources();
+        ResourceManager.loadAllResources();
     }
 
     @Override
@@ -63,11 +64,15 @@ public class SplashScreen implements Screen {
         stage.act();
         stage.draw();
 
+        if (Gdx.input.isTouched()) {
+            prologueDone = true;
+        }
+
         // Comprueba si se han cargado todos los recursos
         if (ResourceManager.update()) {
             // Si la animación ha terminado se muestra ya el menú principal
-            if (splashDone) {
-                game.setScreen(new MainMenuScreen(game));
+            if (prologueDone) {
+                game.setScreen(new GameScreen(game));
             }
         }
 
@@ -95,7 +100,7 @@ public class SplashScreen implements Screen {
 
     @Override
     public void dispose() {
-        splashTexture.dispose();
+        prologueTexture.dispose();
         stage.dispose();
     }
 }

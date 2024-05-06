@@ -42,7 +42,7 @@ public class MainMenuScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new PrologueScreen(game));
             }
         });
         TextButton settingsButton = new TextButton("Settings", skin);

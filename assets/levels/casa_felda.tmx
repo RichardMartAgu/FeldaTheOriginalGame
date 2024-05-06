@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="113">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="121">
  <tileset firstgid="1" source="public_tileset_by_orohnpokemon-d4vpcfu.tsx"/>
  <tileset firstgid="2377" source="green_bubble_down_2.tsx"/>
  <tileset firstgid="2378" source="gray_bubble_down_1.tsx"/>
@@ -128,8 +128,11 @@
   <object id="28" x="112" y="32" width="80" height="48"/>
   <object id="69" x="0" y="320" width="128" height="16"/>
   <object id="70" x="176" y="320" width="128" height="16"/>
+  <object id="118" x="112" y="80" width="16" height="48"/>
+  <object id="119" x="176" y="80" width="16" height="48"/>
+  <object id="120" x="128" y="336" width="48" height="16"/>
  </objectgroup>
- <objectgroup id="9" name="objects">
+ <objectgroup id="9" name="objects" visible="0">
   <properties>
    <property name="character" value="green"/>
   </properties>
@@ -198,7 +201,15 @@
     <property name="item" value="rupia"/>
    </properties>
   </object>
-  <object id="111" x="112" y="80" width="16" height="48"/>
-  <object id="112" x="176" y="80" width="16" height="48"/>
+  <object id="116" gid="2378" x="240" y="288" width="16" height="16">
+   <properties>
+    <property name="enemy" value="gray"/>
+   </properties>
+  </object>
+  <object id="117" gid="2379" x="48" y="288" width="16" height="16">
+   <properties>
+    <property name="enemy" value="blue"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

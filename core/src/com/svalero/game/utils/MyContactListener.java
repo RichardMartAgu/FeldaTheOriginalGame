@@ -18,33 +18,18 @@ public class MyContactListener implements ContactListener {
     public void beginContact(Contact contact) {
         // Método llamado cuando dos cuerpos comienzan a colisionar
 
-        Body bodySword = contact.getFixtureA().getBody();
-        Body bodyPlayer = contact.getFixtureA().getBody();
-        Body bodyEnemy = contact.getFixtureB().getBody();
+        Fixture fixtureA = contact.getFixtureA();
+        Fixture fixtureB = contact.getFixtureB();
+
+        Object userDataA = fixtureA.getBody().getUserData();
+        Object userDataB = fixtureB.getBody().getUserData();
 
 
-        if (bodyPlayer.getUserData() instanceof Player && bodyEnemy.getUserData() instanceof Enemy) {
-            Player player = (Player) bodyPlayer.getUserData();
-            player.hit(1, bodyEnemy.getPosition());
-            ResourceManager.getSound(Constants.SOUND + "hurt.mp3").play();
-        }
-
-        if (bodySword.getUserData() instanceof Sword && bodyEnemy.getUserData() instanceof Enemy) {
-            Enemy enemy = (Enemy) bodyEnemy.getUserData();
-            if (enemy instanceof GreenEnemy) {
-                ResourceManager.getSound(Constants.SOUND + "hurt_bubble.mp3").play();
-                enemy.hit(1, bodySword.getPosition());
-            } else if (enemy instanceof GrayEnemy) {
-                ResourceManager.getSound(Constants.SOUND + "hurt_bubble.mp3").play();
-                enemy.hit(1, bodySword.getPosition());
-            } else if (enemy instanceof BlueEnemy) {
-                ResourceManager.getSound(Constants.SOUND + "hurt_bubble.mp3").play();
-                enemy.hit(1, bodySword.getPosition());
-            } else if (enemy instanceof BlueProjectile) {
-                ResourceManager.getSound(Constants.SOUND + "hurt_bubble.mp3").play();
-                enemy.hit(1, bodySword.getPosition());
-            }
-        }
+//        if (userDataA instanceof Player && userDataB instanceof Enemy) {
+//            Player player = (Player) userDataA;
+//            player.hit(1, fixtureB.getBody().getPosition());
+//            ResourceManager.getSound(Constants.SOUND + "hurt.mp3").play();
+//        }
 
     }
 

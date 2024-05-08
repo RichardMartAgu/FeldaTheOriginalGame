@@ -40,7 +40,6 @@ public class GameScreen implements Screen {
         cameraManager = new CameraManager(spriteManager, levelManager);
         renderManager = new RenderManager(spriteManager, cameraManager, levelManager, levelManager.batch);
         levelManager.setCameraManager(cameraManager);
-
     }
 
     @Override

@@ -8,13 +8,11 @@ public class Heart extends Item {
         super(x, y);
         this.score = score;
 
-
         currentFrame = ResourceManager.getRegion("heart");
         rect.x = x;
         rect.y = y;
         rect.width = currentFrame.getRegionWidth();
         rect.height = currentFrame.getRegionHeight();
-
 
     }
 

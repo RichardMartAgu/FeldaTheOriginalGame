@@ -22,7 +22,7 @@ public class SplashScreen implements Screen {
 
     private Felda game;
 
-    public SplashScreen (Felda game) {
+    public SplashScreen(Felda game) {
         this.game = game;
 
         splashTexture = new Texture(Gdx.files.internal("splash.png"));
@@ -31,13 +31,12 @@ public class SplashScreen implements Screen {
     }
 
     @Override
-    public void show( ) {
+    public void show() {
 
         Table table = new Table();
         table.setFillParent(true);
         table.center();
 
-        // Muestra la imagen de SplashScreen como una animación
         splashImage.addAction(Actions.sequence(Actions.alpha(0), Actions.fadeIn(1f),
                 Actions.delay(1.5f), Actions.run(new Runnable() {
                     @Override
@@ -51,8 +50,7 @@ public class SplashScreen implements Screen {
         table.add(splashImage).center();
         stage.addActor(table);
 
-        // Lanza la carga de recursos
-       ResourceManager.loadAllResources();
+        ResourceManager.loadAllResources();
     }
 
     @Override
@@ -63,9 +61,7 @@ public class SplashScreen implements Screen {
         stage.act();
         stage.draw();
 
-        // Comprueba si se han cargado todos los recursos
         if (ResourceManager.update()) {
-            // Si la animación ha terminado se muestra ya el menú principal
             if (splashDone) {
                 game.setScreen(new MainMenuScreen(game));
             }

@@ -7,12 +7,10 @@ import com.svalero.game.screen.SplashScreen;
 
 public class Felda extends Game {
 
-
     @Override
     public void create() {
         ((Game) Gdx.app.getApplicationListener()).setScreen(new SplashScreen(this));
     }
-
 
     @Override
     public void render() {

@@ -28,7 +28,7 @@ public class GameOverScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        Label titleLabel = new Label("GAME OVER", skin,"big");
+        Label titleLabel = new Label("GAME OVER", skin, "big");
         table.add(titleLabel).expandX().center().top().padBottom(100f).colspan(2).row();
         titleLabel.setFontScale(2f);
 
@@ -60,7 +60,6 @@ public class GameOverScreen implements Screen {
         table.add(playButton).center().padBottom(20).colspan(2).row();
         table.add(menuButton).center().padBottom(20).colspan(2).row();
         table.add(exitButton).center().colspan(2);
-
     }
 
 

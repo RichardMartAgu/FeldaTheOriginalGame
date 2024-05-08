@@ -25,11 +25,13 @@ public class CameraManager {
     }
 
     public void handleCamera() {
+
+        //Definir los límites del mapa para cada nivel
         float levelWith = 0;
         if (levelManager.currentLevelIndex == 0)
             levelWith = 320;
         else if (levelManager.currentLevelIndex == 1)
-            levelWith = 1120 ;
+            levelWith = 1120;
         else if (levelManager.currentLevelIndex == 2)
             levelWith = 640;
         else if (levelManager.currentLevelIndex == 3)
@@ -46,10 +48,6 @@ public class CameraManager {
         camera.update();
         levelManager.mapRenderer.setView(camera);
         levelManager.mapRenderer.render(new int[]{0, 1, 2, 3});
-    }
-
-    public OrthographicCamera getCamera() {
-        return camera;
     }
 
 }

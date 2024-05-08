@@ -65,7 +65,7 @@ public class GrayEnemy extends Enemy {
         if (liveState == LiveState.HIT) {
             Vector2 repulsionDirection = body.getPosition().cpy().sub(attackOrigin).nor();
             // Aplicar una fuerza repulsiva al cuerpo
-            float repulsionForceMagnitude = 90000000000f; // Ajusta la magnitud según lo deseado
+            float repulsionForceMagnitude = 90000000000f;
             body.applyLinearImpulse(repulsionDirection.scl(repulsionForceMagnitude), body.getWorldCenter(), true);
             liveState = LiveState.NORMAL;
         }
@@ -94,12 +94,10 @@ public class GrayEnemy extends Enemy {
                     // Obtener la dirección hacia la que debe moverse el enemigo para alcanzar al jugador
                     Vector2 direction = playerPosition.cpy().sub(currentPosition).nor();
 
-
                     // Aplicar una fuerza lineal al cuerpo del enemigo en la dirección del jugador
                     body.applyLinearImpulse(direction.scl(MOVEMENT_SPEED), body.getWorldCenter(), true);
 
                     // Actualizar la animación según la dirección del movimiento
-
                     if (direction.x > 0) {
                         // Mover hacia la derecha
                         currentFrame = rightAnimation.getKeyFrame(stateTime, true);
@@ -114,6 +112,8 @@ public class GrayEnemy extends Enemy {
                     currentFrame = idleAnimation.getKeyFrame(stateTime, true);
                 }
             }
+
+            // Generar un tiempo aleatorio para la invulnerabilidad
             timeToInvulnerability = MathUtils.random(4, 15);
             if (invulnerabilityState == InvulnerabilityState.FALSE && refreshTime > timeToInvulnerability) {
                 boolean invulnerability = MathUtils.randomBoolean(0.2f);
@@ -123,19 +123,14 @@ public class GrayEnemy extends Enemy {
                 }
             }
 
+            // Terminar la invulnerabilidad si ha terminado la animación
             if (invulnerabilityState == InvulnerabilityState.TRUE && invulnerabilityAnimation.isAnimationFinished(stateTime)) {
                 repeatCount++;
-                    invulnerabilityState = InvulnerabilityState.FALSE;
-                    body.setActive(true);
-                    refreshTime = 0;
-                    repeatCount = 0;
+                invulnerabilityState = InvulnerabilityState.FALSE;
+                body.setActive(true);
+                refreshTime = 0;
+                repeatCount = 0;
             }
         }
     }
 }
-
-
-
-
-
-

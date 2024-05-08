@@ -16,7 +16,6 @@ import com.svalero.game.managers.SpriteManager;
 
 public class PauseGameScreen extends ScreenAdapter {
 
-
     final Felda game;
     private Skin skin;
     private Stage stage;

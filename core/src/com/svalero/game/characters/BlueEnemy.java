@@ -14,6 +14,7 @@ public class BlueEnemy extends Enemy {
     public enum ShootingState {
         TRUE, FALSE
     }
+
     public ShootingState shootingState = ShootingState.FALSE;
 
     World world;
@@ -41,12 +42,10 @@ public class BlueEnemy extends Enemy {
         rect.width = currentFrame.getRegionWidth();
         rect.height = currentFrame.getRegionHeight();
 
-
         rightAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("blue_bubble_right"));
         leftAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("blue_bubble_left"));
         idleAnimation = new Animation<TextureRegion>(1f, ResourceManager.getRegions("blue_bubble_down"));
         dieAnimation = new Animation<TextureRegion>(0.15f, ResourceManager.getRegions("blue_bubble_die"));
-
     }
 
     public void update(float dt, SpriteManager spriteManager) {
@@ -55,17 +54,17 @@ public class BlueEnemy extends Enemy {
         stateTime += dt;
         refreshTime += dt;
 
-
         Vector2 currentPosition = body.getPosition();
         position.set(currentPosition.x, currentPosition.y);
 
         rect.x = currentPosition.x;
         rect.y = currentPosition.y;
 
+        // Manejar el estado de ser golpeado
         if (liveState == LiveState.HIT) {
             Vector2 repulsionDirection = body.getPosition().cpy().sub(attackOrigin).nor();
             // Aplicar una fuerza repulsiva al cuerpo
-            float repulsionForceMagnitude = 90000000000f; // Ajusta la magnitud según lo deseado
+            float repulsionForceMagnitude = 90000000000f;
             body.applyLinearImpulse(repulsionDirection.scl(repulsionForceMagnitude), body.getWorldCenter(), true);
             liveState = LiveState.NORMAL;
         }
@@ -97,7 +96,6 @@ public class BlueEnemy extends Enemy {
                     body.applyLinearImpulse(direction.scl(MOVEMENT_SPEED), body.getWorldCenter(), true);
 
                     // Actualizar la animación según la dirección del movimiento
-
                     if (direction.x > 0) {
                         // Mover hacia la derecha
                         currentFrame = rightAnimation.getKeyFrame(stateTime, true);
@@ -112,18 +110,19 @@ public class BlueEnemy extends Enemy {
                     currentFrame = idleAnimation.getKeyFrame(stateTime, true);
                 }
             }
+
+            // Generar un tiempo aleatorio para el próximo disparo
             timeToShooting = MathUtils.random(8, 15);
             if (shootingState == ShootingState.FALSE && refreshTime > timeToShooting) {
                 shootingState = ShootingState.TRUE;
                 stateTime = 0;
                 refreshTime = 0;
-
             }
 
+            // Realizar un disparo si está en el estado de disparo verdadero
             if (shootingState == ShootingState.TRUE && idleAnimation.isAnimationFinished(stateTime)) {
                 shoot = true;
                 shootingState = ShootingState.FALSE;
-
 
             }
         }

@@ -2,9 +2,7 @@ package com.svalero.game.screen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -16,16 +14,12 @@ import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisCheckBox;
 import com.svalero.game.Felda;
 import com.svalero.game.managers.ConfigurationManager;
-import com.svalero.game.managers.SpriteManager;
-import com.svalero.game.utils.Constants;
 
 public class PreferencesScreen implements Screen {
 
     final Felda game;
     private Skin skin;
     private Stage stage;
-
-
 
     public PreferencesScreen(Felda game) {
         this.game = game;
@@ -96,6 +90,7 @@ public class PreferencesScreen implements Screen {
         loadPreferences();
 
     }
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);

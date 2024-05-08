@@ -13,10 +13,8 @@ public class ConfigurationManager {
     }
 
     public static void switchMusic(boolean value) {
-        // Aquí puedes manejar el estado de la música, por ejemplo, detenerla o iniciarla según el valor recibido
         ConfigurationManager.setSoundEnabled(value);
-
-        if (SpriteManager.music != null) { // Verificar si SpriteManager.music no es null
+        if (SpriteManager.music != null) {
             if (value) {
                 // Iniciar la música
                 SpriteManager.music.play();
@@ -30,7 +28,7 @@ public class ConfigurationManager {
     public static void setSoundEnabled(boolean value) {
         Preferences preferences = Gdx.app.getPreferences(Constants.APP_NAME);
         preferences.putBoolean("sound", value);
-        preferences.flush(); // Guardar los cambios
+        preferences.flush();
     }
 
     public static String getDifficulty() {
@@ -40,7 +38,7 @@ public class ConfigurationManager {
     public static void setDifficulty(String value) {
         Preferences preferences = Gdx.app.getPreferences(Constants.APP_NAME);
         settings.putString("difficulty", value);
-        preferences.flush(); // Guardar los cambios
+        preferences.flush();
     }
 
 }

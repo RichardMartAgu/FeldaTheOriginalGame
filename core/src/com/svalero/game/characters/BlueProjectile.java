@@ -50,7 +50,8 @@ public class BlueProjectile extends Enemy {
         rect.x = currentPosition.x;
         rect.y = currentPosition.y;
 
-        if(liveState== LiveState.NORMAL && elapsedTime >LIFETIME) {
+        // Comprobar si el proyectil ha superado su tiempo de vida
+        if (liveState == LiveState.NORMAL && elapsedTime > LIFETIME) {
             liveState = LiveState.DYING;
         }
 
@@ -66,15 +67,11 @@ public class BlueProjectile extends Enemy {
         Vector2 playerPosition = player.getPosition();
 
         if (!(liveState == LiveState.DYING || liveState == LiveState.DEAD)) {
-
             // Obtener la dirección hacia la que debe moverse el enemigo para alcanzar al jugador
             Vector2 direction = playerPosition.cpy().sub(currentPosition).nor();
-
             // Aplicar una fuerza lineal al cuerpo del enemigo en la dirección del jugador
             body.applyLinearImpulse(direction.scl(MOVEMENT_SPEED), body.getWorldCenter(), true);
-
             // Actualizar la animación según la dirección del movimiento
-
             if (direction.x > 0) {
                 // Mover hacia la derecha
                 currentFrame = rightAnimation.getKeyFrame(stateTime, true);

@@ -11,7 +11,8 @@ import com.svalero.game.managers.ResourceManager;
 import com.svalero.game.managers.SpriteManager;
 import com.svalero.game.utils.Constants;
 
-import static com.svalero.game.utils.Constants.*;
+import static com.svalero.game.utils.Constants.SWORD_HEIGHT;
+import static com.svalero.game.utils.Constants.SWORD_WIDTH;
 
 public class Player extends Character {
     private Body body;
@@ -41,7 +42,7 @@ public class Player extends Character {
             upAnimation, idleUpAnimation, downAnimation, idleDownAnimation, attackRightAnimation, attackLeftAnimation,
             attackUpAnimation, attackDownAnimation, dieAnimationPLayer, hurtAnimationPLayer;
 
-    public Player(Vector2 position, int hearts,int rupias, World world, Sword sword) {
+    public Player(Vector2 position, int hearts, int rupias, World world, Sword sword) {
         super(position);
         this.position = position;
         this.sword = sword;
@@ -259,11 +260,13 @@ public class Player extends Character {
             }
         }
     }
+
     public void addHeart() {
-        currentHearts ++;
+        currentHearts++;
     }
+
     public void addRupia(int score) {
-        rupias +=  score;
+        rupias += score;
     }
 
     public void playIdleAnimation() {

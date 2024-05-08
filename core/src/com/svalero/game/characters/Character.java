@@ -1,6 +1,5 @@
 package com.svalero.game.characters;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -14,8 +13,8 @@ public abstract class Character implements Disposable {
         RIGHT, LEFT, UP, DOWN, IDLE;
     }
 
-    public enum LiveState{
-        DEAD,DYING,NORMAL, HIT;
+    public enum LiveState {
+        DEAD, DYING, NORMAL, HIT;
     }
 
     public int currentHearts;
@@ -32,6 +31,7 @@ public abstract class Character implements Disposable {
         if (currentFrame != null)
             batch.draw(currentFrame, position.x, position.y);
     }
+
     @Override
     public void dispose() {
 
@@ -40,6 +40,7 @@ public abstract class Character implements Disposable {
     public void update(float dt, SpriteManager spriteManager) {
         stateTime += dt;
     }
+
     public Vector2 getPosition() {
         return position;
     }

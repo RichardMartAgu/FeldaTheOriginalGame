@@ -61,6 +61,7 @@ public class RenderManager {
     }
 
     private void drawHud() {
+        //Pinta el nombre en el HUD
         String levelName = "";
         if (levelManager.currentLevelIndex == 0)
             levelName = ": Casa de Felda";

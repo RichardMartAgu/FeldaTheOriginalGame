@@ -10,14 +10,12 @@ import com.svalero.game.utils.Constants;
 
 public class GreenEnemy extends Enemy {
 
-
     World world;
     private static final float DETECTION_DISTANCE = 100;
 
     private static float MOVEMENT_SPEED = 800f;
     private Vector2 position;
     private Player player;
-
 
 
     public GreenEnemy(Vector2 position, int hearts, Player player, World world) {
@@ -44,7 +42,6 @@ public class GreenEnemy extends Enemy {
     }
 
     public void update(float dt, SpriteManager spriteManager) {
-        boolean frozen = true;
 
         stateTime += dt;
 
@@ -57,7 +54,7 @@ public class GreenEnemy extends Enemy {
         if (liveState == LiveState.HIT) {
             Vector2 repulsionDirection = body.getPosition().cpy().sub(attackOrigin).nor();
             // Aplicar una fuerza repulsiva al cuerpo
-            float repulsionForceMagnitude = 90000000000f; // Ajusta la magnitud según lo deseado
+            float repulsionForceMagnitude = 90000000000f;
             body.applyLinearImpulse(repulsionDirection.scl(repulsionForceMagnitude), body.getWorldCenter(), true);
             liveState = LiveState.NORMAL;
         }

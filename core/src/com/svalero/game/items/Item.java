@@ -4,11 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.utils.Disposable;
-import com.svalero.game.characters.Character;
-import com.svalero.game.managers.SpriteManager;
-import com.svalero.game.utils.Constants;
 
 
 public abstract class Item {

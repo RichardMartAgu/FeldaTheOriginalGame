@@ -55,12 +55,9 @@ public class LevelManager {
 
     }
 
-    public void setCameraManager(CameraManager cameraManager) {
-        this.cameraManager = cameraManager;
-    }
 
     private void playCurrentLevelMusic() {
-
+        //Carga la música
         if (ConfigurationManager.isSoundEnabled()) {
             spriteManager.music = ResourceManager.getMusic(Constants.MUSIC + "zelda_music.mp3");
             spriteManager.music.setLooping(true);
@@ -70,6 +67,7 @@ public class LevelManager {
     }
 
     public void loadCurrentLevel() {
+        //Carga el nivel que toca
         String levelFile = LEVELS[currentLevelIndex];
 
         map = new TmxMapLoader().load(levelFile);
@@ -78,6 +76,7 @@ public class LevelManager {
 
         batch = mapRenderer.getBatch();
 
+        //Dependiendo del nivel pone el jugador en un inicio recuperando rupias y corazones
         if (currentLevelIndex == 0) {
             spriteManager.player = new Player(new Vector2(140, 180), 5, 0, world, spriteManager.sword = new Sword(world));
         } else if (currentLevelIndex == 1) {
@@ -95,7 +94,6 @@ public class LevelManager {
     }
 
     public void loadEnemies() {
-
         Enemy enemy = null;
         // Carga los objetos "enemigo" del TiledMap
         for (MapObject object : map.getLayers().get("objects").getObjects()) {
@@ -121,9 +119,8 @@ public class LevelManager {
     }
 
     private void loadItems() {
-
         Item item = null;
-        // Carga los objetos "enemigo" del TiledMap
+        // Carga los objetos "item" del TiledMap
         for (MapObject object : map.getLayers().get("objects").getObjects()) {
             if (object instanceof TiledMapTileMapObject) {
                 TiledMapTileMapObject tile = (TiledMapTileMapObject) object;
@@ -136,7 +133,6 @@ public class LevelManager {
                         case "goal":
                             item = new Goal(tile.getX(), tile.getY());
                             break;
-
                     }
                     spriteManager.items.add(item);
                 }
@@ -145,6 +141,7 @@ public class LevelManager {
     }
 
     public void loadCollisionLayer() {
+        // Carga los collision del TiledMap
         collisionObjects = new ArrayList<>();
         MapLayer objectLayer = map.getLayers().get("collision");
         for (MapObject object : objectLayer.getObjects()) {
@@ -155,25 +152,25 @@ public class LevelManager {
                 float width = rectangleObject.getRectangle().width;
                 float height = rectangleObject.getRectangle().height;
                 collisionObjects.add(new CollisionObject(x, y, width, height, world));
-
             }
         }
     }
 
     public void nextLevel() {
-
+        //Cambia de nivel
         currentLevelIndex++;
         if (currentLevelIndex >= LEVELS.length) {
             currentLevelIndex = 0;
             ResourceManager.getSound(Constants.SOUND + "win.mp3").play();
             ((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen(game));
-        }else {
+        } else {
             unloadCurrentLevel();
             loadCurrentLevel();
         }
     }
 
     public void unloadCurrentLevel() {
+        //libera recursos del nivel anterior
         spriteManager.music.stop();
         cameraManager.init();
         spriteManager.enemies.clear();
@@ -188,7 +185,7 @@ public class LevelManager {
 
     }
 
-
+    public void setCameraManager(CameraManager cameraManager) {
+        this.cameraManager = cameraManager;
+    }
 }
-
-

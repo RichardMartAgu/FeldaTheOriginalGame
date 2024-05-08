@@ -1,18 +1,18 @@
 package com.svalero.game.screen;
 
-        import com.badlogic.gdx.Gdx;
-        import com.badlogic.gdx.Input;
-        import com.badlogic.gdx.Screen;
-        import com.badlogic.gdx.graphics.GL20;
-        import com.badlogic.gdx.graphics.Texture;
-        import com.badlogic.gdx.scenes.scene2d.Stage;
-        import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-        import com.badlogic.gdx.scenes.scene2d.ui.Image;
-        import com.badlogic.gdx.scenes.scene2d.ui.Table;
-        import com.svalero.game.Felda;
-        import com.svalero.game.managers.ResourceManager;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.svalero.game.Felda;
+import com.svalero.game.managers.ResourceManager;
 
-        import static com.svalero.game.utils.Constants.SCREEN_HEIGHT;
+import static com.svalero.game.utils.Constants.SCREEN_HEIGHT;
 
 public class WinScreen implements Screen {
 
@@ -23,7 +23,7 @@ public class WinScreen implements Screen {
 
     private Felda game;
 
-    public WinScreen (Felda game) {
+    public WinScreen(Felda game) {
         this.game = game;
 
         winTexture = new Texture(Gdx.files.internal("win.png"));
@@ -32,13 +32,12 @@ public class WinScreen implements Screen {
     }
 
     @Override
-    public void show( ) {
+    public void show() {
 
         Table table = new Table();
         table.setFillParent(true);
         table.center();
 
-        // Muestra la imagen de SplashScreen como una animación
         winImage.addAction(Actions.sequence(Actions.alpha(0), Actions.fadeIn(1f),
                 Actions.delay(10f), Actions.run(new Runnable() {
                     @Override
@@ -52,7 +51,6 @@ public class WinScreen implements Screen {
         table.add(winImage).center();
         stage.addActor(table);
 
-        // Lanza la carga de recursos
         ResourceManager.loadAllResources();
     }
 
@@ -68,29 +66,23 @@ public class WinScreen implements Screen {
             winDone = true;
         }
 
-        // Comprueba si se han cargado todos los recursos
         if (ResourceManager.update()) {
-            // Si la animación ha terminado se muestra ya el menú principal
             if (winDone) {
                 game.setScreen(new MainMenuScreen(game));
             }
         }
-
     }
 
     @Override
     public void resize(int width, int height) {
-
     }
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override

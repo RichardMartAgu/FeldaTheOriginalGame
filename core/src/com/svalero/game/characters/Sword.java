@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.svalero.game.managers.ResourceManager;
 import com.svalero.game.utils.Constants;
 
 import static com.svalero.game.utils.Constants.PLAYER_HEIGHT;
@@ -20,7 +19,7 @@ public class Sword {
     TextureRegion currentFrame;
     public Rectangle rect;
 
-    public Sword( World world) {
+    public Sword(World world) {
         this.world = world;
         rect = new Rectangle();
 
@@ -33,7 +32,7 @@ public class Sword {
 
         BodyDef bodySword = new BodyDef();
         bodySword.type = BodyDef.BodyType.StaticBody;
-        bodySword.position.set(0,0);
+        bodySword.position.set(0, 0);
         sword = world.createBody(bodySword);
         sword.setUserData(this);
 

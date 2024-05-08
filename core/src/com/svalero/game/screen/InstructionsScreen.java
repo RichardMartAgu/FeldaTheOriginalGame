@@ -39,7 +39,6 @@ public class InstructionsScreen implements Screen {
         table.setFillParent(true);
         table.center();
 
-        // Muestra la imagen de SplashScreen como una animación
         instructionsImage.addAction(Actions.sequence(Actions.alpha(0), Actions.fadeIn(1f),
                 Actions.delay(10f), Actions.run(new Runnable() {
                     @Override
@@ -53,7 +52,6 @@ public class InstructionsScreen implements Screen {
         table.add(instructionsImage).center();
         stage.addActor(table);
 
-        // Lanza la carga de recursos
         ResourceManager.loadAllResources();
     }
 
@@ -69,9 +67,7 @@ public class InstructionsScreen implements Screen {
             instructionsDone = true;
         }
 
-        // Comprueba si se han cargado todos los recursos
         if (ResourceManager.update()) {
-            // Si la animación ha terminado se muestra ya el menú principal
             if (instructionsDone) {
                 game.setScreen(new MainMenuScreen(game));
             }

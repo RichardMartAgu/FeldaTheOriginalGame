@@ -56,35 +56,35 @@ public class SpriteManager implements InputProcessor {
 
 
     private void handleGameScreenInput() {
+        //Cuando apretamos scape vamos al modo pausa
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             pause = !pause;
             game.setScreen(new PauseGameScreen(game, gameScreen, this));
-
         }
-
     }
 
-    public void setLevelManager(LevelManager levelManager) {
-        this.levelManager = levelManager;
-    }
+
 
     public void update(float dt) {
-        System.out.println(levelManager.currentLevelIndex);
+        // Se actualiza el juego solo si no está en pausa
         if (!pause) {
+            // Se maneja la entrada del jugador
             player.manageInput(dt);
 
+            // Se actualiza el mundo físico del juego
             if (player.liveState != Character.LiveState.DYING) {
                 world.step(1 / 60f, 6, 2);
             } else {
+                // Si el jugador está muriendo, se detiene el mundo físico
                 music.stop();
                 world.step(0, 0, 0); // Detiene el mundo físico
             }
 
+            // Se obtienen los cuerpos del mundo físico
             world.getBodies(worldBodies);
 
             for (Body body : worldBodies) {
                 if (world.isLocked()) continue;
-
 
                 if (body.getUserData() instanceof Enemy) {
                     Enemy enemy = (Enemy) body.getUserData();
@@ -92,6 +92,7 @@ public class SpriteManager implements InputProcessor {
                         worldBodies.removeValue(enemy.getBody(), true);
                         world.destroyBody(body);
 
+                        // Se elige aleatoriamente entre agregar una rupia o un corazón en la posición del enemigo muerto
                         int random = MathUtils.random(1, 2);
                         if (random == 1) {
                             // Agrega una rupia en la posición del enemigo
@@ -109,16 +110,17 @@ public class SpriteManager implements InputProcessor {
 
             }
 
+            // Si el jugador está muerto, se reproduce el sonido de perder y se muestra la pantalla de Game Over
             if (player.liveState == Player.LiveState.DEAD) {
                 ResourceManager.getSound(Constants.SOUND + "lose.mp3").play();
-
                 game.setScreen(new GameOverScreen(game));
             }
 
+            // Si el jugador está golpeado, se desactiva el listener de colisiones
             if (player.liveState == Character.LiveState.HIT) {
                 world.setContactListener(null);
             } else {
-
+                // Si no, se activa el listener de colisiones
                 world.setContactListener(myContactListener);
             }
 
@@ -126,16 +128,20 @@ public class SpriteManager implements InputProcessor {
 
             for (Enemy enemy : enemies) {
                 if (enemy instanceof BlueEnemy) {
+                    // Si el enemigo es de tipo BlueEnemy y está disparando, se crea un proyectil
                     if (((BlueEnemy) enemy).shoot) {
                         BlueProjectile blueProjectile = new BlueProjectile(new Vector2(enemy.position.x, enemy.position.y), 1, player, world);
                         enemies.add(blueProjectile);
                     }
                 }
+                // Se actualiza el enemigo
                 enemy.update(dt, this);
             }
 
         }
+        // Se maneja el metodo para entrar en pause
         handleGameScreenInput();
+        // Se actualizan los ítems y los enemigos
         updateItems();
         updateEnemy();
 
@@ -149,8 +155,11 @@ public class SpriteManager implements InputProcessor {
             item = iterItems.next();
             if (item instanceof Heart) {
                 if (item.rect.overlaps(player.rect)) {
+                    // Se agrega un corazón al jugador
                     player.addHeart();
+                    // Se elimina el corazón de la lista de ítems
                     iterItems.remove();
+                    // Si el sonido está habilitado, se reproduce el sonido de recolección de corazón
                     if (ConfigurationManager.isSoundEnabled()) {
                         ResourceManager.getSound(Constants.SOUND + "collect_heart.mp3").play();
 
@@ -158,16 +167,22 @@ public class SpriteManager implements InputProcessor {
                 }
             } else if (item instanceof Rupia) {
                 if (item.rect.overlaps(player.rect)) {
+                    // Se agrega la cantidad de rupias al jugador
                     player.addRupia(item.score);
+                    // Se elimina la rupia de la lista de ítems
                     iterItems.remove();
+                    // Si el sonido está habilitado, se reproduce el sonido de recolección de rupia
                     if (ConfigurationManager.isSoundEnabled()) {
                         ResourceManager.getSound(Constants.SOUND + "collect_rupia.mp3").play();
 
                     }
                 }
             } else if (item instanceof Goal) {
+                // Si el jugador colisiona con la meta
                 if (item.rect.overlaps(player.rect)) {
+                    // Se carga el siguiente nivel
                     levelManager.nextLevel();
+                    // Se reproduce el sonido de pasar al siguiente nivel
                     ResourceManager.getSound(Constants.SOUND + "next_level.mp3").play();
 
                 }
@@ -183,14 +198,20 @@ public class SpriteManager implements InputProcessor {
             enemy = iterEnemies.next();
 
             if (enemy.rect.overlaps(sword.rect)) {
-                System.out.println("choca");
                 if (ConfigurationManager.isSoundEnabled()) {
+                    // Si el sonido está habilitado, se reproduce el sonido de impacto
                     ResourceManager.getSound(Constants.SOUND + "hurt_bubble.mp3").play();
+                    // Se aplica un golpe al enemigo
                     enemy.hit(1, (new Vector2(sword.rect.x, sword.rect.y)));
-                    sword.rect.setPosition(0,0);
+                    // Se reposiciona la espada
+                    sword.rect.setPosition(0, 0);
                 }
             }
         }
+    }
+
+    public void setLevelManager(LevelManager levelManager) {
+        this.levelManager = levelManager;
     }
 
     public void quitPause() {

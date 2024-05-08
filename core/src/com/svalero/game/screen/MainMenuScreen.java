@@ -1,6 +1,5 @@
 package com.svalero.game.screen;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -21,7 +20,6 @@ public class MainMenuScreen extends ScreenAdapter {
     private Stage stage;
 
 
-
     public MainMenuScreen(Felda game) {
         this.game = game;
 
@@ -33,7 +31,7 @@ public class MainMenuScreen extends ScreenAdapter {
         table.setFillParent(true);
         stage.addActor(table);
 
-        Label titleLabel = new Label("Menu", skin,"big");
+        Label titleLabel = new Label("Menu", skin, "big");
         table.add(titleLabel).expandX().center().top().padBottom(70f).colspan(2).row();
         titleLabel.setFontScale(1.7f);
 

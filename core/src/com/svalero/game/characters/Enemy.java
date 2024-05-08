@@ -11,11 +11,10 @@ import com.svalero.game.utils.Constants;
 
 public class Enemy extends Character {
 
-
     public Vector2 attackOrigin;
 
     public enum EnemyType {
-        green, gray, blue,projectile
+        green, gray, blue, projectile
     }
 
     public Body body;
@@ -78,6 +77,7 @@ public class Enemy extends Character {
             }
         }
     }
+
     public void setDifficultyStats(int hearts) {
         String difficulty = ConfigurationManager.getDifficulty();
 
